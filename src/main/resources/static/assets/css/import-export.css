@@ -1,0 +1,15 @@
+.block-title {
+    background-color: #ffffcc;
+}
+
+.green-light {
+    background-color: #ccffcc;
+}
+
+tr.green-light td.essential {
+    font-weight: bold;
+}
+
+.red-light {
+    background-color: #ff9999;
+}
