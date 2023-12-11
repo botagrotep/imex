@@ -38,4 +38,9 @@ public class TransportationService {
         Transportation transportation = converter.toTransportation(t);
         return repository.save(transportation);
     }
+
+    public Optional<TransportationDetailsDto> findTransportationDetailsById(Long id) {
+        return repository.findById(id)
+                .map(converter::toTransportationDetailsDto);
+    }
 }

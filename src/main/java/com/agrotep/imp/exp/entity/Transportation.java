@@ -63,18 +63,12 @@ public class Transportation {
     @Builder.Default
     private LocalTime orderTime = LocalTime.now();
     @Builder.Default
-    private String clientName = "";
-    @Builder.Default
     private String clientContactPerson = "";
-    @Builder.Default
-    private String cargoName = "";
     private Float cargoWeightTons;
     private Float cargoVolumeM3;
     private Integer cargoPlacesNumber;
     @Builder.Default
     private String cargoPlacesType = "";
-    @Builder.Default
-    private String cargoTruckType = "";
     private Boolean isCargoTir;
     private Boolean isCargoAdr;
     private Boolean isCargoAdr1;

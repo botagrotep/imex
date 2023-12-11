@@ -1,5 +1,6 @@
 package com.agrotep.imp.exp.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@Builder
 public class LoadingDto {
     private Integer no;
     private LocalDate loadingDate;

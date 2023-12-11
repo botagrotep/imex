@@ -24,4 +24,5 @@ public class TransportationDto {
     private String equipage = "";
     private String driver = "";
     private String comment;
+    private String severity;
 }

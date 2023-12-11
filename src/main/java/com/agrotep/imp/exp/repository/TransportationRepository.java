@@ -1,13 +1,13 @@
 package com.agrotep.imp.exp.repository;
 
+import com.agrotep.imp.exp.dto.LoadingDto;
 import com.agrotep.imp.exp.entity.Transportation;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Month;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.agrotep.imp.exp.repository.PersonRepository.SVITLANA;
 
@@ -32,6 +32,28 @@ public class TransportationRepository {
                     .coordinatorComment("завантаження о 9:00")
                     .equipage("AA4545BB/CC8787BB")
                     .driver("Юсь Сергій АТ")
+                    .orderDate(LocalDate.of(2023, 11, 7))
+                    .orderTime(LocalTime.of(15, 27))
+                    .clientContactPerson("Florian Hoffman")
+                    .cargoWeightTons(20F)
+                    .cargoVolumeM3(96F)
+                    .cargoPlacesNumber(23)
+                    .cargoPlacesType("піддони")
+                    .cargoTemperatureFrom(2)
+                    .loadings(Collections.singletonList(
+                            LoadingDto.builder()
+                                    .no(1)
+                                    .loadingDate(LocalDate.of(2023, 11, 7))
+                                    .loadingTime(LocalTime.of(0, 8))
+                                    .loadingType("Зав")
+                                    .senderReceiverLegalEntity("Arlon")
+                                    .loadingCity("Arlon")
+                                    .loadingCountry("Бельгія")
+                                    .loadingAddress("LS")
+                                    .loadingLatitude(49.6951348876953125)
+                                    .loadingLongitude(5.81048059469500977)
+                                    .build()
+                    ))
                     .build(),
             Transportation.builder()
                     .id(2L)
@@ -116,5 +138,11 @@ public class TransportationRepository {
         }
         TRANSPORTATIONS.add(t);
         return t;
+    }
+
+    public Optional<Transportation> findById(Long id) {
+        return TRANSPORTATIONS.stream()
+                .filter(t -> Objects.equals(id, t.getId()))
+                .findAny();
     }
 }
