@@ -32,9 +32,8 @@ public class TransportationDetailsController {
         return "add-transportation-details";
     }
 
-    @PostMapping
-    @PutMapping
-    public String createTransportation(@RequestBody TransportationDetailsDto transportation, Model model) {
+    @PostMapping(value = "/update", consumes = {"application/x-www-form-urlencoded;charset=UTF-8"})
+    public String updateTransportation(@RequestBody TransportationDetailsDto transportation, Model model) {
         TransportationDto transportationDto = service.save(transportation);
         model.addAttribute(transportationDto);
         return "transportation-details";
