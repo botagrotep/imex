@@ -307,7 +307,6 @@
                     <span>Деталі &RightArrow;</span>
                 </a>
 
-                <!-- General elements -->
                 <h4
                         class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
                 >
@@ -316,8 +315,19 @@
                 <div
                         class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
                 >
-                    <form th:action="@{/transportation-details/update}" th:object="${transportation}" method="post">
+                    <form action="#" th:action="@{/transportation-details/update}" th:object="${transportation}"
+                          method="post">
 
+                        <input type="hidden" th:field="*{id}"/>
+                        <input type="hidden" th:field="*{managerId}"/>
+
+                        <label class="block text-sm">
+                            <span class="text-gray-700 dark:text-gray-400">Менеджер</span>
+                            <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                   disabled="disabled"
+                                   type="text"
+                                   th:field="*{managerName}">
+                            </label>
                         <label class="block text-sm">
                             <span class="text-gray-700 dark:text-gray-400">Дата, час</span>
                             <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
@@ -442,13 +452,231 @@
                                 <input
                                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                         placeholder="-10"
-                                        th:field="*{cargoTemperatureFrom}"
+                                        th:field="*{temperatureMin}"
                                 />
                                 <input
                                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                         placeholder="+10"
-                                        th:field="*{cargoTemperatureTo}"
+                                        th:field="*{temperatureMax}"
                                 />
+                            </label>
+                        </div>
+                        <label class="block text-sm">
+                            <span class="text-gray-700 dark:text-gray-400">Додаткова інформація</span>
+                            <input
+                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                    placeholder="внесіть коментарі"
+                                    th:field="*{coordinatorComment}"
+                            >
+                        </label>
+
+
+
+                        <h4
+                                class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
+                        >
+                            Завантаження
+                        </h4>
+                        <div
+                                class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+                        >
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">№ п/п</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="123"
+                                        th:field="*{loadingNo}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Дата</span>
+                                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                       type="date"
+                                       th:field="*{loadingDateStr}">
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">час</span>
+                                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                       type="time"
+                                       th:field="*{loadingTimeStr}">
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Тип</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Зав"
+                                        disabled="disabled"
+                                        th:field="*{loadingType}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Відправник / Отримувач / Юр. особа</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Jane Doe"
+                                        th:field="*{loadingSenderReceiverLegalEntity}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Пункт</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Arlon"
+                                        th:field="*{loadingCity}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Пошт. код</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="20123"
+                                        th:field="*{loadingCityPostalIndex}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Країна</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Бельгія"
+                                        th:field="*{loadingCountry}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Область</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Хмельницька"
+                                        th:field="*{loadingRegion}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Адреса</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="01203 пр. Правди, 67, м. Київ, Україна"
+                                        th:field="*{loadingAddress}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Широта</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="49.6951348876953125"
+                                        th:field="*{loadingLatitude}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="ml-2">Довгота</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="5.81048059469500977"
+                                        th:field="*{loadingLongitude}"
+                                />
+
+                            </label>
+                        </div>
+
+                        <h4
+                                class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
+                        >
+                            Розвантаження
+                        </h4>
+                        <div
+                                class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+                        >
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">№ п/п</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="123"
+                                        th:field="*{unloadingNo}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Дата</span>
+                                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                       type="date"
+                                       th:field="*{unloadingDateStr}">
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">час</span>
+                                <input class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                       type="time"
+                                       th:field="*{unloadingTimeStr}">
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Тип</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Зав"
+                                        disabled="disabled"
+                                        th:field="*{unloadingType}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Відправник / Отримувач / Юр. особа</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Jane Doe"
+                                        th:field="*{unloadingSenderReceiverLegalEntity}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Пункт</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Arlon"
+                                        th:field="*{unloadingCity}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Пошт. код</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="20123"
+                                        th:field="*{unloadingCityPostalIndex}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Країна</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Бельгія"
+                                        th:field="*{unloadingCountry}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Область</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="Назва області"
+                                        th:field="*{unloadingRegion}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Адреса</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="01203 пр. Правди, 67, м. Київ, Україна"
+                                        th:field="*{unloadingAddress}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="text-gray-700 dark:text-gray-400">Широта</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="49.6951348876953125"
+                                        th:field="*{unloadingLatitude}"
+                                />
+                            </label>
+                            <label class="block text-sm">
+                                <span class="ml-2">Довгота</span>
+                                <input
+                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                        placeholder="5.81048059469500977"
+                                        th:field="*{unloadingLongitude}"
+                                />
+
                             </label>
                         </div>
                         <button

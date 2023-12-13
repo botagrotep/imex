@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.agrotep.imp.exp.service.converter.TransportationConverter;
+import com.agrotep.imp.exp.service.converter.TransportationDetailsDtoConverter;
+import com.agrotep.imp.exp.service.converter.TransportationDtoConverter;
+import com.agrotep.imp.exp.service.converter.TruckDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,29 +20,34 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TransportationService {
     private final TransportationRepository repository;
-    private final TransportationConverter converter;
-    
+
+    private final TransportationDtoConverter converter;
+    private final TransportationDetailsDtoConverter detailsDtoConverter;
+    private final TruckDtoConverter truckDtoConverter;
+
     public SortedMap<LocalDate, List<TransportationDto>> findAll() {
         final Collection<Transportation> transportationsList = repository.findAll();
         List<TransportationDto> dtos = converter.toTransportationDto(transportationsList);
         Map<LocalDate, List<TransportationDto>> transportationsGroups
-            = dtos.stream().collect(Collectors.groupingBy(TransportationDto::getTransportationDate));
+            = dtos.stream()
+                .filter(t -> t.getTransportationDate() != null)
+                .collect(Collectors.groupingBy(TransportationDto::getTransportationDate));
         return new TreeMap<>(transportationsGroups);
     }
 
     public TransportationDto save(TransportationDetailsDto transportationDetailsDto) {
-        Transportation transportation = converter.toTransportation(transportationDetailsDto);
+        Transportation transportation = detailsDtoConverter.toTransportation(transportationDetailsDto);
         Transportation t = repository.save(transportation);
         return converter.toTransportationDto(t);
     }
 
     public Transportation saveTruck(TruckDto t) {
-        Transportation transportation = converter.toTransportation(t);
+        Transportation transportation = truckDtoConverter.toTransportation(t);
         return repository.save(transportation);
     }
 
     public Optional<TransportationDetailsDto> findTransportationDetailsById(Long id) {
         return repository.findById(id)
-                .map(converter::toTransportationDetailsDto);
+                .map(detailsDtoConverter::toTransportationDetailsDto);
     }
 }

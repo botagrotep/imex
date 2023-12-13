@@ -1,10 +1,15 @@
 package com.agrotep.imp.exp.repository;
 
 import com.agrotep.imp.exp.entity.Person;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 //import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
+@Repository
 //public interface PersonRepository extends JpaRepository<Person, Integer> {
 public class PersonRepository {
 
@@ -20,10 +25,19 @@ public class PersonRepository {
             "anton"
     );
     public static final List<Person> PERSONS = List.of(
-            SVITLANA//, ANTON
+            SVITLANA, ANTON
     );
 
     public List<Person> findAll() {
         return PERSONS;
+    }
+
+    public Optional<Person> findByName(String name) {
+        if (!StringUtils.hasText(name)) {
+            return Optional.empty();
+        }
+        return PERSONS.stream()
+                .filter(p -> name.equalsIgnoreCase(p.getName()))
+                .findFirst();
     }
 }

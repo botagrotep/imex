@@ -12,6 +12,7 @@ public class TransportationDto {
 
     private Long id;
     private LocalDate transportationDate;
+    private LocalDate transportationFillingDate;
     private String direction;
     private String typeOfTruck;
     private String clientCompany;

@@ -1,47 +1,48 @@
 package com.agrotep.imp.exp.service.converter;
 
 
-import com.agrotep.imp.exp.dto.TransportationDetailsDto;
+import com.agrotep.imp.exp.dto.LoadingDto;
 import com.agrotep.imp.exp.dto.TransportationDto;
-import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.entity.Transportation;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
-import static com.agrotep.imp.exp.dto.TransportationDetailsDto.TIME_FORMATTER;
-
 @Mapper(componentModel = "spring")
-public abstract class TransportationConverter {
+public abstract class TransportationDtoConverter {
+
+    public static final String DEFAULT_COMMENT = "Додати коментар";
+
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
     public abstract TransportationDto toTransportationDto(Transportation t);
     public abstract List<TransportationDto> toTransportationDto(Collection<Transportation> t);
-    public abstract TransportationDetailsDto toTransportationDetailsDto(Transportation t);
-
-
-    public abstract Transportation toTransportation(TransportationDetailsDto transportationDetailsDto);
-    public abstract Transportation toTransportation(TruckDto truckDto);
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
+        dto.setTransportationDate(t.getLoadingDate());
+
         setDirection(t, dto);
         setCondition(t, dto);
         setTransportationComment(t, dto);
         setSeverity(t, dto);
-
+        setDefaultCommentsForEmptyFields(dto);
     }
 
-    @AfterMapping
-    public void toStringFields(Transportation t, @MappingTarget TransportationDetailsDto dto) {
-        dto.setOrderDateStr(t.getOrderDate().format(DATE_FORMATTER));
-        dto.setOrderTimeStr(t.getOrderTime().format(TIME_FORMATTER));
+    private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
+        if (!StringUtils.hasText(dto.getCoordinatorComment())) {
+            dto.setCoordinatorComment(DEFAULT_COMMENT);
+        }
+        if (!StringUtils.hasText(dto.getComment())) {
+            dto.setComment(DEFAULT_COMMENT);
+        }
     }
 
     private static void setSeverity(Transportation t, TransportationDto dto) {
@@ -60,8 +61,12 @@ public abstract class TransportationConverter {
         if (StringUtils.hasText(t.getDriver())) {
             transportationComment.append(t.getDriver()).append(" ");
         }
+        transportationComment
+                .append(t.getTransportationComment());
+        if (!StringUtils.hasText(transportationComment)) {
+            transportationComment.append(DEFAULT_COMMENT);
+        }
         dto.setTransportationComment(transportationComment
-                .append(t.getTransportationComment())
                 .toString()
                 .trim());
     }
@@ -80,7 +85,9 @@ public abstract class TransportationConverter {
             }
             conditionBuilder.append(t.getTemperatureMax()).append(" ");
         }
-        conditionBuilder.append(t.getDangerousStatus());
+        if (t.getIsCargoAdr() == Boolean.TRUE) {
+            conditionBuilder.append("ADR");
+        }
 
         dto.setConditions(conditionBuilder.toString());
     }
@@ -99,4 +106,5 @@ public abstract class TransportationConverter {
         }
         dto.setDirection(s.toString());
     }
+
 }

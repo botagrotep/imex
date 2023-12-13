@@ -14,10 +14,15 @@ import static com.agrotep.imp.exp.repository.PersonRepository.SVITLANA;
 @Repository
 public class TransportationRepository {
 
-    Set<Transportation> TRANSPORTATIONS = Set.of(
+    public static final long ID3 = 3L;
+    public static final long ID1 = 1L;
+    public static final long ID2 = 2L;
+    public static final long ID4 = 4L;
+    public static final long ID5 = 5L;
+    Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(
             Transportation.builder()
-                    .id(1L)
-                    .transportationDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .id(ID1)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity("Вінниця")
                     .loadingCountry("UA")
                     .borderCrossingPoint("Чоп")
@@ -39,25 +44,29 @@ public class TransportationRepository {
                     .cargoVolumeM3(96F)
                     .cargoPlacesNumber(23)
                     .cargoPlacesType("піддони")
-                    .cargoTemperatureFrom(2)
-                    .loadings(Collections.singletonList(
-                            LoadingDto.builder()
-                                    .no(1)
-                                    .loadingDate(LocalDate.of(2023, 11, 7))
-                                    .loadingTime(LocalTime.of(0, 8))
-                                    .loadingType("Зав")
-                                    .senderReceiverLegalEntity("Arlon")
-                                    .loadingCity("Arlon")
-                                    .loadingCountry("Бельгія")
-                                    .loadingAddress("LS")
-                                    .loadingLatitude(49.6951348876953125)
-                                    .loadingLongitude(5.81048059469500977)
-                                    .build()
-                    ))
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingTime(LocalTime.of(0, 8))
+                    .loadingType("Зав")
+                    .loadingSenderReceiverLegalEntity("Arlon")
+//                    .loadingCity("Arlon")
+//                    .loadingCountry("Бельгія")
+                    .loadingCityPostalIndex("5780")
+                    .loadingAddress("LS")
+                    .loadingLatitude(49.6951348876953125)
+                    .loadingLongitude(5.81048059469500977)
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 23))
+                    .unloadingTime(LocalTime.of(7, 44))
+                    .unloadingType("Розвантаження")
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(12.6951348876953125)
+                    .unloadingLongitude(5.81048059469500977)
                     .build(),
             Transportation.builder()
-                    .id(2L)
-                    .transportationDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .id(ID2)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity("Вінниця")
                     .loadingCountry("UA")
                     .borderCrossingPoint("Чоп")
@@ -71,10 +80,32 @@ public class TransportationRepository {
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
                     .transportationComment("перенесено на 3.12.2023")
+
+
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingTime(LocalTime.of(0, 8))
+                    .loadingType("Зав")
+                    .loadingSenderReceiverLegalEntity("Arlon")
+//                    .loadingCity("Arlon")
+//                    .loadingCountry("Бельгія")
+                    .loadingAddress("LS")
+                    .loadingLatitude(49.6951348876953125)
+                    .loadingLongitude(5.81048059469500977)
+
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingTime(LocalTime.of(10, 8))
+                    .unloadingType("Розвантаження")
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(50.6951348876953125)
+                    .unloadingLongitude(7.81048059469500977)
                     .build(),
+
             Transportation.builder()
-                    .id(3L)
-                    .transportationDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .id(ID3)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity("Вінниця")
                     .loadingCountry("UA")
                     .borderCrossingPoint("Чоп")
@@ -84,11 +115,31 @@ public class TransportationRepository {
                     .clientCompany("Оріфлейм")
                     .manager(SVITLANA)
                     .cargo("косметика")
-                    .dangerousStatus("ADR")
+                    .isCargoAdr(true)
+
+                    .loadingNo(2)
+                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingTime(LocalTime.of(0, 8))
+                    .loadingType("Зав")
+                    .loadingSenderReceiverLegalEntity("Arlon")
+//                    .loadingCity("Arlon")
+//                    .loadingCountry("Бельгія")
+                    .loadingAddress("LS")
+                    .loadingLatitude(49.6951348876953125)
+                    .loadingLongitude(5.81048059469500977)
+
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingTime(LocalTime.of(10, 8))
+                    .unloadingType("Розвантаження")
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(50.6951348876953125)
+                    .unloadingLongitude(7.81048059469500977)
                     .build(),
             Transportation.builder()
-                    .id(4L)
-                    .transportationDate(LocalDate.of(2023, Month.DECEMBER, 2))
+                    .id(ID4)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
                     .loadingCity("Вінниця")
                     .loadingCountry("UA")
                     .borderCrossingPoint("Чоп")
@@ -104,10 +155,29 @@ public class TransportationRepository {
                     .equipage("AA1111BB/CC2222BB")
                     .driver("Ось Юрій ВТ")
                     .comment("комент")
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, 12, 2))
+                    .loadingTime(LocalTime.of(0, 8))
+                    .loadingType("Зав")
+                    .loadingSenderReceiverLegalEntity("Arlon")
+//                    .loadingCity("Arlon")
+//                    .loadingCountry("Бельгія")
+                    .loadingAddress("LS")
+                    .loadingLatitude(49.6951348876953125)
+                    .loadingLongitude(5.81048059469500977)
+
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingTime(LocalTime.of(10, 8))
+                    .unloadingType("Розвантаження")
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(50.6951348876953125)
+                    .unloadingLongitude(7.81048059469500977)
                     .build(),
             Transportation.builder()
-                    .id(5L)
-                    .transportationDate(LocalDate.of(2023, Month.DECEMBER, 2))
+                    .id(ID5)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
                     .loadingCity("Вінниця")
                     .loadingCountry("UA")
                     .borderCrossingPoint("Чоп")
@@ -121,8 +191,27 @@ public class TransportationRepository {
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
                     .transportationComment("відміна")
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, 12, 2))
+                    .loadingTime(LocalTime.of(0, 8))
+                    .loadingType("Зав")
+                    .loadingSenderReceiverLegalEntity("Arlon")
+//                    .loadingCity("Arlon")
+//                    .loadingCountry("Бельгія")
+                    .loadingAddress("LS")
+                    .loadingLatitude(49.6951348876953125)
+                    .loadingLongitude(5.81048059469500977)
+
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingTime(LocalTime.of(10, 8))
+                    .unloadingType("Розвантаження")
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(50.6951348876953125)
+                    .unloadingLongitude(7.81048059469500977)
                     .build()
-    );
+    ));
 
     public Collection<Transportation> findAll() {
         return TRANSPORTATIONS;
@@ -136,6 +225,7 @@ public class TransportationRepository {
                     .orElse(1L);
             t.setId(maxId + 1);
         }
+        TRANSPORTATIONS.remove(t);
         TRANSPORTATIONS.add(t);
         return t;
     }

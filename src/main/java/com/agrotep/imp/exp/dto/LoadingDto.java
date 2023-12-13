@@ -11,6 +11,8 @@ import java.time.LocalTime;
 @Setter
 @Builder
 public class LoadingDto {
+    private Long id;
+    private Long transportationId;
     private Integer no;
     private LocalDate loadingDate;
     private LocalTime loadingTime;

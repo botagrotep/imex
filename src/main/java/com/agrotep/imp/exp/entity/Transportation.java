@@ -25,7 +25,8 @@ public class Transportation {
 //    @GeneratedValue(strategy= GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private Long id;
-    private LocalDate transportationDate;
+    private Person manager;
+    private LocalDate transportationFillingDate;
     @Builder.Default
     private String loadingCity = "";
     @Builder.Default
@@ -40,13 +41,10 @@ public class Transportation {
     private String typeOfTruck = "";
     @Builder.Default
     private String clientCompany = "";
-    private Person manager;
     @Builder.Default
     private String cargo = "";
     private Integer temperatureMin;
     private Integer temperatureMax;
-    @Builder.Default
-    private String dangerousStatus = "";
     @Builder.Default
     private String coordinatorComment = "";
     @Builder.Default
@@ -75,7 +73,32 @@ public class Transportation {
     private Boolean isCargoCustomsServicesPaid;
     private Boolean isCargoStickers;
     private Boolean isCargoThermalPrinterNeeded;
-    private Integer cargoTemperatureFrom;
-    private Integer cargoTemperatureTo;
-    private List<LoadingDto> loadings;
+
+    private Integer loadingNo;
+    private LocalDate loadingDate;
+    private LocalTime loadingTime;
+    private String loadingType;
+    private String loadingSenderReceiverLegalEntity;
+    private String loadingCityPostalIndex;
+    private String loadingRegion;
+    private String loadingAddress;
+    private Double loadingLongitude;
+    private Double loadingLatitude;
+    private Double loadingFreight;
+    private String loadingCurrency;
+    private Boolean isLoadingPaymentInCash;
+
+    private Integer unloadingNo;
+    private LocalDate unloadingDate;
+    private LocalTime unloadingTime;
+    private String unloadingType;
+    private String unloadingSenderReceiverLegalEntity;
+    private String unloadingCityPostalIndex;
+    private String unloadingRegion;
+    private String unloadingAddress;
+    private Double unloadingLongitude;
+    private Double unloadingLatitude;
+    private Double unloadingFreight;
+    private String unloadingCurrency;
+    private Boolean isUnloadingPaymentInCash;
 }
