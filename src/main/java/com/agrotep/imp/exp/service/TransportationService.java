@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.agrotep.imp.exp.repository.TruckRepository;
 import com.agrotep.imp.exp.service.converter.TransportationDetailsDtoConverter;
 import com.agrotep.imp.exp.service.converter.TransportationDtoConverter;
 import com.agrotep.imp.exp.service.converter.TruckDtoConverter;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TransportationService {
     private final TransportationRepository repository;
+    private final TruckRepository truckRepository;
 
     private final TransportationDtoConverter converter;
     private final TransportationDetailsDtoConverter detailsDtoConverter;
@@ -49,5 +51,19 @@ public class TransportationService {
     public Optional<TransportationDetailsDto> findTransportationDetailsById(Long id) {
         return repository.findById(id)
                 .map(detailsDtoConverter::toTransportationDetailsDto);
+    }
+
+    public Optional<TransportationDto> findTransportationById(Long id) {
+        return repository.findById(id)
+                .map(converter::toTransportationDto);
+    }
+
+    public void setTruck(Long truckId, Long transportationId) {
+        truckRepository.findById(truckId)
+                .ifPresent(t -> repository.findById(transportationId)
+                        .ifPresent(transportation -> {
+                            transportation.setTruck(t);
+                            repository.save(transportation);
+                        }));
     }
 }

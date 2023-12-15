@@ -1,25 +1,66 @@
 package com.agrotep.imp.exp.service.converter;
 
 
-import com.agrotep.imp.exp.dto.LoadingDto;
-import com.agrotep.imp.exp.dto.TransportationDto;
 import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.entity.Transportation;
+import com.agrotep.imp.exp.entity.Truck;
+import com.agrotep.imp.exp.repository.TransportationRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.util.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 
 @Mapper(componentModel = "spring")
 public abstract class TruckDtoConverter {
+    @Autowired
+    protected TransportationRepository transportationRepository;
 
     public abstract Transportation toTransportation(TruckDto truckDto);
+    public abstract TruckDto toTruckDto(Truck t);
 
+    @AfterMapping
+    public void toStringFields(Truck truck, @MappingTarget TruckDto dto) {
+        StringBuilder transportationComment = new StringBuilder();
 
+        if (truck != null) {
+            String equipage = truck.getEquipage();
+            if (StringUtils.hasText(equipage)) {
+                transportationComment.append(equipage).append(" ");
+            }
+            String driver = truck.getDriver();
+            if (StringUtils.hasText(driver)) {
+                transportationComment.append(driver).append(" ");
+            }
+        }
+
+        transportationRepository.findTransportationForTruck(truck)
+                        .ifPresent(t -> transportationComment.append(t.getTransportationComment()));
+
+        dto.setTransportationComment(transportationComment
+                .toString()
+                .trim());
+
+        transportationRepository.findTransportationForTruck(truck)
+                .ifPresent(t -> setUnloading(dto, t));
+
+    }
+
+    private static void setUnloading(TruckDto dto, Transportation transportation) {
+        StringBuilder unloading = new StringBuilder();
+        if (transportation.getUnloadingDate() != null) {
+            unloading.append(transportation.getUnloadingDate().format(DATE_FORMATTER));
+        }
+        unloading.append(" ");
+        if (StringUtils.hasText(transportation.getUnloadingCity())) {
+            unloading.append(transportation.getUnloadingCity());
+        }
+        unloading.append(" ");
+        if (StringUtils.hasText(transportation.getUnloadingCountry())) {
+            unloading.append(transportation.getUnloadingCountry());
+        }
+        dto.setUnloading(unloading.toString().trim());
+    }
 }

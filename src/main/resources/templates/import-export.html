@@ -989,18 +989,18 @@
                                         <td class="px-4 py-3 font-semibold" th:text="${truck.cargo}"></td>
                                         <td class="px-4 py-3 font-semibold" th:text="${truck.conditions}"></td>
                                         <td class="px-4 py-3 font-semibold">
-                                            <a th:href="@{/transportation-details}"
-                                               th:text="${truck.coordinatorComment != null ? truck.coordinatorComment : 'Додати коментар'}">
+                                            <a th:href="${'/truck/' + truck.id}"
+                                               th:text="${truck.coordinatorComment}">
                                             </a>
                                         </td>
                                         <td class="px-4 py-3 font-semibold essential">
-                                            <a th:href="@{/transportation-details}"
-                                                th:text="${truck.transportationComment} ?: 'Додати коментар'">
+                                            <a th:href="${'/truck/' + truck.id}"
+                                                th:text="${truck.transportationComment}">
                                             </a>
                                         </td>
                                         <td class="px-4 py-3 font-semibold">
-                                            <a th:href="@{/transportation-details}"
-                                               th:text="${truck.comment} ?: 'Додати коментар'">
+                                            <a th:href="${'/truck/' + truck.id}"
+                                               th:text="${truck.comment}">
                                             </a>
                                         </td>
                                     </tr>

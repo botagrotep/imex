@@ -1,19 +1,18 @@
 package com.agrotep.imp.exp.service.converter;
 
 
-import com.agrotep.imp.exp.dto.LoadingDto;
 import com.agrotep.imp.exp.dto.TransportationDto;
 import com.agrotep.imp.exp.entity.Transportation;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
@@ -22,6 +21,8 @@ public abstract class TransportationDtoConverter {
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
+    @Mapping(target = "equipage", source = "t.truck.equipage")
+    @Mapping(target = "driver", source = "t.truck.driver")
     public abstract TransportationDto toTransportationDto(Transportation t);
     public abstract List<TransportationDto> toTransportationDto(Collection<Transportation> t);
 
@@ -37,16 +38,19 @@ public abstract class TransportationDtoConverter {
     }
 
     private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
-        if (!StringUtils.hasText(dto.getCoordinatorComment())) {
-            dto.setCoordinatorComment(DEFAULT_COMMENT);
-        }
-        if (!StringUtils.hasText(dto.getComment())) {
-            dto.setComment(DEFAULT_COMMENT);
+        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
+        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
+        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
+    }
+
+    private static void setDefaultCommentsForEmptyField(Supplier<String> getter, Consumer<String> setter) {
+        if (!StringUtils.hasText(getter.get())) {
+            setter.accept(DEFAULT_COMMENT);
         }
     }
 
-    private static void setSeverity(Transportation t, TransportationDto dto) {
-        String severity = StringUtils.hasText(t.getEquipage()) && StringUtils.hasText(t.getDriver())
+        private static void setSeverity(Transportation t, TransportationDto dto) {
+        String severity = StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
                 ? "green-light"
                 : StringUtils.hasText(t.getTransportationComment()) ? "red-light"
                 : "";
@@ -55,11 +59,11 @@ public abstract class TransportationDtoConverter {
 
     private static void setTransportationComment(Transportation t, TransportationDto dto) {
         StringBuilder transportationComment = new StringBuilder();
-        if (StringUtils.hasText(t.getEquipage())) {
-            transportationComment.append(t.getEquipage()).append(" ");
+        if (StringUtils.hasText(dto.getEquipage())) {
+            transportationComment.append(dto.getEquipage()).append(" ");
         }
-        if (StringUtils.hasText(t.getDriver())) {
-            transportationComment.append(t.getDriver()).append(" ");
+        if (StringUtils.hasText(dto.getDriver())) {
+            transportationComment.append(dto.getDriver()).append(" ");
         }
         transportationComment
                 .append(t.getTransportationComment());

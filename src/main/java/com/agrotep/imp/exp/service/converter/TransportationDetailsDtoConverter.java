@@ -6,7 +6,6 @@ import com.agrotep.imp.exp.entity.Person;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.repository.PersonRepository;
 import com.agrotep.imp.exp.repository.TransportationRepository;
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
@@ -58,9 +57,7 @@ public abstract class TransportationDetailsDtoConverter {
         Long id = dto.getId();
         if (id != null) {
             repository.findById(id)
-                    .ifPresent(tR -> {
-                        t.setManager(tR.getManager());
-                    });
+                    .ifPresent(tR -> t.setManager(tR.getManager()));
         }
     }
 
@@ -83,8 +80,7 @@ public abstract class TransportationDetailsDtoConverter {
                     .ifPresent(tR -> {
                         t.setManager(tR.getManager());
                         t.setTransportationComment(tR.getTransportationComment());
-                        t.setEquipage(tR.getEquipage());
-                        t.setDriver(tR.getDriver());
+                        t.setTruck(tR.getTruck());
                     });
         } else if (StringUtils.hasText(dto.getManagerName())) {
             personRepository.findByName(dto.getManagerName())

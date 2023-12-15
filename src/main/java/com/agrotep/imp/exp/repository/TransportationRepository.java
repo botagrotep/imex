@@ -1,7 +1,7 @@
 package com.agrotep.imp.exp.repository;
 
-import com.agrotep.imp.exp.dto.LoadingDto;
 import com.agrotep.imp.exp.entity.Transportation;
+import com.agrotep.imp.exp.entity.Truck;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -10,6 +10,7 @@ import java.time.Month;
 import java.util.*;
 
 import static com.agrotep.imp.exp.repository.PersonRepository.SVITLANA;
+import static com.agrotep.imp.exp.repository.TruckRepository.*;
 
 @Repository
 public class TransportationRepository {
@@ -35,8 +36,7 @@ public class TransportationRepository {
                     .temperatureMin(10)
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
-                    .equipage("AA4545BB/CC8787BB")
-                    .driver("Юсь Сергій АТ")
+                    .truck(TRUCK1)
                     .orderDate(LocalDate.of(2023, 11, 7))
                     .orderTime(LocalTime.of(15, 27))
                     .clientContactPerson("Florian Hoffman")
@@ -47,7 +47,6 @@ public class TransportationRepository {
                     .loadingNo(1)
                     .loadingDate(LocalDate.of(2023, 12, 1))
                     .loadingTime(LocalTime.of(0, 8))
-                    .loadingType("Зав")
                     .loadingSenderReceiverLegalEntity("Arlon")
 //                    .loadingCity("Arlon")
 //                    .loadingCountry("Бельгія")
@@ -58,7 +57,6 @@ public class TransportationRepository {
                     .unloadingNo(2)
                     .unloadingDate(LocalDate.of(2023, 12, 23))
                     .unloadingTime(LocalTime.of(7, 44))
-                    .unloadingType("Розвантаження")
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
                     .unloadingLatitude(12.6951348876953125)
@@ -73,6 +71,7 @@ public class TransportationRepository {
                     .unloadingCity("Будапешт")
                     .unloadingCountry("HU")
                     .typeOfTruck("реф")
+                    .truck(TRUCK3)
                     .clientCompany("Рошен")
                     .manager(SVITLANA)
                     .cargo("шоколад")
@@ -80,15 +79,10 @@ public class TransportationRepository {
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
                     .transportationComment("перенесено на 3.12.2023")
-
-
                     .loadingNo(1)
                     .loadingDate(LocalDate.of(2023, 12, 1))
                     .loadingTime(LocalTime.of(0, 8))
-                    .loadingType("Зав")
                     .loadingSenderReceiverLegalEntity("Arlon")
-//                    .loadingCity("Arlon")
-//                    .loadingCountry("Бельгія")
                     .loadingAddress("LS")
                     .loadingLatitude(49.6951348876953125)
                     .loadingLongitude(5.81048059469500977)
@@ -96,7 +90,6 @@ public class TransportationRepository {
                     .unloadingNo(2)
                     .unloadingDate(LocalDate.of(2023, 12, 10))
                     .unloadingTime(LocalTime.of(10, 8))
-                    .unloadingType("Розвантаження")
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
                     .unloadingLatitude(50.6951348876953125)
@@ -120,10 +113,7 @@ public class TransportationRepository {
                     .loadingNo(2)
                     .loadingDate(LocalDate.of(2023, 12, 1))
                     .loadingTime(LocalTime.of(0, 8))
-                    .loadingType("Зав")
                     .loadingSenderReceiverLegalEntity("Arlon")
-//                    .loadingCity("Arlon")
-//                    .loadingCountry("Бельгія")
                     .loadingAddress("LS")
                     .loadingLatitude(49.6951348876953125)
                     .loadingLongitude(5.81048059469500977)
@@ -131,7 +121,6 @@ public class TransportationRepository {
                     .unloadingNo(2)
                     .unloadingDate(LocalDate.of(2023, 12, 10))
                     .unloadingTime(LocalTime.of(10, 8))
-                    .unloadingType("Розвантаження")
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
                     .unloadingLatitude(50.6951348876953125)
@@ -152,16 +141,12 @@ public class TransportationRepository {
                     .temperatureMin(10)
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
-                    .equipage("AA1111BB/CC2222BB")
-                    .driver("Ось Юрій ВТ")
+                    .truck(TRUCK2)
                     .comment("комент")
                     .loadingNo(1)
                     .loadingDate(LocalDate.of(2023, 12, 2))
                     .loadingTime(LocalTime.of(0, 8))
-                    .loadingType("Зав")
                     .loadingSenderReceiverLegalEntity("Arlon")
-//                    .loadingCity("Arlon")
-//                    .loadingCountry("Бельгія")
                     .loadingAddress("LS")
                     .loadingLatitude(49.6951348876953125)
                     .loadingLongitude(5.81048059469500977)
@@ -169,7 +154,6 @@ public class TransportationRepository {
                     .unloadingNo(2)
                     .unloadingDate(LocalDate.of(2023, 12, 10))
                     .unloadingTime(LocalTime.of(10, 8))
-                    .unloadingType("Розвантаження")
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
                     .unloadingLatitude(50.6951348876953125)
@@ -194,7 +178,7 @@ public class TransportationRepository {
                     .loadingNo(1)
                     .loadingDate(LocalDate.of(2023, 12, 2))
                     .loadingTime(LocalTime.of(0, 8))
-                    .loadingType("Зав")
+                    .truck(TRUCK4)
                     .loadingSenderReceiverLegalEntity("Arlon")
 //                    .loadingCity("Arlon")
 //                    .loadingCountry("Бельгія")
@@ -205,7 +189,6 @@ public class TransportationRepository {
                     .unloadingNo(2)
                     .unloadingDate(LocalDate.of(2023, 12, 10))
                     .unloadingTime(LocalTime.of(10, 8))
-                    .unloadingType("Розвантаження")
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
                     .unloadingLatitude(50.6951348876953125)
@@ -233,6 +216,12 @@ public class TransportationRepository {
     public Optional<Transportation> findById(Long id) {
         return TRANSPORTATIONS.stream()
                 .filter(t -> Objects.equals(id, t.getId()))
+                .findAny();
+    }
+
+    public Optional<Transportation> findTransportationForTruck(Truck truck) {
+        return TRANSPORTATIONS.stream()
+                .filter(t -> Objects.equals(truck, t.getTruck()))
                 .findAny();
     }
 }

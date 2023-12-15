@@ -50,11 +50,8 @@ public class Transportation {
     @Builder.Default
     private String transportationComment = "";
     @Builder.Default
-    private String equipage = "";
-    @Builder.Default
-    private String driver = "";
-    @Builder.Default
     private String comment = "";
+    private  Truck truck;
 
     @Builder.Default
     private LocalDate orderDate = LocalDate.now();
@@ -77,7 +74,6 @@ public class Transportation {
     private Integer loadingNo;
     private LocalDate loadingDate;
     private LocalTime loadingTime;
-    private String loadingType;
     private String loadingSenderReceiverLegalEntity;
     private String loadingCityPostalIndex;
     private String loadingRegion;
@@ -91,7 +87,6 @@ public class Transportation {
     private Integer unloadingNo;
     private LocalDate unloadingDate;
     private LocalTime unloadingTime;
-    private String unloadingType;
     private String unloadingSenderReceiverLegalEntity;
     private String unloadingCityPostalIndex;
     private String unloadingRegion;
