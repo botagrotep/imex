@@ -748,6 +748,12 @@
                                     alt=""
                                     aria-hidden="true"
                             />
+
+
+                            <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="submit" value="Sign Out"/>
+                            </form>
                         </button>
                         <template x-if="isProfileMenuOpen">
                             <ul
