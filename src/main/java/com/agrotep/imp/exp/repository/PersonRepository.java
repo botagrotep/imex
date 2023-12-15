@@ -15,12 +15,12 @@ public class PersonRepository {
             1L,
             "Світлецька Світлана",
             "svitlana",
-            "1");
+            "svitlana");
     public static final Person ANTON = new Person(
             2L,
             "Антон Уліцький",
             "anton",
-            "1"
+            "anton"
     );
     public static final List<Person> PERSONS = List.of(
             SVITLANA, ANTON

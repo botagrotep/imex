@@ -27,8 +27,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers(toH2Console()).permitAll()
-                        .requestMatchers("/home", "/h2-console/**").permitAll()
+                        .requestMatchers("/home", "/resources/**", "/assets/**").permitAll()
                         .anyRequest().authenticated()
                 )
 //                .csrf(AbstractHttpConfigurer::disable)
