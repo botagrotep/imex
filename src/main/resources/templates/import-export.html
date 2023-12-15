@@ -3,1087 +3,267 @@
       xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Логістика ІМПОРТ/ЕКСПОРТ</title>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-            rel="stylesheet"
-    />
-    <link rel="stylesheet" th:href="@{/assets/css/tailwind.output.css}"/>
-    <link rel="stylesheet" th:href="@{/assets/css/import-export.css}"/>
-    <script
-            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-            defer
-    ></script>
-    <script th:src="@{/assets/js/init-alpine.js}"></script>
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
-    />
-    <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
-            defer
-    ></script>
-    <script th:src="@{./assets/js/charts-lines.js}" defer></script>
-    <script th:src="@{./assets/js/charts-pie.js}" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agrotep</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/assets/images/logos/favicon.png}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}"/>
+
+    <script defer th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
+    <script defer th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script defer th:src="@{/assets/js/sidebarmenu.js}"></script>
+    <script defer th:src="@{/assets/js/app.min.js}"></script>
+    <script defer th:src="@{/assets/libs/apexcharts/dist/apexcharts.min.js}"></script>
+    <script defer th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
+    <script defer th:src="@{/assets/js/dashboard.js}"></script>
 </head>
+
 <body>
-<div
-        class="flex h-screen bg-gray-50 dark:bg-gray-900"
-        :class="{ 'overflow-hidden': isSideMenuOpen }"
->
-    <!-- Desktop sidebar -->
-    <aside
-            class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0"
-    >
-        <div class="py-4 text-gray-500 dark:text-gray-400">
-            <a
-                    class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-                    href="#"
-            >
-                Логістика ІМПОРТ/ЕКСПОРТ
-            </a>
-            <ul class="mt-6">
-                <li class="relative px-6 py-3">
-                            <span
-                                    class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                                    aria-hidden="true"
-                            ></span>
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            th:href="@{/import-export}"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Логістика</span>
-                    </a>
-                </li>
-            </ul>
-            <ul>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="forms.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Forms</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="cards.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Cards</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="charts.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                            ></path>
-                            <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-                        </svg>
-                        <span class="ml-4">Charts</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="buttons.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Buttons</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="modals.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Modals</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="tables.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                        </svg>
-                        <span class="ml-4">Tables</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <button
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            @click="togglePagesMenu"
-                            aria-haspopup="true"
-                    >
-                                <span class="inline-flex items-center">
-                                    <svg
-                                            class="w-5 h-5"
-                                            aria-hidden="true"
-                                            fill="none"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                    >
-                                    <path
-                                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                                    ></path>
-                                    </svg>
-                                    <span class="ml-4">Pages</span>
-                                </span>
-                        <svg
-                                class="w-4 h-4"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                        >
-                            <path
-                                    fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                    </button>
-                    <template x-if="isPagesMenuOpen">
-                        <ul
-                                x-transition:enter="transition-all ease-in-out duration-300"
-                                x-transition:enter-start="opacity-25 max-h-0"
-                                x-transition:enter-end="opacity-100 max-h-xl"
-                                x-transition:leave="transition-all ease-in-out duration-300"
-                                x-transition:leave-start="opacity-100 max-h-xl"
-                                x-transition:leave-end="opacity-0 max-h-0"
-                                class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
-                                aria-label="submenu"
-                        >
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/login.html">Login</a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/create-account.html">
-                                    Create account
-                                </a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/forgot-password.html">
-                                    Forgot password
-                                </a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/404.html">404</a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/blank.html">Blank</a>
-                            </li>
-                        </ul>
-                    </template>
-                </li>
-            </ul>
-            <div class="px-6 my-6">
-                <button
-                        class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                >
-                    Create account
-                    <span class="ml-2" aria-hidden="true">+</span>
-                </button>
-            </div>
-        </div>
-    </aside>
-    <!-- Mobile sidebar -->
-    <!-- Backdrop -->
-    <div
-            x-show="isSideMenuOpen"
-            x-transition:enter="transition ease-in-out duration-150"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in-out duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-    ></div>
-    <aside
-            class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden"
-            x-show="isSideMenuOpen"
-            x-transition:enter="transition ease-in-out duration-150"
-            x-transition:enter-start="opacity-0 transform -translate-x-20"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in-out duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0 transform -translate-x-20"
-            @click.away="closeSideMenu"
-            @keydown.escape="closeSideMenu"
-    >
-        <div class="py-4 text-gray-500 dark:text-gray-400">
-            <a
-                    class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-                    href="#"
-            >
-                Логістика ІМПОРТ/ЕКСПОРТ
-            </a>
-            <ul class="mt-6">
-                <li class="relative px-6 py-3">
-                            <span
-                                    class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                                    aria-hidden="true"
-                            ></span>
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                            th:href="@{import-export}"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Логістика</span>
-                    </a>
-                </li>
-            </ul>
-            <ul>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="forms.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Forms</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="cards.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Cards</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="charts.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                            ></path>
-                            <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-                        </svg>
-                        <span class="ml-4">Charts</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="buttons.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Buttons</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="modals.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                            ></path>
-                        </svg>
-                        <span class="ml-4">Modals</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <a
-                            class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            href="tables.html"
-                    >
-                        <svg
-                                class="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                        >
-                            <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-                        </svg>
-                        <span class="ml-4">Tables</span>
-                    </a>
-                </li>
-                <li class="relative px-6 py-3">
-                    <button
-                            class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            @click="togglePagesMenu"
-                            aria-haspopup="true"
-                    >
-                                <span class="inline-flex items-center">
-                                    <svg
-                                            class="w-5 h-5"
-                                            aria-hidden="true"
-                                            fill="none"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                    >
-                                    <path
-                                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
-                                    ></path>
-                                    </svg>
-                                    <span class="ml-4">Pages</span>
-                                </span>
-                        <svg
-                                class="w-4 h-4"
-                                aria-hidden="true"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                        >
-                            <path
-                                    fill-rule="evenodd"
-                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"
-                            ></path>
-                        </svg>
-                    </button>
-                    <template x-if="isPagesMenuOpen">
-                        <ul
-                                x-transition:enter="transition-all ease-in-out duration-300"
-                                x-transition:enter-start="opacity-25 max-h-0"
-                                x-transition:enter-end="opacity-100 max-h-xl"
-                                x-transition:leave="transition-all ease-in-out duration-300"
-                                x-transition:leave-start="opacity-100 max-h-xl"
-                                x-transition:leave-end="opacity-0 max-h-0"
-                                class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900"
-                                aria-label="submenu"
-                        >
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/login.html">Login</a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/create-account.html">
-                                    Create account
-                                </a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/forgot-password.html">
-                                    Forgot password
-                                </a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/404.html">404</a>
-                            </li>
-                            <li
-                                    class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                            >
-                                <a class="w-full" href="pages/blank.html">Blank</a>
-                            </li>
-                        </ul>
-                    </template>
-                </li>
-            </ul>
-            <div class="px-6 my-6">
-                <button
-                        class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                >
-                    Create account
-                    <span class="ml-2" aria-hidden="true">+</span>
-                </button>
-            </div>
-        </div>
-    </aside>
-    <div class="flex flex-col flex-1 w-full">
-        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
-            <div
-                    class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
-            >
-                <!-- Mobile hamburger -->
-                <button
-                        class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
-                        @click="toggleSideMenu"
-                        aria-label="Menu"
-                >
-                    <svg
-                            class="w-6 h-6"
-                            aria-hidden="true"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                    >
-                        <path
-                                fill-rule="evenodd"
-                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                clip-rule="evenodd"
-                        ></path>
-                    </svg>
-                </button>
-                <!-- Search input -->
-                <div class="flex justify-center flex-1 lg:mr-32">
-                    <div
-                            class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
-                    >
-                        <div class="absolute inset-y-0 flex items-center pl-2">
-                            <svg
-                                    class="w-4 h-4"
-                                    aria-hidden="true"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                            >
-                                <path
-                                        fill-rule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                        </div>
-                        <input
-                                class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-                                type="text"
-                                placeholder="Search for projects"
-                                aria-label="Search"
-                        />
-                    </div>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+            <div class="brand-logo d-flex align-items-center justify-content-between">
+                <div class="text-nowrap logo-img">
+                    <img th:src="@{/assets/images/logos/dark-logo.png}" width="180" alt=""/>
                 </div>
-                <ul class="flex items-center flex-shrink-0 space-x-6">
-                    <!-- Theme toggler -->
-                    <li class="flex">
-                        <button
-                                class="rounded-md focus:outline-none focus:shadow-outline-purple"
-                                @click="toggleTheme"
-                                aria-label="Toggle color mode"
-                        >
-                            <template x-if="!dark">
-                                <svg
-                                        class="w-5 h-5"
-                                        aria-hidden="true"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                >
-                                    <path
-                                            d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-                                    ></path>
-                                </svg>
-                            </template>
-                            <template x-if="dark">
-                                <svg
-                                        class="w-5 h-5"
-                                        aria-hidden="true"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                >
-                                    <path
-                                            fill-rule="evenodd"
-                                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                            clip-rule="evenodd"
-                                    ></path>
-                                </svg>
-                            </template>
-                        </button>
+                <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                    <i class="ti ti-x fs-8"></i>
+                </div>
+            </div>
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                <ul id="sidebarnav">
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Логістика</span>
                     </li>
-                    <!-- Notifications menu -->
-                    <li class="relative">
-                        <button
-                                class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
-                                @click="toggleNotificationsMenu"
-                                @keydown.escape="closeNotificationsMenu"
-                                aria-label="Notifications"
-                                aria-haspopup="true"
-                        >
-                            <svg
-                                    class="w-5 h-5"
-                                    aria-hidden="true"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                            >
-                                <path
-                                        d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
-                                ></path>
-                            </svg>
-                            <!-- Notification badge -->
-                            <span
-                                    aria-hidden="true"
-                                    class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
-                            ></span>
-                        </button>
-                        <template x-if="isNotificationsMenuOpen">
-                            <ul
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100"
-                                    x-transition:leave-end="opacity-0"
-                                    @click.away="closeNotificationsMenu"
-                                    @keydown.escape="closeNotificationsMenu"
-                                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
-                            >
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Messages</span>
-                                        <span
-                                                class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                                        >
-                                                    13
-                                                </span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Sales</span>
-                                        <span
-                                                class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                                        >
-                                                    2
-                                                </span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Alerts</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </template>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" th:href="@{/import-export}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                            <span class="hide-menu">Імпорт-експорт</span>
+                        </a>
                     </li>
-                    <!-- Profile menu -->
-                    <li class="relative">
-                        <button
-                                class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
-                                @click="toggleProfileMenu"
-                                @keydown.escape="closeProfileMenu"
-                                aria-label="Account"
-                                aria-haspopup="true"
+                    <li class="sidebar-item">
+                        <div class="sidebar-link" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                            <span class="hide-menu">Готовність</span>
+                        </div>
+                    </li>
+                    <li class="sidebar-item">
+                        <div class="sidebar-link" aria-expanded="false">
+                <span>
+                  <i class="ti ti-alert-circle"></i>
+                </span>
+                            <span class="hide-menu">Зошит</span>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <ul class="navbar-nav">
+                    <li class="nav-item d-block d-xl-none">
+                        <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
                         >
-                            <img
-                                    class="object-cover w-8 h-8 rounded-full"
-                                    src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-                                    alt=""
-                                    aria-hidden="true"
-                            />
-
-
-                            <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-                            <form th:action="@{/logout}" method="post">
-                                <input type="submit" value="Sign Out"/>
-                            </form>
-                        </button>
-                        <template x-if="isProfileMenuOpen">
-                            <ul
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100"
-                                    x-transition:leave-end="opacity-0"
-                                    @click.away="closeProfileMenu"
-                                    @keydown.escape="closeProfileMenu"
-                                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-                                    aria-label="submenu"
-                            >
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <svg
-                                                class="w-4 h-4 mr-3"
-                                                aria-hidden="true"
-                                                fill="none"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                        >
-                                            <path
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                            ></path>
-                                        </svg>
-                                        <span>Profile</span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <svg
-                                                class="w-4 h-4 mr-3"
-                                                aria-hidden="true"
-                                                fill="none"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                        >
-                                            <path
-                                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                            ></path>
-                                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span>Settings</span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <form th:action="@{/logout}" method="post">
-                                        <a
-                                                class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                                href="javascript:;" onclick="parentNode.submit();"
-                                        >
-                                            <svg
-                                                    class="w-4 h-4 mr-3"
-                                                    aria-hidden="true"
-                                                    fill="none"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                            >
-                                                <path
-                                                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                                                ></path>
-                                            </svg>
-                                            <span>Log out</span>
-                                        </a>
-                                    </form>
-                                </li>
-                            </ul>
-                        </template>
+                            <i class="ti ti-menu-2"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-icon-hover">
+                            <i class="ti ti-bell-ringing"></i>
+                            <div class="notification bg-primary rounded-circle"></div>
+                        </a>
                     </li>
                 </ul>
-            </div>
-        </header>
-        <main class="h-full overflow-y-auto">
-            <div class="container px-6 mx-auto grid">
-                <h2
-                        class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
-                >
-                    Логістика
-                </h2>
-                <!-- CTA -->
-                <a
-                        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-                        href="https://agrotep.com/" target="blank"
-                >
-                    <div class="flex items-center">
-                        <svg
-                                class="w-5 h-5 mr-2"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                        >
-                            <path
-                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                            ></path>
-                        </svg>
-                        <span>Агротеп</span>
-                    </div>
-                    <span>Деталі &RightArrow;</span>
-                </a>
-                <!-- Cards -->
-                <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-                    <!-- Card -->
-                    <div
-                            class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <div
-                                class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500"
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                        d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"
-                                ></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p
-                                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                            >
-                                Total clients
-                            </p>
-                            <p
-                                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                            >
-                                6389
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Card -->
-                    <div
-                            class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <div
-                                class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500"
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                        fill-rule="evenodd"
-                                        d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p
-                                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                            >
-                                Account balance
-                            </p>
-                            <p
-                                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                            >
-                                $ 46,760.89
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Card -->
-                    <div
-                            class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <div
-                                class="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500"
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                        fill-rule="evenodd"
-                                        d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                                        clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <p
-                                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                            >
-                                Pending contacts
-                            </p>
-                            <p
-                                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                            >
-                                35
-                            </p>
-                        </div>
-                    </div>
-                    <!-- Card -->
-                    <div
-                            class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <div
-                                class="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500"
-                        >
-                            <a th:href="${'/transportation-details/add'}"> Внести перевезення
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 122.88 61.14">
-                                <path
-                                        d="M105.01,40.54c-5.7,0-10.3,4.63-10.3,10.3c0,5.7,4.63,10.3,10.3,10.3c5.7,0,10.3-4.63,10.3-10.3 C115.31,45.14,110.68,40.54,105.01,40.54L105.01,40.54z M61.86,41.46c-5.2,0-9.38,4.22-9.38,9.38c0,5.2,4.22,9.38,9.38,9.38 c5.2,0,9.38-4.22,9.38-9.38C71.24,45.64,67.02,41.46,61.86,41.46L61.86,41.46z M61.86,47.23c-1.99,0-3.61,1.62-3.61,3.61 s1.62,3.61,3.61,3.61c1.99,0,3.61-1.62,3.61-3.61S63.85,47.23,61.86,47.23L61.86,47.23z M24.11,41.46c-5.2,0-9.38,4.22-9.38,9.38 c0,5.2,4.22,9.38,9.38,9.38c5.2,0,9.38-4.22,9.38-9.38C33.5,45.64,29.28,41.46,24.11,41.46L24.11,41.46z M24.11,47.23 c-1.99,0-3.61,1.62-3.61,3.61s1.62,3.61,3.61,3.61c1.99,0,3.61-1.62,3.61-3.61S26.11,47.23,24.11,47.23L24.11,47.23z M47.37,53.53 H38.1v-3.01h9.27V53.53L47.37,53.53z M10.46,53.53H5.63c-1.55,0-2.95-0.66-3.96-1.71c-1.01-1.05-1.65-2.5-1.65-4.02V8.06 c0-2.44-0.36-4.44,1.62-6.42C2.66,0.63,4.05,0,5.6,0h73.32c1.55,0,2.95,0.63,3.96,1.65c1.01,1.01,1.65,2.41,1.65,3.96l0,7.26 l10.27,0.07l3.62,0.02l0,0c0.73,0.79,1.4,1.6,2.01,2.42c2.71,3.64,4.23,7.94,4.52,12.11l16.38,6.27l1.55,16.51h-5.01 c-2.31-18.03-25.03-15.84-25.73,0l-7.61,0v1.74c0,0.86-0.67,1.52-1.52,1.52l-6.69,0v-3.04h5.16V5.61c0-0.7-0.28-1.33-0.76-1.81 c-0.48-0.48-1.11-0.76-1.81-0.76H5.6c-0.7,0-1.33,0.29-1.81,0.76C2.76,4.77,3.07,6.43,3.07,7.7v40.1c0,0.73,0.32,1.43,0.79,1.93 c0.48,0.48,1.08,0.79,1.77,0.79h4.82V53.53L10.46,53.53z M94.46,17.89l-5.83-0.09v9.69h11.02C99.12,23.98,97.49,20.9,94.46,17.89 L94.46,17.89z M105.01,46.88c-2.19,0-3.96,1.77-3.96,3.96c0,2.19,1.77,3.96,3.96,3.96c2.19,0,3.96-1.77,3.96-3.96 C108.97,48.65,107.2,46.88,105.01,46.88L105.01,46.88z"
-                                ></path>
-                            </svg>
+                <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                    <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-icon-hover" id="drop2"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <img th:src="@{/assets/images/profile/user-1.jpg}" alt="" width="35" height="35"
+                                     class="rounded-circle">
                             </a>
-                        </div>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                 aria-labelledby="drop2">
+                                <div class="message-body">
+                                    <a
+                                            class="d-flex align-items-center gap-2 dropdown-item">
+                                        <i class="ti ti-user fs-6"></i>
+                                        <p class="mb-0 fs-3">Мій Профіль</p>
+                                    </a>
+                                    <a
+                                            class="d-flex align-items-center gap-2 dropdown-item">
+                                        <i class="ti ti-list-check fs-6"></i>
+                                        <p class="mb-0 fs-3">Мої Задачі</p>
+                                    </a>
+                                    <form th:action="@{/logout}" method="post">
+                                        <input type="submit" value="Sign Out"/>
+                                    </form>
+                                    <a th:href="@{/login}"
+                                       class="btn btn-outline-primary mx-3 mt-2 d-block">Вийти з системи</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!--  Header End -->
+
+
+        <div class="container-fluid">
+
+
+            <!--  Row 1 -->
+
+            <div class="form-group row">
+                <div class="card w-100">
+                    <div class="card-body p-4">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Мої</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Експорт</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Імпорт</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Україна</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Європа</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">без Екіпажу</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label"><font color="red">Свій фільтр</font></label>
+
+
+                            </div>
+
+                            <div class="card-body p-4">
+                                <button type="button" class="btn btn-light m-1">Додати фільтр</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
 
-                <!-- New Table -->
-                <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-                    <div class="w-full overflow-x-auto" th:each="transportation: ${transportations}">
-                        <table class="w-full whitespace-no-wrap">
-                            <tbody>
-                            <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                                <td class="px-4 py-3 text-sm block-title" th:text="${transportation.key}"></td>
-                            </tr>
-                            <tr>
-                                <table class="w-full whitespace-no-wrap">
+            <div class="card-body p-4 text-end">
+                <form th:action="@{/transportation-details/add}" method="get">
+                    <button type="submit" class="btn btn-warning m-1">+ Нове замовлення</button>
+                </form>
+            </div>
+
+            <!--  Row 2 -->
+            <div class="row" th:each="transportation: ${transportations}">
+
+                <div class="col-lg-12 d-flex align-items-stretch">
+                    <div class="card w-100">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-semibold mb-4" th:text="${transportation.key}">19.12.2023</h5>
+                            <div class="table-responsive">
+                                <table class="table text-nowrap mb-0 align-middle">
+
                                     <tbody>
-                                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
-                                        th:each="truck, iStat: ${transportation.value}"
-                                        th:classappend="${truck.severity}"
-                                    >
-                                        <td class="px-4 py-3 font-semibold" th:text="${iStat.index + 1}"></td>
-                                        <td class="px-4 py-3 font-semibold">
-                                            <a th:href="${'/transportation-details/update/' + truck.id}"
-                                                th:text="${truck.direction}">
+                                    <tr th:each="truck, iStat: ${transportation.value}">
+                                        <td class="border-bottom-0"><h6 class="fw-semibold mb-0"
+                                                                        th:text="${iStat.index + 1}">1</h6></td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1">
+                                                <a th:href="${'/transportation-details/update/' + truck.id}"
+                                                   th:text="${truck.direction}">
+                                                    Berlin, DE - Київ, UA
+                                                </a>
+                                            </h6>
+                                            <a th:href="${'/transportation-details/update/' + truck.id}">
+                                                <span class="fw-normal" th:text="${truck.cargo}">
+                                                    Fererro, шоколад
+                                                </span>
                                             </a>
                                         </td>
-                                        <td class="px-4 py-3 font-semibold" th:text="${truck.typeOfTruck}"></td>
-                                        <td class="px-4 py-3 font-semibold" th:text="${truck.clientCompany}"></td>
-                                        <td class="px-4 py-3 font-semibold" th:text="${truck.managerName}"></td>
-                                        <td class="px-4 py-3 font-semibold" th:text="${truck.cargo}"></td>
-                                        <td class="px-4 py-3 font-semibold" th:text="${truck.conditions}"></td>
-                                        <td class="px-4 py-3 font-semibold">
-                                            <a th:href="${'/truck/' + truck.id}"
-                                               th:text="${truck.coordinatorComment}">
-                                            </a>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1"
+                                                th:text="${truck.typeOfTruck + ' ' + truck.conditions}">
+                                                реф +10 +12
+                                            </h6>
                                         </td>
-                                        <td class="px-4 py-3 font-semibold essential">
-                                            <a th:href="${'/truck/' + truck.id}"
-                                                th:text="${truck.transportationComment}">
-                                            </a>
+                                        <td class="border-bottom-0">
+                                            <p class="mb-0 fw-normal" th:text="${truck.managerName}">Антон Улицький</p>
                                         </td>
-                                        <td class="px-4 py-3 font-semibold">
-                                            <a th:href="${'/truck/' + truck.id}"
-                                               th:text="${truck.comment}">
-                                            </a>
+
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1" th:text="${truck.coordinatorComment}">
+                                                завантаження о 10:00
+                                            </h6>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <div class="d-flex align-items-center gap-2">
+
+                                                <form th:action="${'/truck/' + truck.id}" method="get">
+                                                    <button type="submit" class="btn m-1"
+                                                            th:classappend="${truck.severity}"
+                                                            th:text="${truck.transportationComment}">
+                                                        АА1212SS/LL5555DD Шило С. АТ
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-1" th:text="${truck.comment}"></h6>
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Charts -->
-                <h2
-                        class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
-                >
-                    Charts
-                </h2>
-                <div class="grid gap-6 mb-8 md:grid-cols-2">
-                    <div
-                            class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-                            Revenue
-                        </h4>
-                        <canvas id="pie"></canvas>
-                        <div
-                                class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"
-                        >
-                            <!-- Chart legend -->
-                            <div class="flex items-center">
-                                        <span
-                                                class="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full"
-                                        ></span>
-                                <span>Shirts</span>
-                            </div>
-                            <div class="flex items-center">
-                                        <span
-                                                class="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"
-                                        ></span>
-                                <span>Shoes</span>
-                            </div>
-                            <div class="flex items-center">
-                                        <span
-                                                class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"
-                                        ></span>
-                                <span>Bags</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                            class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-                    >
-                        <h4 class="mb-4 font-semibold text-gray-800 dark:text-gray-300">
-                            Traffic
-                        </h4>
-                        <canvas id="line"></canvas>
-                        <div
-                                class="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"
-                        >
-                            <!-- Chart legend -->
-                            <div class="flex items-center">
-                                        <span
-                                                class="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"
-                                        ></span>
-                                <span>Organic</span>
-                            </div>
-                            <div class="flex items-center">
-                                        <span
-                                                class="inline-block w-3 h-3 mr-1 bg-purple-600 rounded-full"
-                                        ></span>
-                                <span>Paid</span>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 </div>
 </body>
+
 </html>

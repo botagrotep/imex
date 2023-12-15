@@ -4,10 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Getter
 @Setter
@@ -71,4 +68,6 @@ public class TransportationDetailsDto {
     private Double unloadingLatitude;
     private Double unloadingFreight;
     private String unloadingCurrency;
-    private Boolean isUnloadingPaymentInCash;}
+    private Boolean isUnloadingPaymentInCash;
+    private Boolean isSentToDr;
+}

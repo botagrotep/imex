@@ -5,7 +5,7 @@ package com.agrotep.imp.exp.entity;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 //import jakarta.persistence.Id;
-import com.agrotep.imp.exp.dto.LoadingDto;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,7 +13,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 //@Entity // This tells Hibernate to make a table out of this class
 @Getter
@@ -96,4 +95,5 @@ public class Transportation {
     private Double unloadingFreight;
     private String unloadingCurrency;
     private Boolean isUnloadingPaymentInCash;
+    private boolean isSentToDr;
 }

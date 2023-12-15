@@ -28,4 +28,5 @@ public class TransportationDto {
     private String severity;
     private LocalDate loadingDate;
     private LocalTime loadingTime;
+    private Boolean isSentToDr;
 }

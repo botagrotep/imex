@@ -178,7 +178,6 @@ public class TransportationRepository {
                     .loadingNo(1)
                     .loadingDate(LocalDate.of(2023, 12, 2))
                     .loadingTime(LocalTime.of(0, 8))
-                    .truck(TRUCK4)
                     .loadingSenderReceiverLegalEntity("Arlon")
 //                    .loadingCity("Arlon")
 //                    .loadingCountry("Бельгія")

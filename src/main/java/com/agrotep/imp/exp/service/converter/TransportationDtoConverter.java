@@ -24,6 +24,7 @@ public abstract class TransportationDtoConverter {
     @Mapping(target = "equipage", source = "t.truck.equipage")
     @Mapping(target = "driver", source = "t.truck.driver")
     public abstract TransportationDto toTransportationDto(Transportation t);
+
     public abstract List<TransportationDto> toTransportationDto(Collection<Transportation> t);
 
     @AfterMapping
@@ -38,9 +39,9 @@ public abstract class TransportationDtoConverter {
     }
 
     private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
-        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
+//        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
         setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
-        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
+//        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
     }
 
     private static void setDefaultCommentsForEmptyField(Supplier<String> getter, Consumer<String> setter) {
@@ -49,10 +50,11 @@ public abstract class TransportationDtoConverter {
         }
     }
 
-        private static void setSeverity(Transportation t, TransportationDto dto) {
-        String severity = StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
-                ? "green-light"
-                : StringUtils.hasText(t.getTransportationComment()) ? "red-light"
+    private static void setSeverity(Transportation t, TransportationDto dto) {
+        String severity = t.isSentToDr() ? "btn-info"
+                : StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
+                ? "btn-success"
+                : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"
                 : "";
         dto.setSeverity(severity);
     }
