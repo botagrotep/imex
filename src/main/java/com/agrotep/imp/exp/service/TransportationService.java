@@ -6,6 +6,7 @@ import com.agrotep.imp.exp.dto.TransportationDto;
 import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.repository.TransportationRepository;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class TransportationService {
         final Collection<Transportation> transportationsList = repository.findAll();
         List<TransportationDto> dtos = converter.toTransportationDto(transportationsList);
         Map<LocalDate, List<TransportationDto>> transportationsGroups
-            = dtos.stream()
+                = dtos.stream()
                 .filter(t -> t.getTransportationDate() != null)
                 .collect(Collectors.groupingBy(TransportationDto::getTransportationDate));
         return new TreeMap<>(transportationsGroups);
@@ -65,5 +66,31 @@ public class TransportationService {
                             transportation.setTruck(t);
                             repository.save(transportation);
                         }));
+    }
+
+    public Collection<String> getCompanies() {
+        Set<String> predefinedCompanies = new HashSet<>(Set.of(
+                "Fererro (оплата 45 календарних днів по виставленню інвойсу, ліміт 300000 грн)",
+                "МХП (по факту вивантаження, ліміт 50000 грн)",
+                "Веселі бобри (10 днів по вивантаженню, ліміт 40000 грн)"
+        ));
+        predefinedCompanies.addAll(this.findAll().values().stream()
+                .flatMap(Collection::stream)
+                .map(TransportationDto::getClientCompany)
+                .toList());
+        return predefinedCompanies;
+    }
+
+    public Collection<String> getCountries() {
+        Set<String> countries = new HashSet<>(Set.of("UA", "FR", "DE"));
+        countries.addAll(repository.findAll().stream()
+                .map(Transportation::getLoadingCountry)
+                .filter(Objects::nonNull)
+                .toList());
+        countries.addAll(repository.findAll().stream()
+                .map(Transportation::getUnloadingCountry)
+                .filter(Objects::nonNull)
+                .toList());
+        return countries;
     }
 }

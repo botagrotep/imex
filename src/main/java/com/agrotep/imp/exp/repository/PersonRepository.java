@@ -35,7 +35,7 @@ public class PersonRepository {
             return Optional.empty();
         }
         return PERSONS.stream()
-                .filter(p -> name.equalsIgnoreCase(p.getName()))
+                .filter(p -> name.equalsIgnoreCase(p.getName()) || name.equalsIgnoreCase(p.getLogin()))
                 .findFirst();
     }
 }

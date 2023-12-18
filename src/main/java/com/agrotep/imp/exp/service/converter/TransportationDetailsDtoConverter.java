@@ -6,10 +6,7 @@ import com.agrotep.imp.exp.entity.Person;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.repository.PersonRepository;
 import com.agrotep.imp.exp.repository.TransportationRepository;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.BeforeMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -29,9 +26,13 @@ public abstract class TransportationDetailsDtoConverter {
     @Autowired
     protected PersonRepository personRepository;
 
+    @Mapping(target = "freight", source = "t.loadingFreight")
+    @Mapping(target = "currency", source = "t.loadingCurrency")
     public abstract TransportationDetailsDto toTransportationDetailsDto(Transportation t);
 
 
+    @Mapping(target = "loadingFreight", source = "transportationDetailsDto.freight")
+    @Mapping(target = "loadingCurrency", source = "transportationDetailsDto.currency")
     public abstract Transportation toTransportation(TransportationDetailsDto transportationDetailsDto);
 
     @AfterMapping
@@ -71,6 +72,10 @@ public abstract class TransportationDetailsDtoConverter {
         setTime(dto::getUnloadingTimeStr, t::setUnloadingTime);
 
         enrichWithPersistedData(dto, t);
+
+        if (StringUtils.hasText(dto.getClientCompanyFromSelector())) {
+            t.setClientCompany(dto.getClientCompanyFromSelector());
+        }
     }
 
     private void enrichWithPersistedData(TransportationDetailsDto dto, Transportation t) {
