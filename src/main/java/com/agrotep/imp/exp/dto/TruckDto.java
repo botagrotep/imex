@@ -19,7 +19,7 @@ public class TruckDto {
     private String status;
     private String ekmt;
     private String dangerousStatus;
-    private Float distanceBetweenPointsKm;
+    private Integer distanceBetweenPointsKm;
     private Boolean isInCarPark;
     private String domesticCompany;
 }

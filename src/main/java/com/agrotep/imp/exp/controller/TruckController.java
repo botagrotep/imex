@@ -25,12 +25,13 @@ public class TruckController {
     private final TransportationService transportationService;
     private final TruckService service;
 
-    @GetMapping("/{id}")
-    public String getTruckDetails(@PathVariable Long id, Model model) {
-        TransportationDto dto = transportationService.findTransportationById(id).orElse(new TransportationDto());
+    @GetMapping("/{transportationId}")
+    public String getTruckDetails(@PathVariable Long transportationId, Model model) {
+        TransportationDto dto = transportationService.findTransportationById(transportationId)
+                .orElse(new TransportationDto());
         model.addAttribute("transportation", dto);
 
-        List<TruckDto> trucks = service.findAllInRadius();
+        List<TruckDto> trucks = service.findAllWithCalculateRadiusFrom(transportationId);
         model.addAttribute("trucks", trucks);
 
         TruckDto truckDto = TruckDto.builder()

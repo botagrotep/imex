@@ -66,9 +66,29 @@ public class TruckRepository {
             .dangerousStatus("ADR")
             .truckType("Відкрита платформа")
             .build();
+    public static final Truck TRUCK6 = Truck.builder()
+            .id(6L)
+            .status(READY)
+            .equipage("AA1212SS/LL5555DD")
+            .driver("Шило С.А.")
+            .domesticCompany("АТ")
+            .operationalStatusCommentDateTime(LocalDateTime.of(2023, 12, 20, 11, 11))
+            .operationalStatusComment("Перетнув кордон у Дорогуцьку")
+            .truckType("реф")
+            .build();
+    public static final Truck TRUCK7 = Truck.builder()
+            .id(7L)
+            .status(READY)
+            .equipage("АА1277SS/LL5665DD ")
+            .driver("Бондаренко С.")
+            .domesticCompany("АТ")
+            .operationalStatusCommentDateTime(LocalDateTime.of(2023, 12, 20, 11, 11))
+            .operationalStatusComment("Під Ла-Маншем")
+            .truckType("реф")
+            .build();
 
     private static final Set<Truck> TRUCKS = Set.of(
-            TRUCK1, TRUCK2, TRUCK3, TRUCK4, TRUCK5
+            TRUCK1, TRUCK2, TRUCK3, TRUCK4, TRUCK5, TRUCK6, TRUCK7
     );
 
     public Collection<Truck> findAll() {

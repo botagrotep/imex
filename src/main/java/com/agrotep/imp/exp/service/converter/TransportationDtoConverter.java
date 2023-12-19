@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
 
-    public static final String DEFAULT_COMMENT = "Додати коментар";
+    public static final String DEFAULT_COMMENT = "Додати екіпаж";
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
