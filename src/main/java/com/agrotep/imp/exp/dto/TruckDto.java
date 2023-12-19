@@ -4,14 +4,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
 public class TruckDto {
     private Long id;
     private String transportationComment;
+    private String equipage;
+    private String driver;
     private String truckType;
     private String unloading;
+    private LocalDateTime operationalStatusCommentDateTimeStr;
     private String operationalStatusComment;
     private String status;
     private String ekmt;
