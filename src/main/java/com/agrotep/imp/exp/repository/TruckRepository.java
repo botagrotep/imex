@@ -3,8 +3,7 @@ package com.agrotep.imp.exp.repository;
 import com.agrotep.imp.exp.entity.Truck;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,7 +22,8 @@ public class TruckRepository {
             .status(READY)
             .ekmt("DU, HU, IT 2023")
             .truckType(REF)
-            .operationalStatusComment(String.format("%s %s Рух за призначенням", LocalDate.now(), LocalTime.now()))
+            .operationalStatusCommentDateTime(LocalDateTime.of(2023, 12, 21, 11, 22))
+            .operationalStatusComment("Рух за призначенням")
             .build();
 
     public static final Truck TRUCK2 = Truck.builder()
@@ -34,7 +34,8 @@ public class TruckRepository {
             .status(READY)
             .ekmt("DU, HU, IT 2023")
             .truckType(REF)
-            .operationalStatusComment(String.format("%s %s Рух за призначенням", LocalDate.now(), LocalTime.now()))
+            .operationalStatusCommentDateTime(LocalDateTime.of(2023, 12, 1, 10, 22))
+            .operationalStatusComment("Рух за призначенням")
             .build();
 
     public static final String NOT_READY = "НЕГОТ";
@@ -42,6 +43,7 @@ public class TruckRepository {
             .id(3L)
             .truckType(REF)
             .status(NOT_READY)
+            .operationalStatusCommentDateTime(LocalDateTime.now())
             .operationalStatusComment("Просто стоїть")
             .build();
 
@@ -50,6 +52,7 @@ public class TruckRepository {
             .status(NOT_READY)
             .driver("Юсь О.А.")
             .domesticCompany("АТ")
+            .operationalStatusCommentDateTime(LocalDateTime.now())
             .operationalStatusComment("Стоїть, як вкопаний")
             .build();
     private static final Truck TRUCK5 = Truck.builder()
@@ -58,6 +61,7 @@ public class TruckRepository {
             .equipage("AA1111ss/GC2222NN")
             .driver("Юсь А.А.")
             .domesticCompany("ВП")
+            .operationalStatusCommentDateTime(LocalDateTime.of(2023, 11, 11, 11, 11))
             .operationalStatusComment("Став і стоїть")
             .dangerousStatus("ADR")
             .truckType("Відкрита платформа")

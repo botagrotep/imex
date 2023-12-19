@@ -11,6 +11,9 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 
 @Mapper(componentModel = "spring")
@@ -45,6 +48,13 @@ public abstract class TruckDtoConverter {
 
         transportationRepository.findTransportationForTruck(truck)
                 .ifPresent(t -> setUnloading(dto, t));
+
+        assert truck != null;
+        LocalDateTime operationalStatusCommentDateTime = truck.getOperationalStatusCommentDateTime();
+        if (operationalStatusCommentDateTime != null) {
+        dto.setOperationalStatusCommentDateTimeStr(operationalStatusCommentDateTime
+                .format(DateTimeFormatter.ofPattern("dd.MM, HH:mm")));
+        }
 
     }
 

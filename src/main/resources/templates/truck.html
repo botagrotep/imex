@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
@@ -8,6 +8,7 @@
     <title>Agrotep</title>
     <link rel="shortcut icon" type="image/png" th:href="@{/assets/images/logos/favicon.png}"/>
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}"/>
+
     <script defer th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script defer th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
     <script defer th:src="@{/assets/js/sidebarmenu.js}"></script>
@@ -298,68 +299,62 @@
                                     <tbody>
                                     <tr th:each="truck: ${trucks}">
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
                                                 <h6 class="fw-semibold mb-1">
-                                                    <input class="pointer" type="submit" th:value="${truck.equipage}">
+                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                        <span class="text-black" th:text="${truck.equipage}"></span>
+                                                    </a>
                                                 </h6>
-                                                <input class="pointer fw-normal" type="submit"
-                                                       th:value="${truck.driver}">
-                                                <input class="pointer fw-normal text-primary" type="submit"
-                                                       th:value="${truck.domesticCompany}">
-                                            </form>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="text-black fw-normal" th:text="${truck.driver}"></span>
+                                                </a>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="pointer fw-normal" th:text="${truck.domesticCompany}"
+                                                          th:classappend="${'АТ'.equalsIgnoreCase(truck.domesticCompany) ? 'text-primary' : 'text-danger'}"></span>
+                                                </a>
                                         </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal pointer" type="submit" th:value="${truck.truckType}">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.truckType}"></span>
+                                                </a>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal pointer" type="submit" th:value="${truck.unloading}">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.unloading}"></span>
+                                                </a>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <h6><input class="fw-normal pointer" th:value="${truck.operationalStatusCommentDateTimeStr}" type="submit"></h6>
-                                                <h6><input class="fw-normal pointer" th:value="${truck.operationalStatusComment}" type="submit"></h6>
-                                            </form>
-                                        </td>
+                                                <h6>
+                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                        <span class="fw-normal text-black" th:text="${truck.operationalStatusCommentDateTimeStr}"></span>
+                                                    </a>
+                                                </h6>
+                                                <h6>
+                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                        <span class="fw-normal text-black" th:text="${truck.operationalStatusComment}"></span>
+                                                    </a>
+                                                </h6>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal text-success pointer" th:value="${truck.status}" type="submit">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-success" th:text="${truck.status}"
+                                                          th:classappend="${'ГОТ'.equalsIgnoreCase(truck.status) ? 'text-success' : 'text-danger'}"></span>
+                                                </a>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal pointer" th:value="${truck.ekmt}" type="submit">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.ekmt}"></span>
+                                                </a>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal text-danger pointer" th:value="${truck.dangerousStatus}" type="submit">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-danger" th:text="${truck.dangerousStatus}"></span>
+                                                </a>
+                                            </td>
                                         <td class="border-bottom-0">
-                                            <form action="#"
-                                                  th:action="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}"
-                                                  method="post">
-                                                <input class="mb-0 fw-normal" th:value="120" type="submit">
-                                            </form>
-                                        </td>
+                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-black" th:text="120"></span>
+                                                </a>
+                                            </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -377,14 +372,6 @@
         </div>
     </div>
 </div>
-<script src="../static/assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="../static/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../static/assets/js/sidebarmenu.js"></script>
-<script src="../static/assets/js/app.min.js"></script>
-<script src="../static/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-<script src="../static/assets/libs/simplebar/dist/simplebar.js"></script>
-<script src="../static/assets/js/dashboard.js"></script>
-
 <script>
     var rows = document.getElementById('myTable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
 

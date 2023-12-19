@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
@@ -16,7 +14,7 @@ public class TruckDto {
     private String driver;
     private String truckType;
     private String unloading;
-    private LocalDateTime operationalStatusCommentDateTimeStr;
+    private String operationalStatusCommentDateTimeStr;
     private String operationalStatusComment;
     private String status;
     private String ekmt;

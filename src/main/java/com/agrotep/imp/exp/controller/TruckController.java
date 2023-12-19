@@ -46,4 +46,10 @@ public class TruckController {
               transportationService.setTruck(truckId, transportationId);
         return "redirect:/import-export";
     }
+
+    @GetMapping("/assign/{truckId}/to/transportation/{transportationId}")
+    public String assignTruckViaGet(@PathVariable Long truckId, @PathVariable Long transportationId) {
+              transportationService.setTruck(truckId, transportationId);
+        return "redirect:/import-export";
+    }
 }
