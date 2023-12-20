@@ -69,4 +69,5 @@ public class TransportationDetailsDto {
     private Double unloadingLatitude;
     private Boolean isSentToDr;
     private Boolean isPrinted;
+    private String comment;
 }

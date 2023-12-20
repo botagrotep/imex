@@ -111,8 +111,10 @@
                                         <i class="ti ti-list-check fs-6"></i>
                                         <p class="mb-0 fs-3">Мої Задачі</p>
                                     </a>
-                                    <a href="login.html"
-                                       class="btn btn-outline-primary mx-3 mt-2 d-block">Вийти з системи</a>
+
+                                    <form th:action="@{/logout}" method="post">
+                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit" value="Вийти з системи"/>
+                                    </form>
                                 </div>
                             </div>
                         </li>

@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
 
-    public static final String DEFAULT_COMMENT = "Додати екіпаж";
+    public static final String DEFAULT_COMMENT = "+ коментар";
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
@@ -33,15 +33,15 @@ public abstract class TransportationDtoConverter {
 
         setDirection(t, dto);
         setCondition(t, dto);
-        setTransportationComment(t, dto);
+//        setTransportationComment(t, dto);
         setSeverity(t, dto);
-        setDefaultCommentsForEmptyFields(dto);
+//        setDefaultCommentsForEmptyFields(dto);
     }
 
     private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
 //        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
-        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
-//        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
+//        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
+        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
     }
 
     private static void setDefaultCommentsForEmptyField(Supplier<String> getter, Consumer<String> setter) {
@@ -60,21 +60,13 @@ public abstract class TransportationDtoConverter {
     }
 
     private static void setTransportationComment(Transportation t, TransportationDto dto) {
-        StringBuilder transportationComment = new StringBuilder();
-        if (StringUtils.hasText(dto.getEquipage())) {
-            transportationComment.append(dto.getEquipage()).append(" ");
+        String transportationComment = t.getTransportationComment();
+        if (!StringUtils.hasText(transportationComment) && !StringUtils.hasText(dto.getEquipage())
+                && !StringUtils.hasText(dto.getDriver())) {
+            dto.setTransportationComment(DEFAULT_COMMENT);
+            return;
         }
-        if (StringUtils.hasText(dto.getDriver())) {
-            transportationComment.append(dto.getDriver()).append(" ");
-        }
-        transportationComment
-                .append(t.getTransportationComment());
-        if (!StringUtils.hasText(transportationComment)) {
-            transportationComment.append(DEFAULT_COMMENT);
-        }
-        dto.setTransportationComment(transportationComment
-                .toString()
-                .trim());
+        dto.setTransportationComment(transportationComment);
     }
 
     private static void setCondition(Transportation t, TransportationDto dto) {

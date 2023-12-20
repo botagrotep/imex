@@ -14,6 +14,7 @@
     <script defer th:src="@{/assets/js/sidebarmenu.js}"></script>
     <script defer th:src="@{/assets/js/app.min.js}"></script>
     <script defer th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
+    <script defer th:src="@{/assets/js/truck.js}"></script>
 
     <style>
         .table tbody tr:hover {
@@ -117,8 +118,10 @@
                                         <i class="ti ti-list-check fs-6"></i>
                                         <p class="mb-0 fs-3">Мої Задачі</p>
                                     </a>
-                                    <a th:href="@{/templates/login.html}"
-                                       class="btn btn-outline-primary mx-3 mt-2 d-block">Вийти з системи</a>
+
+                                    <form th:action="@{/logout}" method="post">
+                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit" value="Вийти з системи"/>
+                                    </form>
                                 </div>
                             </div>
                         </li>
@@ -137,231 +140,229 @@
             <div class="form-group row">
                 <div class="card w-100">
                     <div class="card-body p-4">
-                        <form>
-                            <div class="card-body p-4">
-
-                                <div class="table-responsive">
-                                    <table class="table text-nowrap mb-0 align-middle">
-                                        <tbody>
-                                        <tr>
-                                            <td class="border-bottom-0">
-                                                <h6 th:text="${transportation.loadingDate + ' ' + transportation.loadingTime}"
-                                                    class="fw-semibold mb-0">19.12.2023
-                                                </h6>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-1" th:text="${transportation.direction}">
-                                                    Львів, UA - Одеса, UA
-                                                </h6>
-                                                <span class="fw-normal"
-                                                      th:text="${transportation.clientCompany + ' ' + transportation.cargo}">Комбінат, тнп</span>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-1" th:text="${transportation.typeOfTruck}">
-                                                    тент</h6>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal" th:text="${transportation.managerName}">Оксана
-                                                    Бойко</p>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-1"
-                                                    th:text="${transportation.conditions}"></h6>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <br>
-
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">ЕКМТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">без ЕКМТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label class="form-check-label text-danger">ADR</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label class="form-check-label text-danger">ADR1</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label text-success">ГОТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label class="form-check-label">НЕГОТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">в парку</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">не в парку</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label text-primary">АТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label text-warning">ВПТ</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">тент</label>
-                                </div>
-
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" checked>
-                                    <label class="form-check-label">реф</label>
-                                </div>
-                                <div class="mb-3 form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input">
-                                    <label class="form-check-label">2х-ярусний</label>
-                                </div>
-
-
-                            </div>
-                            <div class="row align-items-center mb-3">
-                                <div class="col d-flex justify-content-center">
-                                    <p>
-                                        <u th:text="${truck.transportationComment.length() > 0 ? truck.transportationComment : 'екіпаж не обрано'}">
-                                            екіпаж не обраний
-                                        </u>
-                                    </p>
-                                </div>
-                            </div>
-
-
-                            <div class="row align-items-center mb-3">
-                                <div class="col-md-6">
-                                    <label for="inputNumber">Радіус, км</label>
-                                    <input type="number" id="inputNumber" class="form-control" value="300">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="selectInput">Пошук авто</label>
-                                    <select id="selectInput" class="form-select">
-                                        <option value="option1"></option>
-                                        <option value="option1">АА1111ДД/ІІ9999УУ Суліма Н.В. АТ</option>
-                                        <option value="option2">АА2222ПП/ІІ8888УУ Соловей К.С. АТ</option>
-                                        <option value="option3">АА3333ЛЛ/ІІ7777УУ Федоров Д.Л. АТ</option>
-                                        <option value="option4">АА4444СС/ІІ6666УУ Репик Р.Р. АТ</option>
-                                        <option value="option5">АА5555НН/ІІ5555УУ Йосин Л.Л. АТ</option>
-                                        <option value="option6">АА6666КК/ІІ4444УУ Колгейт Р.Т. АТ</option>
-                                        <option value="option7">АА7777РР/ІІ3333УУ Філ Д.О. ВПТ</option>
-                                        <option value="option8">АА8888ГГ/ІІ2222УУ Міл А.В. АТ</option>
-                                        <option value="option9">АА9999ББ/ІІ1111УУ Токар Ю.М. ВПТ</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-
+                        <div class="card-body p-4">
                             <div class="table-responsive">
-                                <table class="table text-nowrap mb-0 align-middle" id="myTable">
-                                    <thead class="text-dark fs-4">
-                                    <tr>
-
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Екіпаж</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">ТЗ</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Вивантаження</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Оперативний стан</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Статус</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">ЕКМТ</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">АДР</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">r, км</h6>
-                                        </th>
-                                    </tr>
-                                    </thead>
+                                <table class="table text-nowrap mb-0 align-middle">
                                     <tbody>
-                                    <tr th:each="truck: ${trucks}">
+                                    <tr>
                                         <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-1">
-                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                        <span class="text-black" th:text="${truck.equipage}"></span>
-                                                    </a>
-                                                </h6>
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="text-black fw-normal" th:text="${truck.driver}"></span>
-                                                </a>
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="pointer fw-normal" th:text="${truck.domesticCompany}"
-                                                          th:classappend="${'АТ'.equalsIgnoreCase(truck.domesticCompany) ? 'text-primary' : 'text-danger'}"></span>
-                                                </a>
+                                            <h6 th:text="${transportation.loadingDate + ' ' + transportation.loadingTime}"
+                                                class="fw-semibold mb-0">19.12.2023
+                                            </h6>
                                         </td>
                                         <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.truckType}"></span>
-                                                </a>
-                                            </td>
+                                            <h6 class="fw-semibold mb-1" th:text="${transportation.direction}">
+                                                Львів, UA - Одеса, UA
+                                            </h6>
+                                            <span class="fw-normal"
+                                                  th:text="${transportation.clientCompany + ' ' + transportation.cargo}">Комбінат, тнп</span>
+                                        </td>
                                         <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.unloading}"></span>
-                                                </a>
-                                            </td>
+                                            <h6 class="fw-semibold mb-1" th:text="${transportation.typeOfTruck}">
+                                                тент</h6>
+                                        </td>
                                         <td class="border-bottom-0">
-                                                <h6>
-                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                        <span class="fw-normal text-black" th:text="${truck.operationalStatusCommentDateTimeStr}"></span>
-                                                    </a>
-                                                </h6>
-                                                <h6>
-                                                    <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                        <span class="fw-normal text-black" th:text="${truck.operationalStatusComment}"></span>
-                                                    </a>
-                                                </h6>
-                                            </td>
+                                            <p class="mb-0 fw-normal" th:text="${transportation.managerName}">Оксана
+                                                Бойко</p>
+                                        </td>
                                         <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-success" th:text="${truck.status}"
-                                                          th:classappend="${'ГОТ'.equalsIgnoreCase(truck.status) ? 'text-success' : 'text-danger'}"></span>
-                                                </a>
-                                            </td>
-                                        <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.ekmt}"></span>
-                                                </a>
-                                            </td>
-                                        <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-danger" th:text="${truck.dangerousStatus}"></span>
-                                                </a>
-                                            </td>
-                                        <td class="border-bottom-0">
-                                                <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
-                                                    <span class="mb-0 fw-normal text-black" th:text="${truck.distanceBetweenPointsKm}"></span>
-                                                </a>
-                                            </td>
+                                            <h6 class="fw-semibold mb-1"
+                                                th:text="${transportation.conditions}"></h6>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <br>
+
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">ЕКМТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">без ЕКМТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label text-danger">ADR</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label text-danger">ADR1</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label text-success">ГОТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">НЕГОТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">в парку</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">не в парку</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label text-primary">АТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label text-warning">ВПТ</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">тент</label>
+                            </div>
+
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input" checked>
+                                <label class="form-check-label">реф</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">2х-ярусний</label>
+                            </div>
 
 
-                        </form>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <div class="col d-flex justify-content-center">
+                                <p>
+                                    <u th:text="${truck.transportationComment.length() > 0 ? truck.transportationComment : 'екіпаж не обрано'}">
+                                        екіпаж не обраний
+                                    </u>
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div class="row align-items-center mb-3">
+                            <div class="col-md-6">
+                                <label for="radius-filter">Радіус, км</label>
+                                <input type="number" id="radius-filter" class="form-control" placeholder="300">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="selectInput">Пошук авто</label>
+                                <select id="selectInput" class="form-select">
+                                    <option value="option1"></option>
+                                    <option value="option1">АА1111ДД/ІІ9999УУ Суліма Н.В. АТ</option>
+                                    <option value="option2">АА2222ПП/ІІ8888УУ Соловей К.С. АТ</option>
+                                    <option value="option3">АА3333ЛЛ/ІІ7777УУ Федоров Д.Л. АТ</option>
+                                    <option value="option4">АА4444СС/ІІ6666УУ Репик Р.Р. АТ</option>
+                                    <option value="option5">АА5555НН/ІІ5555УУ Йосин Л.Л. АТ</option>
+                                    <option value="option6">АА6666КК/ІІ4444УУ Колгейт Р.Т. АТ</option>
+                                    <option value="option7">АА7777РР/ІІ3333УУ Філ Д.О. ВПТ</option>
+                                    <option value="option8">АА8888ГГ/ІІ2222УУ Міл А.В. АТ</option>
+                                    <option value="option9">АА9999ББ/ІІ1111УУ Токар Ю.М. ВПТ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+
+                        <div class="table-responsive">
+                            <table class="table text-nowrap mb-0 align-middle" id="trucks-list">
+                                <thead class="text-dark fs-4">
+                                <tr>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Екіпаж</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">ТЗ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Вивантаження</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Оперативний стан</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Статус</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">ЕКМТ</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">АДР</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">r, км</h6>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="truck: ${trucks}">
+                                    <td class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-1">
+                                            <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                <span class="text-black" th:text="${truck.equipage}"></span>
+                                            </a>
+                                        </h6>
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="text-black fw-normal" th:text="${truck.driver}"></span>
+                                        </a>
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="pointer fw-normal" th:text="${truck.domesticCompany}"
+                                                          th:classappend="${'АТ'.equalsIgnoreCase(truck.domesticCompany) ? 'text-primary' : 'text-danger'}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="mb-0 fw-normal text-black" th:text="${truck.truckType}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="mb-0 fw-normal text-black" th:text="${truck.unloading}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <h6>
+                                            <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                <span class="fw-normal text-black"
+                                                      th:text="${truck.operationalStatusCommentDateTimeStr}"></span>
+                                            </a>
+                                        </h6>
+                                        <h6>
+                                            <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                <span class="fw-normal text-black"
+                                                      th:text="${truck.operationalStatusComment}"></span>
+                                            </a>
+                                        </h6>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                                    <span class="mb-0 fw-normal text-success" th:text="${truck.status}"
+                                                          th:classappend="${'ГОТ'.equalsIgnoreCase(truck.status) ? 'text-success' : 'text-danger'}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="mb-0 fw-normal text-black" th:text="${truck.ekmt}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="mb-0 fw-normal text-danger"
+                                                  th:text="${truck.dangerousStatus}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0 distance">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <span class="mb-0 fw-normal text-black"
+                                                  th:text="${truck.distanceBetweenPointsKm}"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
 
