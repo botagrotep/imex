@@ -148,9 +148,12 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="mb-3 form-check form-check-inline">
-                                        <input type="checkbox" class="form-check-input">
-                                        <label class="form-check-label">Мої</label>
+                                    <div class="mb-3 form-check form-check-inline" id="current-user-filter">
+                                        <p hidden="hidden" th:text="${currentUser.id}"></p>
+                                        <label class="form-check-label">
+                                            Мої
+                                            <input type="checkbox" class="form-check-input">
+                                        </label>
                                     </div>
                                     <div class="mb-3 form-check form-check-inline">
                                         <input type="checkbox" class="form-check-input">
@@ -194,7 +197,7 @@
                     </div>
 
                     <!--  Row 2 -->
-                    <div class="row" th:each="transportation: ${transportations}">
+                    <div class="row" th:each="transportation: ${transportations}" id="transportations-div">
 
                         <div class="col-lg-12 d-flex align-items-stretch">
                             <div class="card w-100">
@@ -226,7 +229,8 @@
                                                             реф +10 +12
                                                         </h6>
                                                     </td>
-                                                    <td class="border-bottom-0">
+                                                    <td class="border-bottom-0 manager-td">
+                                                        <p hidden="hidden" class="mb-0 fw-normal manager-id" th:text="${truck.managerId}">1</p>
                                                         <p class="mb-0 fw-normal" th:text="${truck.managerName}">Антон Улицький</p>
                                                     </td>
 
@@ -255,7 +259,7 @@
                                                         <div class="d-flex align-items-center gap-2">
                                                             <form hidden="hidden" th:action="${'/comment/' + truck.id +'/update'}" method="post" th:object="${transportationForComment}">
                                                                 <input type="text" th:field="*{comment}" class="form-control" id="comment-input">
-                                                                    <button hidden="hidden "type="submit" th:text="${'Зберегти коментар'}" class="btn m-1 btn-info"></button>
+                                                                    <button hidden="hidden" type="submit" th:text="${'Зберегти коментар'}" class="btn m-1 btn-info"></button>
                                                             </form>                                                
                                                         </div>
                                                     </td>

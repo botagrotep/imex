@@ -29,4 +29,9 @@ public class TransportationDto {
     private LocalDate loadingDate;
     private LocalTime loadingTime;
     private Boolean isSentToDr;
-}
+    private String loadingCity;
+    private String loadingCountry;
+    private String borderCrossingPoint;
+    private String unloadingCity;
+    private String unloadingCountry;
+    }
