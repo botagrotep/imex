@@ -23,6 +23,7 @@ public abstract class TransportationDtoConverter {
     @Mapping(target = "managerId", source = "t.manager.id")
     @Mapping(target = "equipage", source = "t.truck.equipage")
     @Mapping(target = "driver", source = "t.truck.driver")
+    @Mapping(target = "truckId", source = "t.truck.id")
     public abstract TransportationDto toTransportationDto(Transportation t);
 
     public abstract List<TransportationDto> toTransportationDto(Collection<Transportation> t);

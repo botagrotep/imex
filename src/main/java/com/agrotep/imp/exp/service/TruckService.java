@@ -21,6 +21,11 @@ public class TruckService {
     private static final double EARTH_RADIUS_KM = 6_371.009;
     private static final double FACTOR_FOR_GRADUSES = Math.PI / 180;
 
+    public TruckDto findById(Long id) {
+        return repository.findById(id)
+                .map(truckDtoConverter::toTruckDto)
+                .orElse(null);
+    }
 
     public List<TruckDto> findAllWithCalculateRadiusFrom(Long transportationId) {
         Transportation transportationGiven = transportationRepository.findById(transportationId)

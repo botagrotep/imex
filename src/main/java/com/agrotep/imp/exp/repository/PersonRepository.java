@@ -27,7 +27,7 @@ public class PersonRepository {
             "oksana",
             "1");
     public static final List<Person> PERSONS = List.of(
-            SVITLANA, ANTON
+            SVITLANA, ANTON, OKSANA
     );
 
     public List<Person> findAll() {

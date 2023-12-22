@@ -34,4 +34,5 @@ public class TransportationDto {
     private String borderCrossingPoint;
     private String unloadingCity;
     private String unloadingCountry;
+    private Long truckId;
     }

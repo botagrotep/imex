@@ -3,10 +3,12 @@ package com.agrotep.imp.exp.controller;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.service.PersonService;
 import com.agrotep.imp.exp.service.TransportationService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -17,10 +19,14 @@ public class ImportExportController {
     private final PersonService personService;
 
     @GetMapping
-    public String getTransportations(Authentication authentication, Model model) {
-        model.addAttribute("transportations", service.findAll());
+    public String getTransportations(@RequestParam(name = "filters", required = false) List<String> filters,
+                                     Authentication authentication, Model model) {
+        model.addAttribute("transportations", CollectionUtils.isEmpty(filters)
+                ? service.findAll()
+                : service.findAllFiltered(filters));
         model.addAttribute("transportationForComment", new TransportationDetailsDto());
         model.addAttribute("currentUser", personService.findByName(authentication.getName()));
+        model.addAttribute("filters", filters);
         return "import-export";
     }
 

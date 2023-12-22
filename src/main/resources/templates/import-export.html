@@ -136,16 +136,16 @@
 
             <!--  Row 1 -->
 
-            <div class="form-group row">
+            <div class="form-group row" id="table-filters">
                 <div class="card w-100">
                     <div class="card-body p-4">
                         <form>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" id="from-input">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" id="to-input">
                                 </div>
                             </div>
                             <br>
@@ -153,36 +153,38 @@
                                 <p hidden="hidden" th:text="${currentUser.id}"></p>
                                 <label class="form-check-label">
                                     Мої
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" class="form-check-input" id="my_check" th:checked="${filters != null and filters.contains('my_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline" id="export-filter">
                                 <label class="form-check-label">
                                     Експорт
-                                    <input type="checkbox" class="form-check-input">
+                                    <input type="checkbox" class="form-check-input" id="export_check" th:checked="${filters != null and filters.contains('export_check')}">
+                                </label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline" id="import-filter">
+                                <label class="form-check-label">
+                                    Імпорт
+                                    <input type="checkbox" class="form-check-input" id="import_check" th:checked="${filters != null and filters.contains('import_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label">Імпорт</label>
+                                <label class="form-check-label">
+                                    Україна
+                                    <input type="checkbox" class="form-check-input" id="ua_check" th:checked="${filters != null and filters.contains('ua_check')}">
+                                </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label">Україна</label>
+                                <label class="form-check-label">
+                                    Європа
+                                    <input type="checkbox" class="form-check-input" id="eu_check" th:checked="${filters != null and filters.contains('eu_check')}">
+                                </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label">Європа</label>
-                            </div>
-                            <div class="mb-3 form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label">без Екіпажу</label>
-                            </div>
-                            <div class="mb-3 form-check form-check-inline">
-                                <input type="checkbox" class="form-check-input">
-                                <label class="form-check-label"><font color="red">Свій фільтр</font></label>
-
-
+                                <label class="form-check-label">
+                                    без Екіпажу
+                                    <input type="checkbox" class="form-check-input" id="wo_equipage_check" th:checked="${filters != null and filters.contains('wo_equipage_check')}">
+                                </label>
                             </div>
 
                             <div class="card-body p-4">
@@ -219,7 +221,7 @@
                                             <span hidden="hidden" th:text="${truck.unloadingCountry}"
                                                   class="unloading-country"></span>
                                             <h6 class="fw-semibold mb-1">
-                                                <a th:href="${'/transportation-details/update/' + truck.id}"
+                                                <a class="direction" th:href="${'/transportation-details/update/' + truck.id}"
                                                    th:text="${truck.direction}">
                                                     Berlin, DE - Київ, UA
                                                 </a>

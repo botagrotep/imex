@@ -120,7 +120,8 @@
                                     </a>
 
                                     <form th:action="@{/logout}" method="post">
-                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit" value="Вийти з системи"/>
+                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit"
+                                               value="Вийти з системи"/>
                                     </form>
                                 </div>
                             </div>
@@ -233,9 +234,64 @@
                         </div>
                         <div class="row align-items-center mb-3">
                             <div class="col d-flex justify-content-center">
-                                <p>
-                                    <u th:text="${truck.transportationComment.length() > 0 ? truck.transportationComment : 'екіпаж не обрано'}">
-                                        екіпаж не обраний
+
+                                <div class="table-responsive" th:if="${selectedTruck != null}">
+                                    <table class="table text-nowrap mb-0 align-middle" id="selected-truck">
+                                        <tbody>
+                                        <tr>
+                                            <td class="border-bottom-0">
+                                                <h6 class="fw-semibold mb-1">
+                                                    <span class="text-black" th:text="${selectedTruck.equipage}"></span>
+                                                </h6>
+                                                <span class="text-black fw-normal"
+                                                      th:text="${selectedTruck.driver}"></span>
+                                                <span class="pointer fw-normal"
+                                                      th:text="${selectedTruck.domesticCompany}"
+                                                      th:classappend="${'АТ'.equalsIgnoreCase(selectedTruck.domesticCompany) ? 'text-primary' : 'text-danger'}"></span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <span class="mb-0 fw-normal text-black"
+                                                      th:text="${selectedTruck.truckType}"></span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <span class="mb-0 fw-normal text-black"
+                                                      th:text="${selectedTruck.unloading}"></span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <h6>
+                                                    <span class="fw-normal text-black"
+                                                          th:text="${selectedTruck.operationalStatusCommentDateTimeStr}"></span>
+                                                </h6>
+                                                <h6>
+                                                    <span class="fw-normal text-black"
+                                                          th:text="${selectedTruck.operationalStatusComment}"></span>
+                                                </h6>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                    <span class="mb-0 fw-normal text-success"
+                                                          th:text="${selectedTruck.status}"
+                                                          th:classappend="${'ГОТ'.equalsIgnoreCase(selectedTruck.status) ? 'text-success' : 'text-danger'}"></span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <span class="mb-0 fw-normal text-black"
+                                                      th:text="${selectedTruck.ekmt}"></span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <span class="mb-0 fw-normal text-danger"
+                                                      th:text="${selectedTruck.dangerousStatus}"></span>
+                                            </td>
+                                            <td class="border-bottom-0 distance">
+                                                <span class="mb-0 fw-normal text-black"
+                                                      th:text="${selectedTruck.distanceBetweenPointsKm}"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <p th:if="${selectedTruck == null}">
+                                    <u>
+                                        екіпаж не обрано
                                     </u>
                                 </p>
                             </div>

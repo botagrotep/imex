@@ -23,22 +23,33 @@ public class TransportationRepository {
     public static final long ID5 = 5L;
     public static final long ID6 = 6L;
     public static final long ID7 = 7L;
+    public static final long ID8 = 8L;
+    public static final long ID9 = 9L;
 
-    public static final City VINNYTSYA = new City("Вінниця", 49.232780, 28.480970);
-    public static final City BUDAPESHT = new City("Будапешт", 47.4980100, 19.0399100);
-    public static final City KYIV = new City("Київ", 50.4546600, 30.5238000);
-    public static final City BERLIN = new City("Berlin", 52.5243700, 13.4105300);
-    public static final City LADYGYN = new City("Ладижин", 48.6849600, 29.2367900);
-    public static final City LONDON = new City("London", 51.5085300, -0.1257400);
-    Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(
-            Transportation.builder()
+    public static final String UA = "UA";
+    public static final String HU = "HU";
+    public static final String DE = "DE";
+    public static final String GB = "GB";
+    public static final String IT = "IT";
+    public static final String SE = "SE";
+
+    public static final City VINNYTSYA = new City("Вінниця", 49.232780, 28.480970, UA);
+    public static final City BUDAPESHT = new City("Будапешт", 47.4980100, 19.0399100, HU);
+    public static final City KYIV = new City("Київ", 50.4546600, 30.5238000, UA);
+    public static final City BERLIN = new City("Berlin", 52.5243700, 13.4105300, DE);
+    public static final City LADYGYN = new City("Ладижин", 48.6849600, 29.2367900, UA);
+    public static final City LVIV = new City("Львів", 49.8382600, 24.0232400, UA);
+    public static final City LONDON = new City("London", 51.5085300, -0.1257400, GB);
+    public static final City MILAN = new City("Мілан", 45.4642700, 9.1895100, IT);
+    public static final City OSLO = new City("Oslo", 59.9127300, 10.7460900, SE);
+    Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(Transportation.builder()
                     .id(ID1)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity(VINNYTSYA.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(BUDAPESHT.name())
-                    .unloadingCountry("HU")
+                    .unloadingCountry(BUDAPESHT.country())
                     .typeOfTruck("реф")
                     .clientCompany("Рошен")
                     .manager(SVITLANA)
@@ -76,10 +87,10 @@ public class TransportationRepository {
                     .id(ID2)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity(VINNYTSYA.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(BUDAPESHT.name())
-                    .unloadingCountry("HU")
+                    .unloadingCountry(BUDAPESHT.country())
                     .typeOfTruck("реф")
                     .truck(TRUCK3)
                     .clientCompany("Рошен")
@@ -110,10 +121,10 @@ public class TransportationRepository {
                     .id(ID3)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity(VINNYTSYA.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(BUDAPESHT.name())
-                    .unloadingCountry("HU")
+                    .unloadingCountry(BUDAPESHT.country())
                     .typeOfTruck("реф")
                     .clientCompany("Оріфлейм")
                     .manager(SVITLANA)
@@ -133,17 +144,17 @@ public class TransportationRepository {
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
-                    .unloadingLatitude(50.6951348876953125)
-                    .unloadingLongitude(7.81048059469500977)
+                    .unloadingLatitude(BUDAPESHT.latitude())
+                    .unloadingLongitude(BUDAPESHT.longitude())
                     .build(),
             Transportation.builder()
                     .id(ID4)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
                     .loadingCity(VINNYTSYA.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(BUDAPESHT.name())
-                    .unloadingCountry("HU")
+                    .unloadingCountry(BUDAPESHT.country())
                     .typeOfTruck("реф")
                     .clientCompany("Рошен")
                     .manager(SVITLANA)
@@ -173,10 +184,10 @@ public class TransportationRepository {
                     .id(ID5)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
                     .loadingCity(VINNYTSYA.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(BUDAPESHT.name())
-                    .unloadingCountry("HU")
+                    .unloadingCountry(BUDAPESHT.country())
                     .typeOfTruck("реф")
                     .clientCompany("Рошен")
                     .manager(SVITLANA)
@@ -205,10 +216,10 @@ public class TransportationRepository {
                     .id(ID6)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
                     .loadingCity(BERLIN.name())
-                    .loadingCountry("DE")
+                    .loadingCountry(BERLIN.country())
                     .borderCrossingPoint("Дорогуцьк")
                     .unloadingCity(KYIV.name())
-                    .unloadingCountry("UA")
+                    .unloadingCountry(KYIV.country())
                     .typeOfTruck("реф")
                     .clientCompany("Fererro")
                     .manager(ANTON)
@@ -236,10 +247,10 @@ public class TransportationRepository {
                     .id(ID7)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
                     .loadingCity(LADYGYN.name())
-                    .loadingCountry("UA")
+                    .loadingCountry(LADYGYN.country())
                     .borderCrossingPoint("Чоп")
                     .unloadingCity(LONDON.name())
-                    .unloadingCountry("GB")
+                    .unloadingCountry(LONDON.country())
                     .typeOfTruck("реф")
                     .clientCompany("МХП")
                     .manager(OKSANA)
@@ -262,6 +273,63 @@ public class TransportationRepository {
                     .unloadingLatitude(LONDON.latitude())
                     .unloadingLongitude(LONDON.longitude())
                     .comment("ЕКМТ")
+                    .build(),
+            Transportation.builder()
+                    .id(ID8)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .loadingCity(MILAN.name())
+                    .loadingCountry(MILAN.country())
+                    .borderCrossingPoint("Чоп")
+                    .unloadingCity(OSLO.name())
+                    .unloadingCountry(OSLO.country())
+                    .typeOfTruck("тент")
+                    .clientCompany("Ганекс")
+                    .manager(OKSANA)
+                    .cargo("тнп")
+                    .temperatureMin(4)
+                    .temperatureMax(10)
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, 12, 19))
+                    .loadingTime(LocalTime.of(10, 8))
+                    .loadingSenderReceiverLegalEntity("Arlon")
+                    .loadingAddress("LS")
+                    .loadingLatitude(MILAN.latitude())
+                    .loadingLongitude(MILAN.longitude())
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, 12, 2))
+                    .unloadingTime(LocalTime.of(9, 18))
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(OSLO.latitude())
+                    .unloadingLongitude(OSLO.longitude())
+                    .transportationComment("відміна")
+                    .build(),
+            Transportation.builder()
+                    .id(ID9)
+                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .loadingCity(KYIV.name())
+                    .loadingCountry(KYIV.country())
+                    .unloadingCity(LVIV.name())
+                    .unloadingCountry(LVIV.country())
+                    .typeOfTruck("тент")
+                    .clientCompany("Ганекс")
+                    .manager(OKSANA)
+                    .cargo("тнп")
+                    .loadingNo(1)
+                    .loadingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .loadingTime(LocalTime.of(12, 18))
+                    .loadingSenderReceiverLegalEntity("Arlon")
+                    .loadingAddress("LS")
+                    .loadingLatitude(KYIV.latitude())
+                    .loadingLongitude(KYIV.longitude())
+                    .unloadingNo(2)
+                    .unloadingDate(LocalDate.of(2023, Month.DECEMBER, 22))
+                    .unloadingTime(LocalTime.of(9, 16))
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(LVIV.latitude())
+                    .unloadingLongitude(LVIV.longitude())
+                    .transportationComment("перенесено на 25.01")
                     .build()
     ));
 

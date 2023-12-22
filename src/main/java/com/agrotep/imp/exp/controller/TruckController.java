@@ -34,23 +34,21 @@ public class TruckController {
         List<TruckDto> trucks = service.findAllWithCalculateRadiusFrom(transportationId);
         model.addAttribute("trucks", trucks);
 
-        TruckDto truckDto = TruckDto.builder()
-                .transportationComment(dto.getTransportationComment())
-                .build();
-        model.addAttribute("truck", truckDto);
+        TruckDto truckDto = service.findById(dto.getTruckId());
+        model.addAttribute("selectedTruck", truckDto);
 
         return "truck";
     }
 
     @PostMapping("/assign/{truckId}/to/transportation/{transportationId}")
     public String assignTruck(@PathVariable Long truckId, @PathVariable Long transportationId) {
-              transportationService.setTruck(truckId, transportationId);
+        transportationService.setTruck(truckId, transportationId);
         return "redirect:/import-export";
     }
 
     @GetMapping("/assign/{truckId}/to/transportation/{transportationId}")
     public String assignTruckViaGet(@PathVariable Long truckId, @PathVariable Long transportationId) {
-              transportationService.setTruck(truckId, transportationId);
+        transportationService.setTruck(truckId, transportationId);
         return "redirect:/import-export";
     }
 }
