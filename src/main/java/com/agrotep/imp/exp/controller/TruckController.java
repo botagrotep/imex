@@ -25,25 +25,30 @@ public class TruckController {
     private final TransportationService transportationService;
     private final TruckService service;
 
-    @GetMapping("/{id}")
-    public String getTruckDetails(@PathVariable Long id, Model model) {
-        TransportationDto dto = transportationService.findTransportationById(id).orElse(new TransportationDto());
+    @GetMapping("/{transportationId}")
+    public String getTruckDetails(@PathVariable Long transportationId, Model model) {
+        TransportationDto dto = transportationService.findTransportationById(transportationId)
+                .orElse(new TransportationDto());
         model.addAttribute("transportation", dto);
 
-        List<TruckDto> trucks = service.findAllInRadius();
+        List<TruckDto> trucks = service.findAllWithCalculateRadiusFrom(transportationId);
         model.addAttribute("trucks", trucks);
 
-        TruckDto truckDto = TruckDto.builder()
-                .transportationComment(dto.getTransportationComment())
-                .build();
-        model.addAttribute("truck", truckDto);
+        TruckDto truckDto = trucks.stream().filter(t -> dto.getTruckId().equals(t.getId())).findAny().orElse(null);
+        model.addAttribute("selectedTruck", truckDto);
 
         return "truck";
     }
 
     @PostMapping("/assign/{truckId}/to/transportation/{transportationId}")
     public String assignTruck(@PathVariable Long truckId, @PathVariable Long transportationId) {
-              transportationService.setTruck(truckId, transportationId);
+        transportationService.setTruck(truckId, transportationId);
+        return "redirect:/import-export";
+    }
+
+    @GetMapping("/assign/{truckId}/to/transportation/{transportationId}")
+    public String assignTruckViaGet(@PathVariable Long truckId, @PathVariable Long transportationId) {
+        transportationService.setTruck(truckId, transportationId);
         return "redirect:/import-export";
     }
 }

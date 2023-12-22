@@ -20,10 +20,14 @@ public class PersonRepository {
             2L,
             "Антон Уліцький",
             "anton",
-            "1"
-    );
+            "1");
+    public static final Person OKSANA = new Person(
+            3L,
+            "Оксана Бойко",
+            "oksana",
+            "1");
     public static final List<Person> PERSONS = List.of(
-            SVITLANA, ANTON
+            SVITLANA, ANTON, OKSANA
     );
 
     public List<Person> findAll() {
@@ -35,7 +39,7 @@ public class PersonRepository {
             return Optional.empty();
         }
         return PERSONS.stream()
-                .filter(p -> name.equalsIgnoreCase(p.getName()))
+                .filter(p -> name.equalsIgnoreCase(p.getName()) || name.equalsIgnoreCase(p.getLogin()))
                 .findFirst();
     }
 }

@@ -10,13 +10,16 @@ import lombok.Setter;
 public class TruckDto {
     private Long id;
     private String transportationComment;
+    private String equipage;
+    private String driver;
     private String truckType;
     private String unloading;
+    private String operationalStatusCommentDateTimeStr;
     private String operationalStatusComment;
     private String status;
     private String ekmt;
     private String dangerousStatus;
-    private Float distanceBetweenPointsKm;
+    private Integer distanceBetweenPointsKm;
     private Boolean isInCarPark;
     private String domesticCompany;
 }

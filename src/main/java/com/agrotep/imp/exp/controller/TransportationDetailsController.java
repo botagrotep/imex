@@ -1,15 +1,16 @@
 package com.agrotep.imp.exp.controller;
 
-import com.agrotep.imp.exp.dto.LoadingDto;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.dto.TransportationDto;
 import com.agrotep.imp.exp.service.TransportationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -28,10 +29,10 @@ public class TransportationDetailsController {
         if (details.isPresent()) {
             TransportationDetailsDto dto = details.get();
             model.addAttribute("transportation", dto);
+            addListsToModel(model);
             return "update-transportation-details";
         }
-        model.addAttribute("transportation", new TransportationDetailsDto());
-        return "add-transportation-details";
+        return this.createTransportationDetails(model);
     }
 
     @PostMapping("/update")
@@ -42,15 +43,34 @@ public class TransportationDetailsController {
     }
 
     @GetMapping("/add")
-    public String createTranstortationDetails(Model model) {
+    public String createTransportationDetails(Model model) {
         model.addAttribute("transportation", new TransportationDetailsDto());
+        addListsToModel(model);
         return "add-transportation-details";
     }
 
     @PostMapping("/add")
-    public String addTransportation(@ModelAttribute @Valid TransportationDetailsDto transportation, Model model) {
+    public String addTransportation(Authentication authentication,
+                                    @ModelAttribute @Valid TransportationDetailsDto transportation, Model model) {
+        transportation.setManagerName(authentication.getName());
         TransportationDto transportationDto = service.save(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
+    }
+
+
+    private void addListsToModel(Model model) {
+        addCompaniesToModel(model);
+        addCountriesToModel(model);
+    }
+
+    private void addCountriesToModel(Model model) {
+        Collection<String> countries = service.getCountries();
+        model.addAttribute("countries", countries);
+    }
+
+    private void addCompaniesToModel(Model model) {
+        Collection<String> companies = service.getCompanies();
+        model.addAttribute("clientCompanies", companies);
     }
 }

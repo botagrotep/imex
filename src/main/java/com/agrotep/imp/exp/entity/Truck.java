@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -14,6 +16,7 @@ public class Truck {
     private Long id;
     private String equipage;
     private String driver;
+    private LocalDateTime operationalStatusCommentDateTime;
     private String operationalStatusComment;
     private String status;
     private String ekmt;

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 public class TransportationDto {
 
     private Long id;
-    private LocalDate transportationDate;
+    private String transportationDate;
     private LocalDate transportationFillingDate;
     private String direction;
     private String typeOfTruck;
@@ -28,4 +28,11 @@ public class TransportationDto {
     private String severity;
     private LocalDate loadingDate;
     private LocalTime loadingTime;
-}
+    private Boolean isSentToDr;
+    private String loadingCity;
+    private String loadingCountry;
+    private String borderCrossingPoint;
+    private String unloadingCity;
+    private String unloadingCountry;
+    private Long truckId;
+    }

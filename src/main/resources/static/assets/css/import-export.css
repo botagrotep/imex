@@ -13,3 +13,7 @@ tr.green-light td.essential {
 .red-light {
     background-color: #ff9999;
 }
+
+td.comment {
+     cursor: pointer;
+}

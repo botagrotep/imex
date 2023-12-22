@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.util.StringUtils;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,29 +18,33 @@ import java.util.function.Supplier;
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
 
-    public static final String DEFAULT_COMMENT = "Додати коментар";
+    public static final String DEFAULT_COMMENT = "+ коментар";
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
     @Mapping(target = "equipage", source = "t.truck.equipage")
     @Mapping(target = "driver", source = "t.truck.driver")
+    @Mapping(target = "truckId", source = "t.truck.id")
     public abstract TransportationDto toTransportationDto(Transportation t);
+
     public abstract List<TransportationDto> toTransportationDto(Collection<Transportation> t);
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
-        dto.setTransportationDate(t.getLoadingDate());
+        if (t.getLoadingDate() != null) {
+            dto.setTransportationDate(t.getLoadingDate().format(DateTimeFormatter.ofPattern("E dd MMMM yyyy")));
+        }
 
         setDirection(t, dto);
         setCondition(t, dto);
-        setTransportationComment(t, dto);
+//        setTransportationComment(t, dto);
         setSeverity(t, dto);
-        setDefaultCommentsForEmptyFields(dto);
+//        setDefaultCommentsForEmptyFields(dto);
     }
 
     private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
-        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
-        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
+//        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
+//        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
         setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
     }
 
@@ -49,30 +54,23 @@ public abstract class TransportationDtoConverter {
         }
     }
 
-        private static void setSeverity(Transportation t, TransportationDto dto) {
-        String severity = StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
-                ? "green-light"
-                : StringUtils.hasText(t.getTransportationComment()) ? "red-light"
+    private static void setSeverity(Transportation t, TransportationDto dto) {
+        String severity = t.isSentToDr() ? "btn-info"
+                : StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
+                ? "btn-success"
+                : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"
                 : "";
         dto.setSeverity(severity);
     }
 
     private static void setTransportationComment(Transportation t, TransportationDto dto) {
-        StringBuilder transportationComment = new StringBuilder();
-        if (StringUtils.hasText(dto.getEquipage())) {
-            transportationComment.append(dto.getEquipage()).append(" ");
+        String transportationComment = t.getTransportationComment();
+        if (!StringUtils.hasText(transportationComment) && !StringUtils.hasText(dto.getEquipage())
+                && !StringUtils.hasText(dto.getDriver())) {
+            dto.setTransportationComment(DEFAULT_COMMENT);
+            return;
         }
-        if (StringUtils.hasText(dto.getDriver())) {
-            transportationComment.append(dto.getDriver()).append(" ");
-        }
-        transportationComment
-                .append(t.getTransportationComment());
-        if (!StringUtils.hasText(transportationComment)) {
-            transportationComment.append(DEFAULT_COMMENT);
-        }
-        dto.setTransportationComment(transportationComment
-                .toString()
-                .trim());
+        dto.setTransportationComment(transportationComment);
     }
 
     private static void setCondition(Transportation t, TransportationDto dto) {

@@ -4,10 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +14,7 @@ public class TransportationDetailsDto {
     public static final DateTimeFormatter TIME_FORMATTER_SHORT = DateTimeFormatter.ofPattern("HH:mm");
 
     private Long id;
-    @NotEmpty(message = "ім'я менеджера не повинно бути порожнім")
+//    @NotEmpty(message = "ім'я менеджера не повинно бути порожнім")
     private String managerName;
     private Long managerId;
     private String loadingCity;
@@ -27,6 +24,7 @@ public class TransportationDetailsDto {
     private String orderDateStr;
     private String orderTimeStr;
     private String clientCompany;
+    private String clientCompanyFromSelector;
     private String clientContactPerson;
     private String cargo;
     private Float cargoWeightTons;
@@ -55,9 +53,9 @@ public class TransportationDetailsDto {
     private String loadingAddress;
     private Double loadingLongitude;
     private Double loadingLatitude;
-    private Double loadingFreight;
-    private String loadingCurrency;
-    private Boolean isLoadingPaymentInCash;
+    private Double freight;
+    private String currency;
+    private Boolean isPaymentInCash;
 
     private Integer unloadingNo;
     private String unloadingDateStr;
@@ -69,6 +67,7 @@ public class TransportationDetailsDto {
     private String unloadingAddress;
     private Double unloadingLongitude;
     private Double unloadingLatitude;
-    private Double unloadingFreight;
-    private String unloadingCurrency;
-    private Boolean isUnloadingPaymentInCash;}
+    private Boolean isSentToDr;
+    private Boolean isPrinted;
+    private String comment;
+}
