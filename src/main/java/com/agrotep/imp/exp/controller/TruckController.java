@@ -34,7 +34,7 @@ public class TruckController {
         List<TruckDto> trucks = service.findAllWithCalculateRadiusFrom(transportationId);
         model.addAttribute("trucks", trucks);
 
-        TruckDto truckDto = service.findById(dto.getTruckId());
+        TruckDto truckDto = trucks.stream().filter(t -> dto.getTruckId().equals(t.getId())).findAny().orElse(null);
         model.addAttribute("selectedTruck", truckDto);
 
         return "truck";

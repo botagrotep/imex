@@ -37,7 +37,6 @@ public class TruckService {
         }
 
         return transportationRepository.findAll().stream()
-                .filter(t -> !t.equals(transportationGiven))
                 .filter(t -> t.getUnloadingLongitude() != null)
                 .filter(t -> t.getUnloadingLatitude() != null)
                 .filter(t -> t.getTruck() != null)

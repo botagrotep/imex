@@ -254,7 +254,7 @@
                                             <div class="d-flex align-items-center gap-2">
 
                                                 <form th:action="${'/truck/' + truck.id}" method="get">
-                                                    <button type="submit" class="btn m-1"
+                                                    <button th:disabled="${truck.severity} == 'btn-danger'" type="submit" class="btn m-1"
                                                             th:classappend="${truck.severity}">
                                                         <span th:if="${truck.equipage != null and truck.equipage.length() > 0}"
                                                               th:text="${truck.equipage}">АА1212SS/LL5555DD</span>

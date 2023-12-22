@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,12 +30,12 @@ public class TransportationService {
     private final TruckDtoConverter truckDtoConverter;
     private final Map<TransportationFilterType, ImportExportFilter> filterMap;
 
-    public SortedMap<LocalDate, List<TransportationDto>> findAll() {
+    public SortedMap<String, List<TransportationDto>> findAll() {
         final Collection<Transportation> transportationsList = repository.findAll();
         return toMap(transportationsList);
     }
 
-    public SortedMap<LocalDate, List<TransportationDto>> findAllFiltered(List<String> filters) {
+    public SortedMap<String, List<TransportationDto>> findAllFiltered(List<String> filters) {
         Set<TransportationFilterType> filtersEnums = TransportationFilterType.toFilters(filters);
         final Collection<Transportation> transportationsList = repository.findAll().stream()
                 .filter(transportation -> {
@@ -120,9 +119,9 @@ public class TransportationService {
         return countries;
     }
 
-    private TreeMap<LocalDate, List<TransportationDto>> toMap(Collection<Transportation> transportationsList) {
+    private TreeMap<String, List<TransportationDto>> toMap(Collection<Transportation> transportationsList) {
         List<TransportationDto> dtos = converter.toTransportationDto(transportationsList);
-        Map<LocalDate, List<TransportationDto>> transportationsGroups
+        Map<String, List<TransportationDto>> transportationsGroups
                 = dtos.stream()
                 .filter(t -> t.getTransportationDate() != null)
                 .collect(Collectors.groupingBy(TransportationDto::getTransportationDate));

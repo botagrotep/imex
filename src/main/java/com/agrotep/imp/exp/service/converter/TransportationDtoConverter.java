@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.util.StringUtils;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,7 +31,9 @@ public abstract class TransportationDtoConverter {
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
-        dto.setTransportationDate(t.getLoadingDate());
+        if (t.getLoadingDate() != null) {
+            dto.setTransportationDate(t.getLoadingDate().format(DateTimeFormatter.ofPattern("E dd MMMM yyyy")));
+        }
 
         setDirection(t, dto);
         setCondition(t, dto);
