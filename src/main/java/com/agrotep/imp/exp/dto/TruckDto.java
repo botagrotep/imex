@@ -21,5 +21,7 @@ public class TruckDto {
     private String dangerousStatus;
     private Integer distanceBetweenPointsKm;
     private Boolean isInCarPark;
+    private Boolean isVisaGbr;
+    private Boolean isNextLoadingPresent;
     private String domesticCompany;
 }

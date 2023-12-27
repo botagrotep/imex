@@ -71,4 +71,6 @@ public class TransportationDetailsDto {
     private Boolean isSentToDr;
     private Boolean isPrinted;
     private String comment;
+    private String customerApplicationNo;
+    private String customerApplicationDateStr;
 }

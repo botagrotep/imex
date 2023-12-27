@@ -96,4 +96,6 @@ public class Transportation {
     private String unloadingCurrency;
     private Boolean isUnloadingPaymentInCash;
     private boolean isSentToDr;
+    private String customerApplicationNo;
+    private LocalDate customerApplicationDate;
 }

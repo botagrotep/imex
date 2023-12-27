@@ -18,12 +18,14 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TransportationService {
+    public static final DateTimeFormatter DD_MM = DateTimeFormatter.ofPattern("dd.MM");
     private final TransportationRepository repository;
     private final TruckRepository truckRepository;
 
@@ -81,10 +83,27 @@ public class TransportationService {
         return andVal && orVal;
     }
 
-    public TransportationDto save(TransportationDetailsDto transportationDetailsDto) {
+    public TransportationDto saveOrCopy(TransportationDetailsDto transportationDetailsDto) {
         Transportation transportation = detailsDtoConverter.toTransportation(transportationDetailsDto);
+        repository.findById(transportation.getId())
+                .filter(t -> transportation.getLoadingDate() != null
+                        && !transportation.getLoadingDate().equals(t.getLoadingDate()))
+                .ifPresent(t -> {
+                    transportation.setId(null);
+                    t.setTruck(null);
+                    t.setTransportationComment(String.format("перенесено на %s",
+                            transportation.getLoadingDate().format(DD_MM)));
+                    repository.save(t);
+                });
         Transportation t = repository.save(transportation);
         return converter.toTransportationDto(t);
+    }
+
+    public TransportationDto cancel(TransportationDetailsDto transportationDetailsDto) {
+        Transportation transportation = detailsDtoConverter.toTransportation(transportationDetailsDto);
+        transportation.setTransportationComment("відміна");
+        transportation.setTruck(null);
+        return converter.toTransportationDto(repository.save(transportation));
     }
 
     public Transportation saveTruck(TruckDto t) {

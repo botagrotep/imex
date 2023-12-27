@@ -26,5 +26,6 @@ public class Truck {
     private Boolean isInCarPark;
     private Boolean isAdrAcceptable;
     private Boolean isAdr1Acceptable;
+    private Boolean isVisaGbr;
     private String domesticCompany;
 }

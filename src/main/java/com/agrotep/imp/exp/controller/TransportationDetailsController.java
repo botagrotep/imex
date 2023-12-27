@@ -35,11 +35,26 @@ public class TransportationDetailsController {
         return this.createTransportationDetails(model);
     }
 
-    @PostMapping("/update")
+    @PostMapping(value = "/update", params = "submit")
     public String updateTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
-        TransportationDto transportationDto = service.save(transportation);
+        TransportationDto transportationDto = service.saveOrCopy(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
+    }
+
+
+    @PostMapping(value = "/update", params = "cancel")
+    public String cancelTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
+        TransportationDto transportationDto = service.cancel(transportation);
+        model.addAttribute(transportationDto);
+        return "redirect:/import-export";
+    }
+
+    @GetMapping("/empty")
+    public String createEmptyTransportationDetails(Model model) {
+        model.addAttribute("transportation", new TransportationDetailsDto());
+        addListsToModel(model);
+        return "empty-transportation-details";
     }
 
     @GetMapping("/add")
@@ -53,7 +68,7 @@ public class TransportationDetailsController {
     public String addTransportation(Authentication authentication,
                                     @ModelAttribute @Valid TransportationDetailsDto transportation, Model model) {
         transportation.setManagerName(authentication.getName());
-        TransportationDto transportationDto = service.save(transportation);
+        TransportationDto transportationDto = service.saveOrCopy(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
     }

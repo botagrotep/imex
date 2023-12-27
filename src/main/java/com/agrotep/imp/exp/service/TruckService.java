@@ -2,6 +2,7 @@ package com.agrotep.imp.exp.service;
 
 import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.entity.Transportation;
+import com.agrotep.imp.exp.entity.Truck;
 import com.agrotep.imp.exp.repository.TransportationRepository;
 import com.agrotep.imp.exp.repository.TruckRepository;
 import com.agrotep.imp.exp.service.converter.TruckDtoConverter;
@@ -45,16 +46,26 @@ public class TruckService {
     }
 
     private TruckDto toTruckDtoWithDistance(Transportation transportation, Transportation transportationGiven) {
+        double distance = getDistanceBetweenLoadingAndUnloading(transportation, transportationGiven);
+        Truck truck = transportation.getTruck();
+        TruckDto truckDto = truckDtoConverter.toTruckDto(truck);
+        truckDto.setDistanceBetweenPointsKm((int) distance);
+        List<Transportation> transportationsOfTruck = transportationRepository
+                .findByTruckAndLoadingDateAfterEqual(truck, transportation.getUnloadingDate());
+        boolean isNextLoadingPresent = transportationsOfTruck.stream().anyMatch(t -> !transportation.equals(t));
+        truckDto.setIsNextLoadingPresent(isNextLoadingPresent);
+        return truckDto;
+    }
+
+    private static double getDistanceBetweenLoadingAndUnloading(Transportation transportation,
+                                                                Transportation transportationGiven) {
         double dLatitude
                 = transportation.getUnloadingLatitude() - transportationGiven.getLoadingLatitude();
         double dLongitude
                 = transportation.getUnloadingLongitude() - transportationGiven.getLoadingLongitude();
         double averageLatitude = FACTOR_FOR_GRADUSES
                 * (transportation.getUnloadingLatitude() + transportationGiven.getLoadingLatitude()) / 2;
-        double distance = EARTH_RADIUS_KM * FACTOR_FOR_GRADUSES
+        return EARTH_RADIUS_KM * FACTOR_FOR_GRADUSES
                 * Math.sqrt(Math.pow(dLatitude, 2) + Math.pow(Math.cos(averageLatitude) * dLongitude, 2));
-        TruckDto truckDto = truckDtoConverter.toTruckDto(transportation.getTruck());
-        truckDto.setDistanceBetweenPointsKm((int) distance);
-        return truckDto;
     }
 }

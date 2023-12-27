@@ -3,16 +3,15 @@ package com.agrotep.imp.exp.controller;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.service.PersonService;
 import com.agrotep.imp.exp.service.TransportationService;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Controller
 @RequestMapping({"/", "/import-export"})
@@ -31,6 +30,12 @@ public class ImportExportController {
                                      @RequestParam(name= DATE_TO, required = false) LocalDate dateTo,
                                      @RequestParam(name = BORDER_CROSSING_POINT, required = false) String borderCrossingPoint,
                                      Authentication authentication, Model model) {
+        if (dateFrom == null) {
+            dateFrom = LocalDate.now();
+        }
+        if (dateTo == null) {
+            dateTo = LocalDate.now().plusWeeks(1);
+        }
         model.addAttribute("transportations", service.findAllFiltered(filters, dateFrom, dateTo,
                 borderCrossingPoint));
         model.addAttribute("transportationForComment", new TransportationDetailsDto());
@@ -50,7 +55,7 @@ public class ImportExportController {
         service.findTransportationDetailsById(transportationId)
                 .ifPresent(t -> {
                     t.setComment(comment);
-                    service.save(t);
+                    service.saveOrCopy(t);
                 });
         return "redirect:/import-export";
     }

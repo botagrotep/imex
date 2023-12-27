@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,7 +113,8 @@
                                     </a>
 
                                     <form th:action="@{/logout}" method="post">
-                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit" value="Вийти з системи"/>
+                                        <input class="btn btn-outline-primary mx-3 mt-2 d-block" type="submit"
+                                               value="Вийти з системи"/>
                                     </form>
                                 </div>
                             </div>
@@ -213,8 +214,10 @@
                                     <div class="col-md-4">
                                         <label for="border-crossing-point">Погран. перехід</label>
 
-                                        <select id="border-crossing-point" class="form-select" th:field="*{borderCrossingPoint}">
-                                            <option th:each="p: ${borderCrossingPoints}" th:value="${p}" th:text="${p}"></option>
+                                        <select id="border-crossing-point" class="form-select"
+                                                th:field="*{borderCrossingPoint}">
+                                            <option th:each="p: ${borderCrossingPoints}" th:value="${p}"
+                                                    th:text="${p}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -242,7 +245,23 @@
                                     </div>
                                 </div>
 
-                                <!-- Sixth Line: Seven Checkboxes -->
+                                <!-- Sixth Line: Two Input texts -->
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="customer-application-no">Заявка замовника №</label>
+                                        <input th:field="*{customerApplicationNo}" type="text"
+                                               id="customer-application-no"
+                                               class="form-control">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="customer-application-date">від</label>
+                                        <input th:field="*{customerApplicationDateStr}" type="date"
+                                               id="customer-application-date"
+                                               class="form-control">
+                                    </div>
+                                </div>
+
+                                <!-- Seventh Line: Six Checkboxes -->
                                 <div class="mb-3">
                                     <label>Checkboxes</label>
                                     <div class="row">
@@ -296,7 +315,7 @@
                                 </div>
 
 
-                                <!-- Seventh Line: One Input Number, One Input Select, One Checkbox -->
+                                <!-- Eighth Line: One Input Number, One Input Select, One Checkbox -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="freight">Фрахт</label>
@@ -319,7 +338,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Eighth Line: Textarea -->
+                                <!-- Ninth Line: Textarea -->
                                 <div class="mb-3">
                                     <label for="textarea1">Коментар</label>
                                     <textarea th:field="*{coordinatorComment}" id="textarea1" class="form-control"
@@ -517,8 +536,13 @@
                                 <button type="button" class="btn btn-primary m-1">Додати в ДР</button>
                             </div>
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-success m-1">
+                                <button type="submit" class="btn btn-success m-1" th:value="submit" th:name="submit">
                                     Розмістити перевезення
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-danger m-1" th:value="cancel" th:name="cancel">
+                                    Відмінити
                                 </button>
                             </div>
                         </div>

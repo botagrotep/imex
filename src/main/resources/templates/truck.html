@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -229,6 +229,14 @@
                                 <input type="checkbox" class="form-check-input">
                                 <label class="form-check-label">2х-ярусний</label>
                             </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Віза GBR</label>
+                            </div>
+                            <div class="mb-3 form-check form-check-inline">
+                                <input type="checkbox" class="form-check-input">
+                                <label class="form-check-label">Наявність наступного завантаження</label>
+                            </div>
 
 
                         </div>
@@ -350,6 +358,12 @@
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">r, км</h6>
                                     </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Віза GBR</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Наявність наступного завантаження</h6>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -413,6 +427,16 @@
                                         <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
                                             <span class="mb-0 fw-normal text-black"
                                                   th:text="${truck.distanceBetweenPointsKm}"></span>
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0 distance">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <input type="checkbox" class="form-check-input" th:checked="${truck.isVisaGbr}" th:disabled="${true}">
+                                        </a>
+                                    </td>
+                                    <td class="border-bottom-0 distance">
+                                        <a th:href="${'/truck/assign/' + truck.id + '/to/transportation/' + transportation.id}">
+                                            <input type="checkbox" class="form-check-input" th:checked="${truck.isNextLoadingPresent}" th:disabled="${true}">
                                         </a>
                                     </td>
                                 </tr>

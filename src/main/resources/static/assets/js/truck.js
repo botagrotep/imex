@@ -3,8 +3,11 @@ jQuery(document).ready(function () {
     radiusFilterInput.addEventListener('change', function (e) {
         const radiusFromFilter = this.value;
         $('table#trucks-list tr').each(function(n){
+            if (!$('td', this).hasClass('distance')) {
+                return;
+            }
             const distance = Number.parseFloat($(this).find('td.distance a span').text());
-            if (distance > radiusFromFilter) {
+            if (distance && radiusFromFilter && distance > radiusFromFilter) {
                 $(this).attr('hidden', 'hidden');
             } else {
                 $(this).removeAttr('hidden');

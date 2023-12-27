@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -198,7 +198,8 @@
                                 <label for="border_crossing_point">Погран. перехід</label>
                                 <select id="border_crossing_point" name="border_crossing_point" class="form-select">
                                     <option value="">---</option>
-                                    <option th:each="p: ${borderCrossingPoints}" value="${p}" th:value="${p}" th:text="${p}" th:selected="${p == border_crossing_point}"></option>
+                                    <option th:each="p: ${borderCrossingPoints}" value="${p}" th:value="${p}"
+                                            th:text="${p}" th:selected="${p == border_crossing_point}"></option>
                                 </select>
                             </div>
 
@@ -210,10 +211,17 @@
                 </div>
             </div>
 
-            <div class="card-body p-4 text-end">
-                <form th:action="@{/transportation-details/add}" method="get">
-                    <button type="submit" class="btn btn-warning m-1">+ Нове замовлення</button>
-                </form>
+            <div class="form-group row align-items-center">
+                <div class="col-md-6">
+                    <form th:action="@{/transportation-details/add}" method="get">
+                        <button type="submit" class="btn btn-warning m-1">+ Нове замовлення</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <form th:action="@{/transportation-details/empty}" method="get">
+                        <button type="submit" class="btn btn-warning m-1">Створити порожню подачу</button>
+                    </form>
+                </div>
             </div>
 
             <!--  Row 2 -->
