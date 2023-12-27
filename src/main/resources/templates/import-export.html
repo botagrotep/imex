@@ -142,49 +142,64 @@
                         <form>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <input type="date" class="form-control" id="from-input">
+                                    <label for="date_from">Дата завантаження з</label>
+                                    <input type="date" class="form-control" id="date_from" th:value="${date_from}">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="date" class="form-control" id="to-input">
+                                    <label for="date_to">Дата завантаження до</label>
+                                    <input type="date" class="form-control" id="date_to" th:value="${date_to}">
                                 </div>
                             </div>
                             <br>
-                            <div class="mb-3 form-check form-check-inline" id="current-user-filter">
+                            <div class="mb-3 form-check form-check-inline">
                                 <p hidden="hidden" th:text="${currentUser.id}"></p>
                                 <label class="form-check-label">
                                     Мої
-                                    <input type="checkbox" class="form-check-input" id="my_check" th:checked="${filters != null and filters.contains('my_check')}">
+                                    <input type="checkbox" class="form-check-input" id="my_check"
+                                           th:checked="${filters != null and filters.contains('my_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline" id="export-filter">
                                 <label class="form-check-label">
                                     Експорт
-                                    <input type="checkbox" class="form-check-input" id="export_check" th:checked="${filters != null and filters.contains('export_check')}">
+                                    <input type="checkbox" class="form-check-input" id="export_check"
+                                           th:checked="${filters != null and filters.contains('export_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline" id="import-filter">
                                 <label class="form-check-label">
                                     Імпорт
-                                    <input type="checkbox" class="form-check-input" id="import_check" th:checked="${filters != null and filters.contains('import_check')}">
+                                    <input type="checkbox" class="form-check-input" id="import_check"
+                                           th:checked="${filters != null and filters.contains('import_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
                                 <label class="form-check-label">
                                     Україна
-                                    <input type="checkbox" class="form-check-input" id="ua_check" th:checked="${filters != null and filters.contains('ua_check')}">
+                                    <input type="checkbox" class="form-check-input" id="ua_check"
+                                           th:checked="${filters != null and filters.contains('ua_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
                                 <label class="form-check-label">
                                     Європа
-                                    <input type="checkbox" class="form-check-input" id="eu_check" th:checked="${filters != null and filters.contains('eu_check')}">
+                                    <input type="checkbox" class="form-check-input" id="eu_check"
+                                           th:checked="${filters != null and filters.contains('eu_check')}">
                                 </label>
                             </div>
                             <div class="mb-3 form-check form-check-inline">
                                 <label class="form-check-label">
                                     без Екіпажу
-                                    <input type="checkbox" class="form-check-input" id="wo_equipage_check" th:checked="${filters != null and filters.contains('wo_equipage_check')}">
+                                    <input type="checkbox" class="form-check-input" id="wo_equipage_check"
+                                           th:checked="${filters != null and filters.contains('wo_equipage_check')}">
                                 </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="border_crossing_point">Погран. перехід</label>
+                                <select id="border_crossing_point" name="border_crossing_point" class="form-select">
+                                    <option value="">---</option>
+                                    <option th:each="p: ${borderCrossingPoints}" value="${p}" th:value="${p}" th:text="${p}" th:selected="${p == border_crossing_point}"></option>
+                                </select>
                             </div>
 
                             <div class="card-body p-4">
@@ -221,7 +236,8 @@
                                             <span hidden="hidden" th:text="${truck.unloadingCountry}"
                                                   class="unloading-country"></span>
                                             <h6 class="fw-semibold mb-1">
-                                                <a class="direction" th:href="${'/transportation-details/update/' + truck.id}"
+                                                <a class="direction"
+                                                   th:href="${'/transportation-details/update/' + truck.id}"
                                                    th:text="${truck.direction}">
                                                     Berlin, DE - Київ, UA
                                                 </a>
@@ -254,7 +270,8 @@
                                             <div class="d-flex align-items-center gap-2">
 
                                                 <form th:action="${'/truck/' + truck.id}" method="get">
-                                                    <button th:disabled="${truck.severity} == 'btn-danger'" type="submit" class="btn m-1"
+                                                    <button th:disabled="${truck.severity} == 'btn-danger'"
+                                                            type="submit" class="btn m-1"
                                                             th:classappend="${truck.severity}">
                                                         <span th:if="${truck.equipage != null and truck.equipage.length() > 0}"
                                                               th:text="${truck.equipage}">АА1212SS/LL5555DD</span>
@@ -264,6 +281,9 @@
                                                         <br th:if="${truck.driver != null and truck.driver.length() > 0}"/>
                                                         <span th:if="${truck.driver == null and truck.equipage == null or truck.transportationComment != null}"
                                                               th:text="${truck.transportationComment}">АА1212SS/LL5555DD Шило С. АТ</span>
+                                                        <span th:if="${truck.driver == null and truck.equipage == null
+                                                            and (truck.transportationComment == null or truck.transportationComment.length() == 0)}"
+                                                              th:text="${'Без екіпажу'}">АА1212SS/LL5555DD Шило С. АТ</span>
                                                     </button>
                                                 </form>
                                             </div>

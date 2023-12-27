@@ -4,11 +4,13 @@ import com.agrotep.imp.exp.entity.City;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.entity.Truck;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.agrotep.imp.exp.repository.PersonRepository.*;
 import static com.agrotep.imp.exp.repository.TruckRepository.*;
@@ -42,7 +44,8 @@ public class TransportationRepository {
     public static final City LONDON = new City("London", 51.5085300, -0.1257400, GB);
     public static final City MILAN = new City("Мілан", 45.4642700, 9.1895100, IT);
     public static final City OSLO = new City("Oslo", 59.9127300, 10.7460900, SE);
-    Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(Transportation.builder()
+
+    static Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(Transportation.builder()
                     .id(ID1)
                     .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
                     .loadingCity(VINNYTSYA.name())
@@ -333,6 +336,17 @@ public class TransportationRepository {
                     .build()
     ));
 
+    public static final Collection<String> COUNTRIES = getCountries();
+    public static final Collection<String> COMPANIES = getCompanies();
+    public static final Collection<String> BORDER_CROSSING_POINTS = getBorderCrossingPoints();
+
+    private static Collection<String> getCountries() {
+        Set<String> countries = new HashSet<>(Set.of("UA", "FR", "DE"));
+        countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getLoadingCountry).collect(Collectors.toSet()));
+        countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getUnloadingCountry).collect(Collectors.toSet()));
+        return countries;
+    }
+
     public Collection<Transportation> findAll() {
         return TRANSPORTATIONS;
     }
@@ -360,5 +374,27 @@ public class TransportationRepository {
         return TRANSPORTATIONS.stream()
                 .filter(t -> Objects.equals(truck, t.getTruck()))
                 .findAny();
+    }
+
+    private static Collection<String> getCompanies() {
+
+        List<String> predefinedCompanies = new ArrayList<>(List.of(
+                "Новий клієнт",
+                "Fererro (оплата 45 календарних днів по виставленню інвойсу, ліміт 300000 грн)",
+                "МХП (по факту вивантаження, ліміт 50000 грн)",
+                "Веселі бобри (10 днів по вивантаженню, ліміт 40000 грн)"
+        ));
+        predefinedCompanies.addAll(TRANSPORTATIONS.stream()
+                .map(Transportation::getClientCompany)
+                .distinct()
+                .toList());
+        return predefinedCompanies;
+    }
+
+    private static Collection<String> getBorderCrossingPoints() {
+        return TRANSPORTATIONS.stream()
+                .map(Transportation::getBorderCrossingPoint)
+                .filter(StringUtils::hasText)
+                .collect(Collectors.toSet());
     }
 }

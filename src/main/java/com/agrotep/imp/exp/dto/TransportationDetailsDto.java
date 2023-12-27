@@ -21,6 +21,7 @@ public class TransportationDetailsDto {
     private String unloadingCity;
     private String loadingCountry;
     private String unloadingCountry;
+    private String borderCrossingPoint;
     private String orderDateStr;
     private String orderTimeStr;
     private String clientCompany;

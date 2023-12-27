@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -155,7 +155,7 @@
                                     <label for="select-client">Клієнт</label>
                                     <select id="select-client" class="form-select"
                                             th:field="*{clientCompanyFromSelector}">
-                                        <option value="option0">---</option>
+                                        <option value="">---</option>
                                         <option th:each="company: ${clientCompanies}" th:value="${company}"
                                                 th:text="${company}">
                                             Fererro (оплата 45 календарних днів по виставленню
@@ -209,6 +209,17 @@
 
                                 <!-- Fourth Line: Two Input Number -->
                                 <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="border-crossing-point">Погран. перехід</label>
+                                        <select id="border-crossing-point" class="form-select" th:field="*{borderCrossingPoint}">
+                                            <option value="">---</option>
+                                            <option th:each="p: ${borderCrossingPoints}" th:value="${p}" th:text="${p}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Fifth Line: Two Input Number -->
+                                <div class="row mb-3">
                                     <div class="col-2">
                                         <div class="form-check">
                                             <input th:field="*{isCargoThermalPrinterNeeded}" type="checkbox"
@@ -230,7 +241,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Fifth Line: Seven Checkboxes -->
+                                <!-- Sixth Line: Seven Checkboxes -->
                                 <div class="mb-3">
                                     <label>Checkboxes</label>
                                     <div class="row">
@@ -284,7 +295,7 @@
                                 </div>
 
 
-                                <!-- Sixth Line: One Input Number, One Input Select, One Checkbox -->
+                                <!-- Seventh Line: One Input Number, One Input Select, One Checkbox -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="freight">Фрахт</label>
@@ -307,7 +318,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Seventh Line: Textarea -->
+                                <!-- Eighth Line: Textarea -->
                                 <div class="mb-3">
                                     <label for="textarea1">Коментар</label>
                                     <textarea th:field="*{coordinatorComment}" id="textarea1" class="form-control"

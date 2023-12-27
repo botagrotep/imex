@@ -59,7 +59,7 @@ public abstract class TransportationDtoConverter {
                 : StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
                 ? "btn-success"
                 : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"
-                : "";
+                : "btn-light";
         dto.setSeverity(severity);
     }
 

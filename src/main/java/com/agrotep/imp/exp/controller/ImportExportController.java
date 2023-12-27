@@ -3,6 +3,9 @@ package com.agrotep.imp.exp.controller;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.service.PersonService;
 import com.agrotep.imp.exp.service.TransportationService;
+
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -15,18 +18,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping({"/", "/import-export"})
 @RequiredArgsConstructor
 public class ImportExportController {
+    private static final String DATE_FROM = "date_from";
+    private static final String DATE_TO = "date_to";
+    private static final String BORDER_CROSSING_POINT = "border_crossing_point";
+    private static final String FILTERS = "filters";
     private final TransportationService service;
     private final PersonService personService;
 
     @GetMapping
-    public String getTransportations(@RequestParam(name = "filters", required = false) List<String> filters,
+    public String getTransportations(@RequestParam(name = FILTERS, required = false) List<String> filters,
+                                     @RequestParam(name= DATE_FROM, required = false) LocalDate dateFrom,
+                                     @RequestParam(name= DATE_TO, required = false) LocalDate dateTo,
+                                     @RequestParam(name = BORDER_CROSSING_POINT, required = false) String borderCrossingPoint,
                                      Authentication authentication, Model model) {
-        model.addAttribute("transportations", CollectionUtils.isEmpty(filters)
-                ? service.findAll()
-                : service.findAllFiltered(filters));
+        model.addAttribute("transportations", service.findAllFiltered(filters, dateFrom, dateTo,
+                borderCrossingPoint));
         model.addAttribute("transportationForComment", new TransportationDetailsDto());
         model.addAttribute("currentUser", personService.findByName(authentication.getName()));
-        model.addAttribute("filters", filters);
+        model.addAttribute(FILTERS, filters);
+        model.addAttribute(BORDER_CROSSING_POINT, borderCrossingPoint);
+        model.addAttribute(DATE_FROM, dateFrom);
+        model.addAttribute(DATE_TO, dateTo);
+        Collection<String> borderCrossingPoints = service.getBorderCrossingPoints();
+        model.addAttribute("borderCrossingPoints", borderCrossingPoints);
         return "import-export";
     }
 

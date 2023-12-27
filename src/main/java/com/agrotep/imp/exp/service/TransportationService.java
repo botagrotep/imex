@@ -15,7 +15,9 @@ import com.agrotep.imp.exp.service.filters.ImportExportFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,32 +37,48 @@ public class TransportationService {
         return toMap(transportationsList);
     }
 
-    public SortedMap<String, List<TransportationDto>> findAllFiltered(List<String> filters) {
-        Set<TransportationFilterType> filtersEnums = TransportationFilterType.toFilters(filters);
+    public SortedMap<String, List<TransportationDto>> findAllFiltered(List<String> filters,
+                                                                      LocalDate dateFrom, LocalDate dateTo, String borderCrossingPoint) {
+        Set<TransportationFilterType> filtersEnums = new HashSet<>(TransportationFilterType.toFilters(filters));
         final Collection<Transportation> transportationsList = repository.findAll().stream()
-                .filter(transportation -> {
-                    List<ImportExportFilter> andFilters = filtersEnums.stream()
-                            .filter(TransportationFilterType::isAnd)
-                            .map(filterMap::get)
-                            .filter(Objects::nonNull)
-                            .toList();
-                    boolean andVal = CollectionUtils.isEmpty(andFilters) || andFilters.stream()
-                            .map(ImportExportFilter::getPredicate)
-                            .allMatch(p -> p.test(transportation));
-                    List<ImportExportFilter> orFilters = filtersEnums.stream()
-                            .filter(f -> !f.isAnd())
-                            .map(filterMap::get)
-                            .filter(Objects::nonNull)
-                            .toList();
-                    boolean orVal = CollectionUtils.isEmpty(orFilters) || orFilters.stream()
-                            .map(ImportExportFilter::getPredicate)
-                            .anyMatch(p -> p.test(transportation));
-
-                    return andVal && orVal;
-                })
+                .filter(transportation -> applyFilters(transportation, dateFrom, dateTo, borderCrossingPoint,
+                        filtersEnums))
                 .toList();
 
         return toMap(transportationsList);
+    }
+
+    private boolean applyFilters(Transportation transportation, LocalDate dateFrom, LocalDate dateTo,
+                                 String borderCrossingPoint, Set<TransportationFilterType> filtersEnums) {
+        List<ImportExportFilter> andFilters = filtersEnums.stream()
+                .filter(TransportationFilterType::isAnd)
+                .map(filterMap::get)
+                .filter(Objects::nonNull)
+                .toList();
+        List<ImportExportFilter> orFilters = filtersEnums.stream()
+                .filter(f -> !f.isAnd())
+                .map(filterMap::get)
+                .filter(Objects::nonNull)
+                .toList();
+        boolean andVal = CollectionUtils.isEmpty(andFilters) || andFilters.stream()
+                .map(ImportExportFilter::getPredicate)
+                .allMatch(p -> p.test(transportation));
+
+        if (dateFrom != null) {
+            andVal = andVal && dateFrom.minusDays(1L).isBefore(transportation.getLoadingDate());
+        }
+        if (dateTo != null) {
+            andVal = andVal && dateTo.plusDays(1L).isAfter(transportation.getLoadingDate());
+        }
+        if (StringUtils.hasText(borderCrossingPoint)) {
+            andVal = andVal && borderCrossingPoint.equalsIgnoreCase(transportation.getBorderCrossingPoint());
+        }
+
+        boolean orVal = CollectionUtils.isEmpty(orFilters) || orFilters.stream()
+                .map(ImportExportFilter::getPredicate)
+                .anyMatch(p -> p.test(transportation));
+
+        return andVal && orVal;
     }
 
     public TransportationDto save(TransportationDetailsDto transportationDetailsDto) {
@@ -94,29 +112,15 @@ public class TransportationService {
     }
 
     public Collection<String> getCompanies() {
-        Set<String> predefinedCompanies = new HashSet<>(Set.of(
-                "Fererro (оплата 45 календарних днів по виставленню інвойсу, ліміт 300000 грн)",
-                "МХП (по факту вивантаження, ліміт 50000 грн)",
-                "Веселі бобри (10 днів по вивантаженню, ліміт 40000 грн)"
-        ));
-        predefinedCompanies.addAll(this.findAll().values().stream()
-                .flatMap(Collection::stream)
-                .map(TransportationDto::getClientCompany)
-                .toList());
-        return predefinedCompanies;
+        return TransportationRepository.COMPANIES;
     }
 
     public Collection<String> getCountries() {
-        Set<String> countries = new HashSet<>(Set.of("UA", "FR", "DE"));
-        countries.addAll(repository.findAll().stream()
-                .map(Transportation::getLoadingCountry)
-                .filter(Objects::nonNull)
-                .toList());
-        countries.addAll(repository.findAll().stream()
-                .map(Transportation::getUnloadingCountry)
-                .filter(Objects::nonNull)
-                .toList());
-        return countries;
+        return TransportationRepository.COUNTRIES;
+    }
+
+    public Collection<String> getBorderCrossingPoints() {
+        return TransportationRepository.BORDER_CROSSING_POINTS;
     }
 
     private TreeMap<String, List<TransportationDto>> toMap(Collection<Transportation> transportationsList) {

@@ -62,6 +62,12 @@ public class TransportationDetailsController {
     private void addListsToModel(Model model) {
         addCompaniesToModel(model);
         addCountriesToModel(model);
+        addBorderCrossingPointsToModel(model);
+    }
+
+    private void addBorderCrossingPointsToModel(Model model) {
+        Collection<String> borderCrossingPoints = service.getBorderCrossingPoints();
+        model.addAttribute("borderCrossingPoints", borderCrossingPoints);
     }
 
     private void addCountriesToModel(Model model) {

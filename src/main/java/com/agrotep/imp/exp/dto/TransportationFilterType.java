@@ -2,8 +2,10 @@ package com.agrotep.imp.exp.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,11 +30,13 @@ public enum TransportationFilterType {
     private final boolean isAnd;
 
     public static Set<TransportationFilterType> toFilters(Collection<String> filtersNames) {
-        return filtersNames.stream()
-                .filter(Objects::nonNull)
-                .map(String::toUpperCase)
-                .filter(NAMES::contains)
-                .map(TransportationFilterType::valueOf)
-                .collect(Collectors.toSet());
+        return CollectionUtils.isEmpty(filtersNames)
+                ? Collections.emptySet()
+                : filtersNames.stream()
+                    .filter(Objects::nonNull)
+                    .map(String::toUpperCase)
+                    .filter(NAMES::contains)
+                    .map(TransportationFilterType::valueOf)
+                    .collect(Collectors.toSet());
     }
 }
