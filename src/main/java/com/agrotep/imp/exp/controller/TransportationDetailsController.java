@@ -1,8 +1,11 @@
 package com.agrotep.imp.exp.controller;
 
+import com.agrotep.imp.exp.dto.EmptyTransportationDto;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.dto.TransportationDto;
+import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.service.TransportationService;
+import com.agrotep.imp.exp.service.TruckService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -11,10 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author prog
  */
 @Controller
@@ -22,8 +25,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TransportationDetailsController {
     private final TransportationService service;
+    private final TruckService truckService;
 
-    @GetMapping("update/{id}")
+    @GetMapping("/update/{id}")
     public String getTranstortationDetails(@PathVariable Long id, Model model) {
         Optional<TransportationDetailsDto> details = service.findTransportationDetailsById(id);
         if (details.isPresent()) {
@@ -51,10 +55,18 @@ public class TransportationDetailsController {
     }
 
     @GetMapping("/empty")
-    public String createEmptyTransportationDetails(Model model) {
-        model.addAttribute("transportation", new TransportationDetailsDto());
+    public String getEmptyTransportation(Model model) {
+        model.addAttribute("transportation", new EmptyTransportationDto());
         addListsToModel(model);
         return "empty-transportation-details";
+    }
+
+    @PostMapping("empty/add")
+    public String addEmptyTransportation(Authentication authentication,
+                                         @ModelAttribute @Valid EmptyTransportationDto transportation) {
+        transportation.setManagerName(authentication.getName());
+        service.save(transportation);
+        return "redirect:/import-export";
     }
 
     @GetMapping("/add")
@@ -78,11 +90,17 @@ public class TransportationDetailsController {
         addCompaniesToModel(model);
         addCountriesToModel(model);
         addBorderCrossingPointsToModel(model);
+        addTrucksToModel(model);
     }
 
     private void addBorderCrossingPointsToModel(Model model) {
         Collection<String> borderCrossingPoints = service.getBorderCrossingPoints();
         model.addAttribute("borderCrossingPoints", borderCrossingPoints);
+    }
+
+    private void addTrucksToModel(Model model) {
+        List<TruckDto> dtos = truckService.findAll();
+        model.addAttribute("trucks", dtos);
     }
 
     private void addCountriesToModel(Model model) {

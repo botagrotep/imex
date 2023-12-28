@@ -127,8 +127,7 @@
 
 
         <div class="container-fluid">
-            <form action="#" th:action="@{/transportation-details/add}" th:object="${transportation}"
-                  method="post">
+            <form action="#" th:action="@{/transportation-details/empty/add}" th:object="${transportation}" method="post">
                 <!--  Row 1 -->
                 <div class="row">
 
@@ -138,78 +137,26 @@
                             <div class="card-body">
                                 <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                                     <div class="mb-3 mb-sm-0">
-                                        <h5 class="card-title fw-semibold">Нове завантаження</h5>
+                                        <h5 class="card-title fw-semibold">Порожня подача</h5>
                                     </div>
                                 </div>
 
-                                <input type="hidden" th:field="*{managerId}"/>
-
-                                <label class="block text-sm" for="order-date">Дата, час</label>
-                                <input id="order-date" class="form-select"
+                                <label class="block text-sm" for="loading-date">Дата</label>
+                                <input id="loading-date" class="form-select"
                                        type="date"
-                                       th:field="*{orderDateStr}">
-                                <input class="form-select"
-                                       type="time"
-                                       th:field="*{orderTimeStr}">
-                                <!-- First Line: Input Select -->
-                                <div class="mb-3">
-                                    <label for="select-client">Клієнт</label>
-                                    <select id="select-client" class="form-select"
-                                            th:field="*{clientCompanyFromSelector}">
-                                        <option value="">---</option>
-                                        <option th:each="company: ${clientCompanies}" th:value="${company}"
-                                                th:text="${company}">
-                                            Fererro (оплата 45 календарних днів по виставленню
-                                            інвойсу, ліміт 300000 грн)
-                                        </option>
-                                    </select>
-                                    <input type="text" class="form-control" th:field="*{clientCompany}">
-                                </div>
+                                       th:field="*{loadingDate}">
 
-                                <!-- Second Line: Input Text, Input Number, Input Select -->
+                                <!-- First Line: 3 selects -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <label for="cargo-name">Вантаж</label>
-                                        <input th:field="*{cargo}" type="text" id="cargo-name" class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="cargo-weight">Вага, т</label>
-                                        <input th:field="*{cargoWeightTons}" type="text" id="cargo-weight"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="select-truck-type">Тип кузова</label>
-                                        <select id="select-truck-type" class="form-select" th:field="*{typeOfTruck}">
-                                            <option value="option0">---</option>
-                                            <option value="реф">реф</option>
-                                            <option value="тент">тент</option>
-                                            <option value="2х-ярусник">2х-ярусник</option>
-
+                                        <label for="loading-countries">Країна відправлення</label>
+                                        <select id="loading-countries" class="form-select"
+                                                th:field="*{loadingCountry}">
+                                            <option value="АГРОТЕП">АГРОТЕП</option>
+                                            <option th:each="c: ${countries}" th:value="${c}"
+                                                    th:text="${c}"></option>
                                         </select>
                                     </div>
-                                </div>
-
-                                <!-- Third Line: Input Text, Input Number, Input Select -->
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="cargo-volume">Об'єм, м куб.</label>
-                                        <input th:field="*{cargoVolumeM3}" type="text" id="cargo-volume"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="cargo-places-number">К-ть місць</label>
-                                        <input th:field="*{cargoPlacesNumber}" type="number" id="cargo-places-number"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="cargo-places-type">Тип місць</label>
-                                        <input id="cargo-places-type" class="form-control"
-                                               th:field="*{cargoPlacesType}">
-                                    </div>
-                                </div>
-
-                                <!-- Fourth Line: Two Input Number -->
-                                <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="border-crossing-point">Погран. перехід</label>
                                         <select id="border-crossing-point" class="form-select"
@@ -219,325 +166,45 @@
                                                     th:text="${p}"></option>
                                         </select>
                                     </div>
-                                </div>
-
-                                <!-- Fifth Line: Two Input Number -->
-                                <div class="row mb-3">
-                                    <div class="col-2">
-                                        <div class="form-check">
-                                            <input th:field="*{isCargoThermalPrinterNeeded}" type="checkbox"
-                                                   class="form-check-input" id="is-cargo-thermal-printer-needed">
-                                            <label class="form-check-label" for="is-cargo-thermal-printer-needed">
-                                                Потрібен роздрук термописця
-                                            </label>
-                                        </div>
-                                    </div>
                                     <div class="col-md-4">
-                                        <label for="temperature-min">мінімальна температура</label>
-                                        <input th:field="*{temperatureMin}" type="number" id="temperature-min"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="temperature-max">максимальна температура</label>
-                                        <input th:field="*{temperatureMax}" type="number" id="temperature-max"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <!-- Sixth Line: Two Input texts -->
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="customer-application-no">Заявка замовника №</label>
-                                        <input th:field="*{customerApplicationNo}" type="text"
-                                               id="customer-application-no"
-                                               class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="customer-application-date">від</label>
-                                        <input th:field="*{customerApplicationDateStr}" type="date"
-                                               id="customer-application-date"
-                                               class="form-control">
-                                    </div>
-                                </div>
-
-                                <!-- Seventh Line: Seven Checkboxes -->
-                                <div class="mb-3">
-                                    <label>Checkboxes</label>
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isCargoTir}" type="checkbox" class="form-check-input"
-                                                       id="is-cargo-tir">
-                                                <label class="form-check-label" for="is-cargo-tir">TIR</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isCargoAdr}" type="checkbox" class="form-check-input"
-                                                       id="is-cargo-adr">
-                                                <label class="form-check-label text-danger"
-                                                       for="is-cargo-adr">ADR</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isCargoAdr1}" type="checkbox"
-                                                       class="form-check-input" id="is-cargo-adr1">
-                                                <label class="form-check-label text-danger"
-                                                       for="is-cargo-adr1">ADR1</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isCargoCustomsServicesPaid}" type="checkbox"
-                                                       class="form-check-input" id="is-cargo-customs-services-paid">
-                                                <label class="form-check-label" for="is-cargo-customs-services-paid">
-                                                    мито
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isPrinted}" type="checkbox" class="form-check-input"
-                                                       id="is-printed">
-                                                <label class="form-check-label" for="is-printed">Роздруківка</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check">
-                                                <input th:field="*{isCargoStickers}" type="checkbox"
-                                                       class="form-check-input" id="is-cargo-stickers">
-                                                <label class="form-check-label" for="is-cargo-stickers">Стікери</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- Eighth Line: One Input Number, One Input Select, One Checkbox -->
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="freight">Фрахт</label>
-                                        <input th:field="*{freight}" type="number" id="freight" class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="currency">Валюта</label>
-                                        <select th:field="*{currency}" id="currency" class="form-select">
+                                        <label for="unloading-countries">Країна призначення</label>
+                                        <select id="unloading-countries" class="form-select"
+                                                th:field="*{unloadingCountry}">
                                             <option value="">---</option>
-                                            <option value="євро">євро</option>
-                                            <option value="грн">грн</option>
+                                            <option th:each="c: ${countries}" th:value="${c}"
+                                                    th:text="${c}"></option>
                                         </select>
                                     </div>
+                                </div>
+
+                                <!-- Second Line: 1 select -->
+                                <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input th:field="*{isPaymentInCash}" type="checkbox"
-                                                   class="form-check-input" id="is-payment-in-cash">
-                                            <label class="form-check-label" for="is-payment-in-cash">***</label>
-                                        </div>
+                                        <label for="truck">Вибір екіпажу</label>
+                                        <select id="truck" class="form-select"
+                                                th:field="*{truckId}">
+                                            <option value="">---</option>
+                                            <option th:each="t: ${trucks}" th:value="${t.id}"
+                                                    th:text="${t.equipage + ' ' + t.driver + ' ' + t.domesticCompany}"></option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <!-- Ninth Line: Textarea -->
+
+                                <!-- Third Line: Textarea -->
                                 <div class="mb-3">
                                     <label for="textarea1">Коментар</label>
                                     <textarea th:field="*{coordinatorComment}" id="textarea1" class="form-control"
                                               rows="3"></textarea>
                                 </div>
 
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--  code input -->
-
-                    <div class="col-lg-4">
-                        <div class="col-lg-12">
-                            <!-- Завантаження -->
-                            <div class="card overflow-hidden">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-9 fw-semibold">Завантаження</h5>
-
-                                    <!-- First Line: Select Input, One Input Date, One Input Time -->
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-4">
-                                            <label for="loading-type">Тип</label>
-                                            <select th:field="*{loadingType}" id="loading-type" class="form-select">
-
-                                                <option value="option1">Зав</option>
-                                                <option value="option2">ЗавЗам</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="loading-date-str">Дата</label>
-                                            <input th:field="*{loadingDateStr}" type="date" id="loading-date-str"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="loading-time-str">Час</label>
-                                            <input th:field="*{loadingTimeStr}" type="time" id="loading-time-str"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <!-- Second Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="loading-city">Місто</label>
-                                            <input th:field="*{loadingCity}" type="text" id="loading-city"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="loading-country">Країна</label>
-                                            <select th:field="*{loadingCountry}" id="loading-country"
-                                                    class="form-select">
-                                                <option value="option0">---</option>
-                                                <option value="UA">UA</option>
-                                                <option value="DE">DE</option>
-                                                <option value="FR">FR</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <!-- Third Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="loading-region">Область</label>
-                                            <input th:field="*{loadingRegion}" type="text" id="loading-region"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="loading-city-postal-index">Пошт. код</label>
-                                            <input th:field="*{loadingCityPostalIndex}" type="text"
-                                                   id="loading-city-postal-index"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Forth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="loading-address">Адреса</label>
-                                            <input th:field="*{loadingAddress}" type="text"
-                                                   id="loading-address"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Fifth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="loading-latitude">Широта</label>
-                                            <input th:field="*{loadingLatitude}" type="text"
-                                                   id="loading-latitude"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="loading-longitude">Довгота</label>
-                                            <input th:field="*{loadingLongitude}" type="text"
-                                                   id="loading-longitude"
-                                                   class="form-control">
-                                        </div>
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-success m-1" th:value="submit" th:name="submit">
+                                            Розмістити перевезення
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-12">
-                            <!-- Розвантаження -->
-                            <div class="card overflow-hidden">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-9 fw-semibold">Розвантаження</h5>
-
-                                    <!-- First Line: Select Input, One Input Date, One Input Time -->
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-4">
-                                            <label for="unloading-type">Тип</label>
-                                            <select th:field="*{unloadingType}" id="unloading-type" class="form-select">
-
-                                                <option value="option1">Розв</option>
-                                                <option value="option2">РозвРозм</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="unloading-date-str">Дата</label>
-                                            <input th:field="*{unloadingDateStr}" type="date" id="unloading-date-str"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="unloading-time-str">Час</label>
-                                            <input th:field="*{unloadingTimeStr}" type="time" id="unloading-time-str"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <!-- Second Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-city">Місто</label>
-                                            <input th:field="*{unloadingCity}" type="text" id="unloading-city"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-country">Країна</label>
-                                            <select th:field="*{unloadingCountry}" id="unloading-country"
-                                                    class="form-select">
-                                                <option value="option0">---</option>
-                                                <option value="UA">UA</option>
-                                                <option value="DE">DE</option>
-                                                <option value="FR">FR</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Third Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-region">Область</label>
-                                            <input th:field="*{unloadingRegion}" type="text" id="unloading-region"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-city-postal-index">Пошт. код</label>
-                                            <input th:field="*{unloadingCityPostalIndex}" type="text"
-                                                   id="unloading-city-postal-index"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Forth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-address">Адреса</label>
-                                            <input th:field="*{unloadingAddress}" type="text"
-                                                   id="unloading-address"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Fifth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-latitude">Широта</label>
-                                            <input th:field="*{unloadingLatitude}" type="text"
-                                                   id="unloading-latitude"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-longitude">Довгота</label>
-                                            <input th:field="*{unloadingLongitude}" type="text"
-                                                   id="unloading-longitude"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-primary m-1">Додати в ДР</button>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-success m-1">
-                                    Розмістити перевезення
-                                </button>
                             </div>
                         </div>
                     </div>

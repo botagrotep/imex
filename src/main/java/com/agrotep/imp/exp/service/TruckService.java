@@ -8,6 +8,7 @@ import com.agrotep.imp.exp.repository.TruckRepository;
 import com.agrotep.imp.exp.service.converter.TruckDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,14 @@ public class TruckService {
                 .orElse(null);
     }
 
+    public List<TruckDto> findAll() {
+        return repository.findAll().stream()
+                .filter(t -> StringUtils.hasText(t.getEquipage()))
+                .filter(t -> StringUtils.hasText(t.getDriver()))
+                .filter(t -> StringUtils.hasText(t.getDomesticCompany()))
+                .map(truckDtoConverter::toTruckDto)
+                .toList();
+    }
     public List<TruckDto> findAllWithCalculateRadiusFrom(Long transportationId) {
         Transportation transportationGiven = transportationRepository.findById(transportationId)
                 .filter(t -> t.getLoadingLongitude() != null)

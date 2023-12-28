@@ -1,13 +1,11 @@
 package com.agrotep.imp.exp.service;
 
 
-import com.agrotep.imp.exp.dto.TransportationDetailsDto;
-import com.agrotep.imp.exp.dto.TransportationDto;
-import com.agrotep.imp.exp.dto.TransportationFilterType;
-import com.agrotep.imp.exp.dto.TruckDto;
+import com.agrotep.imp.exp.dto.*;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.repository.TransportationRepository;
 import com.agrotep.imp.exp.repository.TruckRepository;
+import com.agrotep.imp.exp.service.converter.EmptyTransportationDtoConverter;
 import com.agrotep.imp.exp.service.converter.TransportationDetailsDtoConverter;
 import com.agrotep.imp.exp.service.converter.TransportationDtoConverter;
 import com.agrotep.imp.exp.service.converter.TruckDtoConverter;
@@ -32,6 +30,8 @@ public class TransportationService {
     private final TransportationDtoConverter converter;
     private final TransportationDetailsDtoConverter detailsDtoConverter;
     private final TruckDtoConverter truckDtoConverter;
+    private final EmptyTransportationDtoConverter emptyTransportationDtoConverter;
+
     private final Map<TransportationFilterType, ImportExportFilter> filterMap;
 
     public SortedMap<String, List<TransportationDto>> findAll() {
@@ -97,6 +97,11 @@ public class TransportationService {
                 });
         Transportation t = repository.save(transportation);
         return converter.toTransportationDto(t);
+    }
+
+    public void save(EmptyTransportationDto dto) {
+        Transportation transportation = emptyTransportationDtoConverter.toTransportation(dto);
+        repository.save(transportation);
     }
 
     public TransportationDto cancel(TransportationDetailsDto transportationDetailsDto) {

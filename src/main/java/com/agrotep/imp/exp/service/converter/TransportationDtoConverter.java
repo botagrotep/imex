@@ -37,21 +37,7 @@ public abstract class TransportationDtoConverter {
 
         setDirection(t, dto);
         setCondition(t, dto);
-//        setTransportationComment(t, dto);
         setSeverity(t, dto);
-//        setDefaultCommentsForEmptyFields(dto);
-    }
-
-    private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
-//        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
-//        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
-        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
-    }
-
-    private static void setDefaultCommentsForEmptyField(Supplier<String> getter, Consumer<String> setter) {
-        if (!StringUtils.hasText(getter.get())) {
-            setter.accept(DEFAULT_COMMENT);
-        }
     }
 
     private static void setSeverity(Transportation t, TransportationDto dto) {
@@ -61,16 +47,6 @@ public abstract class TransportationDtoConverter {
                 : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"
                 : "btn-light";
         dto.setSeverity(severity);
-    }
-
-    private static void setTransportationComment(Transportation t, TransportationDto dto) {
-        String transportationComment = t.getTransportationComment();
-        if (!StringUtils.hasText(transportationComment) && !StringUtils.hasText(dto.getEquipage())
-                && !StringUtils.hasText(dto.getDriver())) {
-            dto.setTransportationComment(DEFAULT_COMMENT);
-            return;
-        }
-        dto.setTransportationComment(transportationComment);
     }
 
     private static void setCondition(Transportation t, TransportationDto dto) {
@@ -96,15 +72,21 @@ public abstract class TransportationDtoConverter {
 
     private static void setDirection(Transportation t, TransportationDto dto) {
         StringBuilder s = new StringBuilder(t.getLoadingCity());
+
         if (StringUtils.hasText(t.getLoadingCountry())) {
-            s.append(", ").append(t.getLoadingCountry()).append(" - ");
+            if (StringUtils.hasText(s)) {
+                s.append(", ");
+            }
+            s.append(t.getLoadingCountry()).append(" - ");
         }
         if (StringUtils.hasText(t.getBorderCrossingPoint())) {
             s.append(t.getBorderCrossingPoint()).append(" - ");
         }
-        s.append(t.getUnloadingCity());
+        if (StringUtils.hasText(t.getUnloadingCity())) {
+            s.append(t.getUnloadingCity()).append(", ");
+        }
         if (StringUtils.hasText(t.getUnloadingCountry())) {
-            s.append(", ").append(t.getUnloadingCountry());
+            s.append(t.getUnloadingCountry());
         }
         dto.setDirection(s.toString());
     }
