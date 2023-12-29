@@ -9,16 +9,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
 
     public static final String DEFAULT_COMMENT = "+ коментар";
+    public static final DateTimeFormatter TRANSPORTATION_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("E dd MMMM yyyy");
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
@@ -31,8 +31,9 @@ public abstract class TransportationDtoConverter {
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
-        if (t.getLoadingDate() != null) {
-            dto.setTransportationDate(t.getLoadingDate().format(DateTimeFormatter.ofPattern("E dd MMMM yyyy")));
+        LocalDate loadingDate = t.getLoadingDate();
+        if (loadingDate != null) {
+            dto.setTransportationDateStr(loadingDate.format(TRANSPORTATION_DATE_TIME_FORMATTER));
         }
 
         setDirection(t, dto);
@@ -42,6 +43,7 @@ public abstract class TransportationDtoConverter {
 
     private static void setSeverity(Transportation t, TransportationDto dto) {
         String severity = t.isSentToDr() ? "btn-info"
+                : !StringUtils.hasText(dto.getClientCompany()) ? "btn-outline-success"
                 : StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
                 ? "btn-success"
                 : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"

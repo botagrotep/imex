@@ -377,7 +377,7 @@ public class TransportationRepository {
     public static final Collection<String> BORDER_CROSSING_POINTS = getBorderCrossingPoints();
 
     private static Collection<String> getCountries() {
-        Set<String> countries = new HashSet<>(Set.of("UA", "FR", "DE"));
+        Set<String> countries = new LinkedHashSet<>(List.of("АГРОТЕП", "UA", "FR", "DE"));
         countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getLoadingCountry).collect(Collectors.toSet()));
         countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getUnloadingCountry).collect(Collectors.toSet()));
         return countries;

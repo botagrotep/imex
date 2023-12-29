@@ -5,6 +5,8 @@ const SELECTED_CHECKBOXES_IDS = new Set();
 jQuery(document).ready(function () {
     addCommentEditor();
     addFiltering();
+    openAdditionalLoading();
+    editAdditionalLoading();
 });
 
 function addFiltering() {
@@ -48,6 +50,24 @@ function addCommentEditor() {
         this.addEventListener('click', function (e) {
             $(this).find('h6').attr('hidden', 'hidden');
             $(this).find('form').removeAttr('hidden');
+        });
+    });
+}
+
+function openAdditionalLoading() {
+    $('div#transportations-div button.open-additional-loading-form').each(function (n) {
+        this.addEventListener('click', function (e) {
+            $(this).parent('div').find('form').removeAttr('hidden');
+        });
+    });
+}
+
+function editAdditionalLoading() {
+    $('div#transportations-div div.alert').each(function (n) {
+        this.addEventListener('click', function (e) {
+            console.log($(this).html());
+            $(this).find('form').removeAttr('hidden');
+//            $(this).find('textarea').val('hidden');
         });
     });
 }

@@ -152,9 +152,8 @@
                                         <label for="loading-countries">Країна відправлення</label>
                                         <select id="loading-countries" class="form-select"
                                                 th:field="*{loadingCountry}">
-                                            <option value="АГРОТЕП">АГРОТЕП</option>
                                             <option th:each="c: ${countries}" th:value="${c}"
-                                                    th:text="${c}"></option>
+                                                    th:text="${c}" th:selected="${'АГРОТЕП'.equalsIgnoreCase(c)}"></option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">

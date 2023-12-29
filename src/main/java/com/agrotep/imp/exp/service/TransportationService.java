@@ -16,9 +16,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +36,12 @@ public class TransportationService {
 
     private final Map<TransportationFilterType, ImportExportFilter> filterMap;
 
-    public SortedMap<String, List<TransportationDto>> findAll() {
+    public Map<String, List<TransportationDto>> findAll() {
         final Collection<Transportation> transportationsList = repository.findAll();
         return toMap(transportationsList);
     }
 
-    public SortedMap<String, List<TransportationDto>> findAllFiltered(List<String> filters,
+    public Map<String, List<TransportationDto>> findAllFiltered(List<String> filters,
                                                                       LocalDate dateFrom, LocalDate dateTo, String borderCrossingPoint) {
         Set<TransportationFilterType> filtersEnums = new HashSet<>(TransportationFilterType.toFilters(filters));
         final Collection<Transportation> transportationsList = repository.findAll().stream()
@@ -47,7 +49,7 @@ public class TransportationService {
                         filtersEnums))
                 .toList();
 
-        return toMap(transportationsList);
+        return toMap(transportationsList, dateFrom, dateTo);
     }
 
     private boolean applyFilters(Transportation transportation, LocalDate dateFrom, LocalDate dateTo,
@@ -147,12 +149,33 @@ public class TransportationService {
         return TransportationRepository.BORDER_CROSSING_POINTS;
     }
 
-    private TreeMap<String, List<TransportationDto>> toMap(Collection<Transportation> transportationsList) {
+    private Map<String, List<TransportationDto>> toMap(Collection<Transportation> transportationsList) {
+        return this.toMap(transportationsList, null, null);
+    }
+
+    private Map<String, List<TransportationDto>> toMap(Collection<Transportation> transportationsList,
+                                                       LocalDate dateFrom, LocalDate dateTo) {
         List<TransportationDto> dtos = converter.toTransportationDto(transportationsList);
+        if (dateFrom != null && dateTo != null) {
+            LocalDate startDate = dateFrom.isBefore(dateTo) ? dateFrom : dateTo;
+            LocalDate endDate = (dateFrom.isBefore(dateTo) ? dateTo : dateFrom).plusDays(1L);
+            Set<LocalDate> availableDates = dtos.stream()
+                    .map(TransportationDto::getLoadingDate)
+                    .collect(Collectors.toSet());
+            List<TransportationDto> datesWoTransportations = startDate.datesUntil(endDate)
+                    .filter(d -> !availableDates.contains(d))
+                    .map(d -> Transportation.builder().loadingDate(d).build())
+                    .map(converter::toTransportationDto)
+                    .toList();
+            dtos.addAll(datesWoTransportations);
+        }
         Map<String, List<TransportationDto>> transportationsGroups
                 = dtos.stream()
-                .filter(t -> t.getTransportationDate() != null)
-                .collect(Collectors.groupingBy(TransportationDto::getTransportationDate));
-        return new TreeMap<>(transportationsGroups);
-    }
+                .filter(t -> t.getTransportationDateStr() != null)
+                .collect(Collectors.groupingBy(TransportationDto::getTransportationDateStr));
+
+        return transportationsGroups.entrySet().stream()
+                .sorted(Comparator.comparing(o -> Objects.requireNonNull(CollectionUtils.firstElement(o.getValue()))
+                        .getLoadingDate()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));    }
 }

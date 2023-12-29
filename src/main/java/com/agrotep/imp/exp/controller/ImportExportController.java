@@ -1,6 +1,8 @@
 package com.agrotep.imp.exp.controller;
 
+import com.agrotep.imp.exp.dto.AlertDto;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
+import com.agrotep.imp.exp.service.AlertService;
 import com.agrotep.imp.exp.service.PersonService;
 import com.agrotep.imp.exp.service.TransportationService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping({"/", "/import-export"})
@@ -23,6 +27,7 @@ public class ImportExportController {
     private static final String FILTERS = "filters";
     private final TransportationService service;
     private final PersonService personService;
+    private final AlertService alertservice;
 
     @GetMapping
     public String getTransportations(@RequestParam(name = FILTERS, required = false) List<String> filters,
@@ -40,23 +45,39 @@ public class ImportExportController {
                 borderCrossingPoint));
         model.addAttribute("transportationForComment", new TransportationDetailsDto());
         model.addAttribute("currentUser", personService.findByName(authentication.getName()));
+
         model.addAttribute(FILTERS, filters);
         model.addAttribute(BORDER_CROSSING_POINT, borderCrossingPoint);
         model.addAttribute(DATE_FROM, dateFrom);
         model.addAttribute(DATE_TO, dateTo);
+
         Collection<String> borderCrossingPoints = service.getBorderCrossingPoints();
         model.addAttribute("borderCrossingPoints", borderCrossingPoints);
+
+        Map<String, List<AlertDto>> alerts = alertservice.findAll();
+        model.addAttribute("alerts", alerts);
+        model.addAttribute("newAlert", AlertDto.builder().build());
         return "import-export";
     }
 
     @PostMapping("comment/{transportationId}/update")
-    public String updateComment(@PathVariable Long transportationId, @ModelAttribute TransportationDetailsDto transportationForComment) {
+    public String updateComment(@PathVariable Long transportationId,
+                                @ModelAttribute TransportationDetailsDto transportationForComment) {
         String comment = transportationForComment.getComment();
         service.findTransportationDetailsById(transportationId)
                 .ifPresent(t -> {
                     t.setComment(comment);
                     service.saveOrCopy(t);
                 });
+        return "redirect:/import-export";
+    }
+
+    @PostMapping("additional/loading")
+    public String createAditionalLoadingRequest(Authentication authentication, @ModelAttribute AlertDto alertDto) {
+        alertservice.save(alertDto.toBuilder()
+                .creatorName(authentication.getName())
+                .time(LocalDateTime.now())
+                .build());
         return "redirect:/import-export";
     }
 }

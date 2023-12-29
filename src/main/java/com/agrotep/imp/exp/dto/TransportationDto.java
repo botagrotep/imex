@@ -11,7 +11,7 @@ import java.time.LocalTime;
 public class TransportationDto {
 
     private Long id;
-    private String transportationDate;
+    private String transportationDateStr;
     private LocalDate transportationFillingDate;
     private String direction;
     private String typeOfTruck;
