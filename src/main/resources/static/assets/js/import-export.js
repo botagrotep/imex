@@ -63,11 +63,25 @@ function openAdditionalLoading() {
 }
 
 function editAdditionalLoading() {
-    $('div#transportations-div div.alert').each(function (n) {
+    $('div#transportations-div div.alert-block').each(function (n) {
         this.addEventListener('click', function (e) {
-            console.log($(this).html());
-            $(this).find('form').removeAttr('hidden');
-//            $(this).find('textarea').val('hidden');
+            const message = $(this).find('div.alert span').text();
+            const id = $(this).find('div.alert input').val();
+            
+            const form = $(this).find('form');
+            const textArea = $(form).find('textarea');
+            const button = $(form).find('button');
+            const idInput = $(form).find('input.alert-id');
+            $(textArea).removeAttr('hidden');
+            $(button).removeAttr('hidden');
+            $(idInput).val(id);
+            if ($(textArea).val() === "") {
+                $(textArea).val(message);
+            }
+        });
+        
+        this.addEventListener('mouseleave', function (e) {
+            $('form textarea, form button', this).attr('hidden', 'hidden');
         });
     });
 }

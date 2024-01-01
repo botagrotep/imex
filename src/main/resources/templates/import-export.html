@@ -315,21 +315,26 @@
                                         <div class="row mb-3">
                                             <div class="col-md-2">
                                                 <button class="btn btn-outline-primary m-1 open-additional-loading-form">+</button>
-                                                <form hidden="hidden" th:action="@{/import-export/additional/loading}" method="post" th:object="${newAlert}">
+                                                <form hidden="hidden" th:action="@{/import-export/add/additional/loading}" method="post" th:object="${newAlert}">
                                                     <textarea th:placeholder="${'Введіть Ваш запит на підвантаження'}" th:field="*{text}"></textarea>
                                                     <button type="submit" class="btn m-1 btn-info" th:text="${'Зберегти запит'}"></button>
                                                 </form>
                                             </div>
                                             <div class="col-md-4" th:each="alert: ${alerts.get(transportation.key)}">
-                                                <div class="alert alert-dismissible fade show" role="alert"
-                                                     th:classappend="${alert.backgroundClass}">
-                                                    <span th:utext="${alert.text}"></span> <br />
-                                                    <i th:text="${alert.creatorName}"></i>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                    <form hidden="hidden" th:action="@{/import-export/additional/loading}" method="post" th:object="${newAlert}">
-                                                        <textarea th:value="${alert.text}" th:field="*{text}"></textarea>
-                                                        <button type="submit" class="btn m-1 btn-info" th:text="${'Змінити запит'}"></button>
-                                                    </form>
+                                                <div class="alert-block">
+                                                    <div class="alert alert-dismissible fade show" role="alert"
+                                                         th:classappend="${alert.backgroundClass}">
+                                                        <input hidden="hidden" class="form-control" th:value="${alert.id}">
+                                                        <span th:utext="${alert.text}"></span> <br />
+                                                        <i th:text="${alert.creatorName}"></i>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>                                                    
+                                                    </div>
+                                                    <form th:action="@{/import-export/edit/additional/loading}"
+                                                          method="post" th:object="${editedAlert}">
+                                                        <input hidden="hidden" class="alert-id form-control" th:field="*{id}">
+                                                        <textarea hidden="hidden" class="form-control" th:field="*{text}"></textarea>
+                                                        <button hidden="hidden" type="submit" class="btn m-1 btn-info" th:text="${'Змінити запит'}"></button>
+                                                    </form>                                                    
                                                 </div>
                                             </div>
                                         </div>

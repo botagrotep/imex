@@ -23,12 +23,12 @@ public class AlertRepository {
     public static final Alert ALERT6 = Alert.builder().id(6L)
             .text("""
             Вільний транспорт у Європі
-            <br />
-            <br />
+            
+            
             Голандія - рефи, чт-пт
-            <br />
+            
             Німеччина - рефи, чт-пт
-            <br />
+            
             Швейцарія - реф
             """)
             .creator(ANTON)

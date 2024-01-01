@@ -56,7 +56,8 @@ public class ImportExportController {
 
         Map<String, List<AlertDto>> alerts = alertservice.findAll();
         model.addAttribute("alerts", alerts);
-        model.addAttribute("newAlert", AlertDto.builder().build());
+        model.addAttribute("newAlert", new AlertDto());
+        model.addAttribute("editedAlert", new AlertDto());
         return "import-export";
     }
 
@@ -72,12 +73,21 @@ public class ImportExportController {
         return "redirect:/import-export";
     }
 
-    @PostMapping("additional/loading")
-    public String createAditionalLoadingRequest(Authentication authentication, @ModelAttribute AlertDto alertDto) {
-        alertservice.save(alertDto.toBuilder()
-                .creatorName(authentication.getName())
-                .time(LocalDateTime.now())
-                .build());
+    @PostMapping("add/additional/loading")
+    public String createAdditionalLoadingRequest(Authentication authentication,
+                                                @ModelAttribute("newAlert") AlertDto newAlert) {
+        newAlert.setCreatorName(authentication.getName());
+        newAlert.setTime(LocalDateTime.now());
+        alertservice.save(newAlert);
+        return "redirect:/import-export";
+    }
+
+    @PostMapping("edit/additional/loading")
+    public String editAdditionalLoadingRequest(Authentication authentication,
+                                                @ModelAttribute("editedAlert") AlertDto editedAlert) {
+        editedAlert.setCreatorName(authentication.getName());
+        editedAlert.setTime(LocalDateTime.now());
+        alertservice.save(editedAlert);
         return "redirect:/import-export";
     }
 }

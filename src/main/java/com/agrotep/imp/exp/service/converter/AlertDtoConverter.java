@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 import static com.agrotep.imp.exp.repository.PersonRepository.PEOPLE_BACKGROUND_CLASSES;
 import static com.agrotep.imp.exp.service.converter.TransportationDtoConverter.TRANSPORTATION_DATE_TIME_FORMATTER;
 
@@ -39,6 +38,15 @@ public abstract class AlertDtoConverter {
             name = String.format("%s %c.", names[0], names[1].charAt(0));
         }
         dto.setCreatorName(name);
+
+        String text = a.getText();
+        if (StringUtils.hasText(text)) {
+            if (text.contains("\r\n")) {
+                dto.setText(text.replace("\r\n", "<br />\r\n"));
+            } else {
+                dto.setText(text.replace("\n", "<br />\n"));
+            }
+        }
     }
 
     @AfterMapping
