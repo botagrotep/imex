@@ -21,6 +21,7 @@ public class TransportationDetailsDto {
     private String unloadingCity;
     private String loadingCountry;
     private String unloadingCountry;
+    private String borderCrossingPoint;
     private String orderDateStr;
     private String orderTimeStr;
     private String clientCompany;
@@ -70,4 +71,6 @@ public class TransportationDetailsDto {
     private Boolean isSentToDr;
     private Boolean isPrinted;
     private String comment;
+    private String customerApplicationNo;
+    private String customerApplicationDateStr;
 }

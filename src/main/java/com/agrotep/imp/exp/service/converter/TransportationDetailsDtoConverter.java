@@ -43,6 +43,7 @@ public abstract class TransportationDetailsDtoConverter {
         setTimeStr(t::getLoadingTime, dto::setLoadingTimeStr);
         setDateStr(t::getUnloadingDate, dto::setUnloadingDateStr);
         setTimeStr(t::getUnloadingTime, dto::setUnloadingTimeStr);
+        setDateStr(t::getCustomerApplicationDate, dto::setCustomerApplicationDateStr);
 
         Person manager = t.getManager();
         if (manager != null) {
@@ -70,6 +71,7 @@ public abstract class TransportationDetailsDtoConverter {
         setTime(dto::getLoadingTimeStr, t::setLoadingTime);
         setDate(dto::getUnloadingDateStr, t::setUnloadingDate);
         setTime(dto::getUnloadingTimeStr, t::setUnloadingTime);
+        setDate(dto::getCustomerApplicationDateStr, t::setCustomerApplicationDate);
 
         enrichWithPersistedData(dto, t);
 

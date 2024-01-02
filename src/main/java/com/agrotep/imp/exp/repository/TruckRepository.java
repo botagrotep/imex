@@ -24,6 +24,7 @@ public class TruckRepository {
             .truckType(REF)
             .operationalStatusCommentDateTime(LocalDateTime.of(2023, 12, 21, 11, 22))
             .operationalStatusComment("Рух за призначенням")
+            .isVisaGbr(true)
             .build();
 
     public static final Truck TRUCK2 = Truck.builder()
@@ -45,6 +46,7 @@ public class TruckRepository {
             .status(NOT_READY)
             .operationalStatusCommentDateTime(LocalDateTime.now())
             .operationalStatusComment("Просто стоїть")
+            .isVisaGbr(true)
             .build();
 
     public static final Truck TRUCK4 = Truck.builder()

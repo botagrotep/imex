@@ -17,3 +17,6 @@ tr.green-light td.essential {
 td.comment {
      cursor: pointer;
 }
+div.alert {
+    cursor: pointer;
+}

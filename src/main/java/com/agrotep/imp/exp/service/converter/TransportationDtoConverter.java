@@ -9,16 +9,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
 
     public static final String DEFAULT_COMMENT = "+ коментар";
+    public static final DateTimeFormatter TRANSPORTATION_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("E dd MMMM yyyy");
 
     @Mapping(target = "managerName", source = "t.manager.name")
     @Mapping(target = "managerId", source = "t.manager.id")
@@ -31,46 +31,24 @@ public abstract class TransportationDtoConverter {
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
-        if (t.getLoadingDate() != null) {
-            dto.setTransportationDate(t.getLoadingDate().format(DateTimeFormatter.ofPattern("E dd MMMM yyyy")));
+        LocalDate loadingDate = t.getLoadingDate();
+        if (loadingDate != null) {
+            dto.setTransportationDateStr(loadingDate.format(TRANSPORTATION_DATE_TIME_FORMATTER));
         }
 
         setDirection(t, dto);
         setCondition(t, dto);
-//        setTransportationComment(t, dto);
         setSeverity(t, dto);
-//        setDefaultCommentsForEmptyFields(dto);
-    }
-
-    private static void setDefaultCommentsForEmptyFields(TransportationDto dto) {
-//        setDefaultCommentsForEmptyField(dto::getCoordinatorComment, dto::setCoordinatorComment);
-//        setDefaultCommentsForEmptyField(dto::getTransportationComment, dto::setTransportationComment);
-        setDefaultCommentsForEmptyField(dto::getComment, dto::setComment);
-    }
-
-    private static void setDefaultCommentsForEmptyField(Supplier<String> getter, Consumer<String> setter) {
-        if (!StringUtils.hasText(getter.get())) {
-            setter.accept(DEFAULT_COMMENT);
-        }
     }
 
     private static void setSeverity(Transportation t, TransportationDto dto) {
         String severity = t.isSentToDr() ? "btn-info"
+                : !StringUtils.hasText(dto.getClientCompany()) ? "btn-outline-success"
                 : StringUtils.hasText(dto.getEquipage()) && StringUtils.hasText(dto.getDriver())
                 ? "btn-success"
                 : StringUtils.hasText(t.getTransportationComment()) ? "btn-danger"
-                : "";
+                : "btn-light";
         dto.setSeverity(severity);
-    }
-
-    private static void setTransportationComment(Transportation t, TransportationDto dto) {
-        String transportationComment = t.getTransportationComment();
-        if (!StringUtils.hasText(transportationComment) && !StringUtils.hasText(dto.getEquipage())
-                && !StringUtils.hasText(dto.getDriver())) {
-            dto.setTransportationComment(DEFAULT_COMMENT);
-            return;
-        }
-        dto.setTransportationComment(transportationComment);
     }
 
     private static void setCondition(Transportation t, TransportationDto dto) {
@@ -96,15 +74,21 @@ public abstract class TransportationDtoConverter {
 
     private static void setDirection(Transportation t, TransportationDto dto) {
         StringBuilder s = new StringBuilder(t.getLoadingCity());
+
         if (StringUtils.hasText(t.getLoadingCountry())) {
-            s.append(", ").append(t.getLoadingCountry()).append(" - ");
+            if (StringUtils.hasText(s)) {
+                s.append(", ");
+            }
+            s.append(t.getLoadingCountry()).append(" - ");
         }
         if (StringUtils.hasText(t.getBorderCrossingPoint())) {
             s.append(t.getBorderCrossingPoint()).append(" - ");
         }
-        s.append(t.getUnloadingCity());
+        if (StringUtils.hasText(t.getUnloadingCity())) {
+            s.append(t.getUnloadingCity()).append(", ");
+        }
         if (StringUtils.hasText(t.getUnloadingCountry())) {
-            s.append(", ").append(t.getUnloadingCountry());
+            s.append(t.getUnloadingCountry());
         }
         dto.setDirection(s.toString());
     }

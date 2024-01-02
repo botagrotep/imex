@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -18,16 +19,22 @@ public class PersonRepository {
             "1");
     public static final Person ANTON = new Person(
             2L,
-            "Антон Уліцький",
+            "Уліцький Антон",
             "anton",
             "1");
     public static final Person OKSANA = new Person(
             3L,
-            "Оксана Бойко",
+            "Бойко Оксана",
             "oksana",
             "1");
     public static final List<Person> PERSONS = List.of(
             SVITLANA, ANTON, OKSANA
+    );
+
+    public static final Map<Person, String> PEOPLE_BACKGROUND_CLASSES = Map.of(
+            SVITLANA, "alert-danger",
+            ANTON, "alert-success",
+            OKSANA, "alert-warning"
     );
 
     public List<Person> findAll() {

@@ -4,14 +4,17 @@ import com.agrotep.imp.exp.entity.City;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.entity.Truck;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.agrotep.imp.exp.repository.PersonRepository.*;
 import static com.agrotep.imp.exp.repository.TruckRepository.*;
+import static com.agrotep.imp.exp.service.TransportationService.DD_MM;
 
 @Repository
 public class TransportationRepository {
@@ -25,6 +28,7 @@ public class TransportationRepository {
     public static final long ID7 = 7L;
     public static final long ID8 = 8L;
     public static final long ID9 = 9L;
+    public static final long ID10 = 10L;
 
     public static final String UA = "UA";
     public static final String HU = "HU";
@@ -42,9 +46,11 @@ public class TransportationRepository {
     public static final City LONDON = new City("London", 51.5085300, -0.1257400, GB);
     public static final City MILAN = new City("Мілан", 45.4642700, 9.1895100, IT);
     public static final City OSLO = new City("Oslo", 59.9127300, 10.7460900, SE);
-    Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(Transportation.builder()
+    public static final City EDINBURG = new City("Единбург", 55.9520600, -3.1964800, GB);
+
+    static Set<Transportation> TRANSPORTATIONS = new HashSet<>(Set.of(Transportation.builder()
                     .id(ID1)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .transportationFillingDate(LocalDate.now().minusDays(1))
                     .loadingCity(VINNYTSYA.name())
                     .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
@@ -66,7 +72,7 @@ public class TransportationRepository {
                     .cargoPlacesNumber(23)
                     .cargoPlacesType("піддони")
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingDate(LocalDate.now().minusDays(1))
                     .loadingTime(LocalTime.of(0, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
 //                    .loadingCity("Arlon")
@@ -76,7 +82,7 @@ public class TransportationRepository {
                     .loadingLatitude(VINNYTSYA.latitude())
                     .loadingLongitude(VINNYTSYA.longitude())
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 23))
+                    .unloadingDate(LocalDate.now().plusDays(1))
                     .unloadingTime(LocalTime.of(7, 44))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -85,7 +91,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID2)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .transportationFillingDate(LocalDate.now())
                     .loadingCity(VINNYTSYA.name())
                     .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
@@ -99,9 +105,10 @@ public class TransportationRepository {
                     .temperatureMin(10)
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 9:00")
-                    .transportationComment("перенесено на 3.12.2023")
+                    .transportationComment(String.format("перенесено на %s",
+                            LocalDate.now().plusWeeks(2).format(DD_MM)))
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingDate(LocalDate.now())
                     .loadingTime(LocalTime.of(0, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
@@ -109,7 +116,7 @@ public class TransportationRepository {
                     .loadingLongitude(VINNYTSYA.longitude())
 
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().plusDays(2))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -119,7 +126,7 @@ public class TransportationRepository {
 
             Transportation.builder()
                     .id(ID3)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 1))
+                    .transportationFillingDate(LocalDate.now().plusDays(2))
                     .loadingCity(VINNYTSYA.name())
                     .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
@@ -132,7 +139,7 @@ public class TransportationRepository {
                     .isCargoAdr(true)
 
                     .loadingNo(2)
-                    .loadingDate(LocalDate.of(2023, 12, 1))
+                    .loadingDate(LocalDate.now().plusDays(1))
                     .loadingTime(LocalTime.of(0, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
@@ -140,7 +147,7 @@ public class TransportationRepository {
                     .loadingLongitude(VINNYTSYA.longitude())
 
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().plusDays(3))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -149,7 +156,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID4)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
+                    .transportationFillingDate(LocalDate.now().minusWeeks(1))
                     .loadingCity(VINNYTSYA.name())
                     .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
@@ -165,7 +172,7 @@ public class TransportationRepository {
                     .truck(TRUCK2)
                     .comment("комент")
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 2))
+                    .loadingDate(LocalDate.now().minusWeeks(1).minusDays(1))
                     .loadingTime(LocalTime.of(0, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
@@ -173,7 +180,7 @@ public class TransportationRepository {
                     .loadingLongitude(VINNYTSYA.longitude())
 
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().minusDays(2))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -182,7 +189,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID5)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
+                    .transportationFillingDate(LocalDate.now().plusWeeks(1))
                     .loadingCity(VINNYTSYA.name())
                     .loadingCountry(VINNYTSYA.country())
                     .borderCrossingPoint("Чоп")
@@ -197,7 +204,7 @@ public class TransportationRepository {
                     .coordinatorComment("завантаження о 9:00")
                     .transportationComment("відміна")
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 2))
+                    .loadingDate(LocalDate.now().plusWeeks(1).plusDays(1))
                     .loadingTime(LocalTime.of(0, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
@@ -205,7 +212,7 @@ public class TransportationRepository {
                     .loadingLongitude(VINNYTSYA.longitude())
 
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().plusWeeks(2))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -214,7 +221,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID6)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 2))
+                    .transportationFillingDate(LocalDate.now())
                     .loadingCity(BERLIN.name())
                     .loadingCountry(BERLIN.country())
                     .borderCrossingPoint("Дорогуцьк")
@@ -229,14 +236,14 @@ public class TransportationRepository {
                     .temperatureMax(12)
                     .coordinatorComment("завантаження о 10:00")
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 19))
+                    .loadingDate(LocalDate.now())
                     .loadingTime(LocalTime.of(10, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
                     .loadingLatitude(KYIV.latitude())
                     .loadingLongitude(KYIV.longitude())
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().plusWeeks(2))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -245,7 +252,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID7)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .transportationFillingDate(LocalDate.now().minusDays(1))
                     .loadingCity(LADYGYN.name())
                     .loadingCountry(LADYGYN.country())
                     .borderCrossingPoint("Чоп")
@@ -259,14 +266,14 @@ public class TransportationRepository {
                     .temperatureMin(4)
                     .temperatureMax(10)
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 19))
+                    .loadingDate(LocalDate.now().minusWeeks(1).minusDays(1))
                     .loadingTime(LocalTime.of(10, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
                     .loadingLatitude(LADYGYN.latitude())
                     .loadingLongitude(LADYGYN.longitude())
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 10))
+                    .unloadingDate(LocalDate.now().plusDays(1))
                     .unloadingTime(LocalTime.of(10, 8))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -276,7 +283,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID8)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .transportationFillingDate(LocalDate.now().minusDays(3))
                     .loadingCity(MILAN.name())
                     .loadingCountry(MILAN.country())
                     .borderCrossingPoint("Чоп")
@@ -289,14 +296,14 @@ public class TransportationRepository {
                     .temperatureMin(4)
                     .temperatureMax(10)
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, 12, 19))
+                    .loadingDate(LocalDate.now().minusDays(3))
                     .loadingTime(LocalTime.of(10, 8))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
                     .loadingLatitude(MILAN.latitude())
                     .loadingLongitude(MILAN.longitude())
                     .unloadingNo(2)
-                    .unloadingDate(LocalDate.of(2023, 12, 2))
+                    .unloadingDate(LocalDate.now())
                     .unloadingTime(LocalTime.of(9, 18))
                     .unloadingSenderReceiverLegalEntity("Arlon")
                     .unloadingAddress("LS")
@@ -306,7 +313,7 @@ public class TransportationRepository {
                     .build(),
             Transportation.builder()
                     .id(ID9)
-                    .transportationFillingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .transportationFillingDate(LocalDate.now().minusDays(4))
                     .loadingCity(KYIV.name())
                     .loadingCountry(KYIV.country())
                     .unloadingCity(LVIV.name())
@@ -316,7 +323,7 @@ public class TransportationRepository {
                     .manager(OKSANA)
                     .cargo("тнп")
                     .loadingNo(1)
-                    .loadingDate(LocalDate.of(2023, Month.DECEMBER, 19))
+                    .loadingDate(LocalDate.now())
                     .loadingTime(LocalTime.of(12, 18))
                     .loadingSenderReceiverLegalEntity("Arlon")
                     .loadingAddress("LS")
@@ -329,9 +336,52 @@ public class TransportationRepository {
                     .unloadingAddress("LS")
                     .unloadingLatitude(LVIV.latitude())
                     .unloadingLongitude(LVIV.longitude())
-                    .transportationComment("перенесено на 25.01")
+                    .transportationComment(String.format("перенесено на %s",
+                            LocalDate.now().plusDays(2).format(DD_MM)))
+                    .build(),
+            Transportation.builder()
+                    .id(ID10)
+                    .transportationFillingDate(LocalDate.now().plusDays(2))
+                    .loadingCity(EDINBURG.name())
+                    .loadingCountry(EDINBURG.country())
+                    .borderCrossingPoint("Чоп")
+                    .unloadingCity(VINNYTSYA.name())
+                    .unloadingCountry(VINNYTSYA.country())
+                    .typeOfTruck("реф")
+                    .clientCompany("МХП")
+                    .manager(OKSANA)
+                    .truck(TRUCK7)
+                    .cargo("комбікорм")
+                    .temperatureMin(4)
+                    .temperatureMax(10)
+                    .loadingNo(3)
+                    .loadingDate(LocalDate.now().plusWeeks(1).minusDays(2))
+                    .loadingTime(LocalTime.of(10, 8))
+                    .loadingSenderReceiverLegalEntity("Arlon")
+                    .loadingAddress("LS")
+                    .loadingLatitude(EDINBURG.latitude())
+                    .loadingLongitude(EDINBURG.longitude())
+                    .unloadingNo(4)
+                    .unloadingDate(LocalDate.now().plusMonths(1))
+                    .unloadingTime(LocalTime.of(10, 8))
+                    .unloadingSenderReceiverLegalEntity("Arlon")
+                    .unloadingAddress("LS")
+                    .unloadingLatitude(VINNYTSYA.latitude())
+                    .unloadingLongitude(VINNYTSYA.longitude())
+                    .comment("ЕКМТ")
                     .build()
     ));
+
+    public static final Collection<String> COUNTRIES = getCountries();
+    public static final Collection<String> COMPANIES = getCompanies();
+    public static final Collection<String> BORDER_CROSSING_POINTS = getBorderCrossingPoints();
+
+    private static Collection<String> getCountries() {
+        Set<String> countries = new LinkedHashSet<>(List.of("АГРОТЕП", "UA", "FR", "DE"));
+        countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getLoadingCountry).collect(Collectors.toSet()));
+        countries.addAll(TRANSPORTATIONS.stream().map(Transportation::getUnloadingCountry).collect(Collectors.toSet()));
+        return countries;
+    }
 
     public Collection<Transportation> findAll() {
         return TRANSPORTATIONS;
@@ -360,5 +410,35 @@ public class TransportationRepository {
         return TRANSPORTATIONS.stream()
                 .filter(t -> Objects.equals(truck, t.getTruck()))
                 .findAny();
+    }
+
+    private static Collection<String> getCompanies() {
+
+        List<String> predefinedCompanies = new ArrayList<>(List.of(
+                "Новий клієнт",
+                "Fererro (оплата 45 календарних днів по виставленню інвойсу, ліміт 300000 грн)",
+                "МХП (по факту вивантаження, ліміт 50000 грн)",
+                "Веселі бобри (10 днів по вивантаженню, ліміт 40000 грн)"
+        ));
+        predefinedCompanies.addAll(TRANSPORTATIONS.stream()
+                .map(Transportation::getClientCompany)
+                .distinct()
+                .toList());
+        return predefinedCompanies;
+    }
+
+    private static Collection<String> getBorderCrossingPoints() {
+        return TRANSPORTATIONS.stream()
+                .map(Transportation::getBorderCrossingPoint)
+                .filter(StringUtils::hasText)
+                .collect(Collectors.toSet());
+    }
+
+    public List<Transportation> findByTruckAndLoadingDateAfterEqual(Truck truck, LocalDate date) {
+        return TRANSPORTATIONS.stream()
+                .filter(t -> Objects.equals(t.getTruck(), truck))
+                .filter(t -> Objects.nonNull(t.getLoadingDate()))
+                .filter(t -> t.getLoadingDate().equals(date) || t.getLoadingDate().isAfter(date))
+                .collect(Collectors.toList());
     }
 }

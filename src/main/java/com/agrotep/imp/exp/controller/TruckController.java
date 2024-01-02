@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -34,7 +35,7 @@ public class TruckController {
         List<TruckDto> trucks = service.findAllWithCalculateRadiusFrom(transportationId);
         model.addAttribute("trucks", trucks);
 
-        TruckDto truckDto = trucks.stream().filter(t -> dto.getTruckId().equals(t.getId())).findAny().orElse(null);
+        TruckDto truckDto = trucks.stream().filter(t -> Objects.equals(dto.getTruckId(), t.getId())).findAny().orElse(null);
         model.addAttribute("selectedTruck", truckDto);
 
         return "truck";
