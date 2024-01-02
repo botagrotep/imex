@@ -82,12 +82,18 @@ public class ImportExportController {
         return "redirect:/import-export";
     }
 
-    @PostMapping("edit/additional/loading")
+    @PostMapping(value = "edit/additional/loading", params = "submit")
     public String editAdditionalLoadingRequest(Authentication authentication,
                                                 @ModelAttribute("editedAlert") AlertDto editedAlert) {
         editedAlert.setCreatorName(authentication.getName());
         editedAlert.setTime(LocalDateTime.now());
         alertservice.save(editedAlert);
+        return "redirect:/import-export";
+    }
+
+    @PostMapping(value = "edit/additional/loading", params = "cancel")
+    public String removeAdditionalLoadingRequest(@ModelAttribute("editedAlert") AlertDto editedAlert) {
+        alertservice.delete(editedAlert);
         return "redirect:/import-export";
     }
 }

@@ -83,5 +83,11 @@ function editAdditionalLoading() {
         this.addEventListener('mouseleave', function (e) {
             $('form textarea, form button', this).attr('hidden', 'hidden');
         });
+        
+        $('div.alert button.btn-close', this).each(function (n) {
+            this.addEventListener('click', function (e) {
+                $(this).closest('div.alert-block').find('form button[value="cancel"]').click()();
+            });
+        });
     });
 }

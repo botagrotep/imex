@@ -4,7 +4,10 @@ import com.agrotep.imp.exp.entity.Alert;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.agrotep.imp.exp.repository.PersonRepository.*;
 
@@ -49,5 +52,9 @@ public class AlertRepository {
         }
         ALERTS.remove(alert);
         ALERTS.add(alert);
+    }
+
+    public void delete(Alert alert) {
+        ALERTS.remove(alert);
     }
 }

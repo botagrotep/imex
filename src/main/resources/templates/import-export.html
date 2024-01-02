@@ -333,7 +333,10 @@
                                                           method="post" th:object="${editedAlert}">
                                                         <input hidden="hidden" class="alert-id form-control" th:field="*{id}">
                                                         <textarea hidden="hidden" class="form-control" th:field="*{text}"></textarea>
-                                                        <button hidden="hidden" type="submit" class="btn m-1 btn-info" th:text="${'Змінити запит'}"></button>
+                                                        <button hidden="hidden" type="submit" class="btn m-1 btn-info"
+                                                                th:text="${'Змінити запит'}" th:value="submit" th:name="submit"></button>
+                                                        <button hidden="hidden" type="submit" class="btn m-1 btn-warning"
+                                                                th:text="${'Видалити запит'}" th:value="cancel" th:name="cancel"></button>
                                                     </form>                                                    
                                                 </div>
                                             </div>

@@ -26,4 +26,8 @@ public class AlertService {
         Alert alert = converter.toAlert(dto);
         repository.save(alert);
     }
+
+    public void delete(AlertDto alert) {
+        repository.delete(converter.toAlert(alert));
+    }
 }
