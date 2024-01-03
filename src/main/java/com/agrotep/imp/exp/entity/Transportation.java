@@ -10,9 +10,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.logging.Formatter;
 
 //@Entity // This tells Hibernate to make a table out of this class
 @Getter
@@ -26,16 +29,9 @@ public class Transportation {
     private Long id;
     private Person manager;
     private LocalDate transportationFillingDate;
-    @Builder.Default
-    private String loadingCity = "";
-    @Builder.Default
-    private String loadingCountry = "";
+    private List<Loading> loadings;
     @Builder.Default
     private String borderCrossingPoint = "";
-    @Builder.Default
-    private String unloadingCity = "";
-    @Builder.Default
-    private String unloadingCountry = "";
     @Builder.Default
     private String typeOfTruck = "";
     @Builder.Default
@@ -69,33 +65,13 @@ public class Transportation {
     private Boolean isCargoCustomsServicesPaid;
     private Boolean isCargoStickers;
     private Boolean isCargoThermalPrinterNeeded;
-
-    private Integer loadingNo;
-    private LocalDate loadingDate;
-    private LocalTime loadingTime;
     private String loadingSenderReceiverLegalEntity;
-    private String loadingCityPostalIndex;
-    private String loadingRegion;
-    private String loadingAddress;
-    private Double loadingLongitude;
-    private Double loadingLatitude;
-    private Double loadingFreight;
-    private String loadingCurrency;
+
     private Boolean isLoadingPaymentInCash;
 
-    private Integer unloadingNo;
-    private LocalDate unloadingDate;
-    private LocalTime unloadingTime;
-    private String unloadingSenderReceiverLegalEntity;
-    private String unloadingCityPostalIndex;
-    private String unloadingRegion;
-    private String unloadingAddress;
-    private Double unloadingLongitude;
-    private Double unloadingLatitude;
-    private Double unloadingFreight;
-    private String unloadingCurrency;
-    private Boolean isUnloadingPaymentInCash;
     private boolean isSentToDr;
     private String customerApplicationNo;
     private LocalDate customerApplicationDate;
+    private Double freight;
+    private String currency;
 }

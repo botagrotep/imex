@@ -26,23 +26,15 @@ public abstract class TransportationDetailsDtoConverter {
     @Autowired
     protected PersonRepository personRepository;
 
-    @Mapping(target = "freight", source = "t.loadingFreight")
-    @Mapping(target = "currency", source = "t.loadingCurrency")
     public abstract TransportationDetailsDto toTransportationDetailsDto(Transportation t);
 
 
-    @Mapping(target = "loadingFreight", source = "transportationDetailsDto.freight")
-    @Mapping(target = "loadingCurrency", source = "transportationDetailsDto.currency")
     public abstract Transportation toTransportation(TransportationDetailsDto transportationDetailsDto);
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDetailsDto dto) {
         setDateStr(t::getOrderDate, dto::setOrderDateStr);
         setTimeStr(t::getOrderTime, dto::setOrderTimeStr);
-        setDateStr(t::getLoadingDate, dto::setLoadingDateStr);
-        setTimeStr(t::getLoadingTime, dto::setLoadingTimeStr);
-        setDateStr(t::getUnloadingDate, dto::setUnloadingDateStr);
-        setTimeStr(t::getUnloadingTime, dto::setUnloadingTimeStr);
         setDateStr(t::getCustomerApplicationDate, dto::setCustomerApplicationDateStr);
 
         Person manager = t.getManager();
@@ -67,10 +59,6 @@ public abstract class TransportationDetailsDtoConverter {
     protected void parseStringFields(TransportationDetailsDto dto, @MappingTarget Transportation t) {
         setDate(dto::getOrderDateStr, t::setOrderDate);
         setTime(dto::getOrderTimeStr, t::setOrderTime);
-        setDate(dto::getLoadingDateStr, t::setLoadingDate);
-        setTime(dto::getLoadingTimeStr, t::setLoadingTime);
-        setDate(dto::getUnloadingDateStr, t::setUnloadingDate);
-        setTime(dto::getUnloadingTimeStr, t::setUnloadingTime);
         setDate(dto::getCustomerApplicationDateStr, t::setCustomerApplicationDate);
 
         enrichWithPersistedData(dto, t);

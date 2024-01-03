@@ -8,11 +8,13 @@
     <title>Agrotep</title>
     <link rel="shortcut icon" type="image/png" th:href="@{/assets/images/logos/favicon.png}"/>
     <link rel="stylesheet" th:href="@{/assets/css/styles.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/update-transportation-details.css}"/>
     <script defer th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script defer th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
     <script defer th:src="@{/assets/js/sidebarmenu.js}"></script>
     <script defer th:src="@{/assets/js/app.min.js}"></script>
     <script defer th:src="@{/assets/libs/simplebar/dist/simplebar.js}"></script>
+    <script defer='defer' th:src="@{/assets/js/update-transportation-details.js}"></script>
 </head>
 
 <body>
@@ -352,182 +354,227 @@
 
                     <!--  code input -->
 
-                    <div class="col-lg-4">
-                        <div class="col-lg-12">
-                            <!-- Завантаження -->
-                            <div class="card overflow-hidden">
+                    <div class="col-lg-4" id="loadings">
+                        <div class="col-lg-12" th:each="loading, i: *{loadings}">
+
+                            <div class="card overflow-hidden loading-output">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title mb-9 fw-semibold">Завантаження</h5>
+                                    <h5 class="card-title mb-9 fw-semibold ti ti-pencil"
+                                        th:text="${loadingTypes.contains(transportation.loadings[__${}}].loadingType) ? 'Завантаження' : 'Розвантаження'}">
+                                        Завантаження
+                                        <span class="ti ti-pencil">wdfsdf</span>
+                                    </h5>
 
                                     <!-- First Line: Select Input, One Input Date, One Input Time -->
                                     <div class="row align-items-center mb-3">
                                         <div class="col-md-4">
-                                            <label for="loading-type">Тип</label>
-                                            <select th:field="*{loadingType}" id="loading-type" class="form-select">
-
-                                                <option value="Зав">Зав</option>
-                                                <option value="ЗавЗам">ЗавЗам</option>
-                                            </select>
+                                            <label>
+                                                Тип
+                                                <select name="loading-type" class="form-select">
+                                                    <option th:if="${loadingTypes.contains(loading.loadingType)}"
+                                                            th:each="t: ${loadingTypes}" th:value="${t}"
+                                                            th:text="${t.notation}"
+                                                            th:selected="${loading.loadingType == t}">
+                                                        Зав
+                                                    </option>
+                                                    <option th:if="${unloadingTypes.contains(loading.loadingType)}"
+                                                            th:each="t: ${unloadingTypes}" th:value="${t.name()}"
+                                                            th:text="${t.notation}"
+                                                            th:selected="${loading.loadingType == t}">
+                                                        РозвРозм
+                                                    </option>
+                                                </select>
+                                            </label>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="loading-date-str">Дата</label>
-                                            <input th:field="*{loadingDateStr}" type="date" id="loading-date-str"
-                                                   class="form-control" required>
+                                            <label>
+                                                Дата
+                                                <input type="date" th:value="${loading.loadingDate}" name="loading-date"
+                                                       class="form-control" required>
+                                            </label>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="loading-time-str">Час</label>
-                                            <input th:field="*{loadingTimeStr}" type="time" id="loading-time-str"
-                                                   class="form-control">
+                                            <label>
+                                                Час
+                                                <input type="time" th:value="${loading.loadingTime}"
+                                                       name="loading-time-str" class="form-control">
+                                            </label>
                                         </div>
                                     </div>
 
                                     <!-- Second Line: One Input Text, One Select Input -->
                                     <div class="row align-items-center">
                                         <div class="col-md-6">
-                                            <label for="loading-city">Місто</label>
-                                            <input th:field="*{loadingCity}" type="text" id="loading-city"
-                                                   class="form-control">
+                                            <label>
+                                                Місто
+                                                <input th:value="${loading.loadingCity}" type="text"
+                                                       name="loading-city" class="form-control">
+                                            </label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="loading-country">Країна</label>
-                                            <select th:field="*{loadingCountry}" id="loading-country"
-                                                    class="form-select">
-                                                <option th:each="country: ${countries}" th:value="${country}"
-                                                        th:text="${country}">
-                                                    UA
-                                                </option>
-                                            </select>
+                                            <label>
+                                                Країна
+                                                <select th:value="${loading.loadingCountry}" name="loading-country"
+                                                        class="form-select">
+                                                    <option th:each="country: ${countries}" th:value="${country}"
+                                                            th:text="${country}"
+                                                            th:selected="${loading.loadingCountry == country}">
+                                                        UA
+                                                    </option>
+                                                </select>
+                                            </label>
                                         </div>
                                     </div>
                                     <!-- Third Line: One Input Text, One Select Input -->
                                     <div class="row align-items-center">
                                         <div class="col-md-6">
-                                            <label for="loading-region">Область</label>
-                                            <input th:field="*{loadingRegion}" type="text" id="loading-region"
-                                                   class="form-control">
+                                            <label>
+                                                Область
+                                                <input th:value="${loading.loadingRegion}" type="text"
+                                                       name="loading-region" class="form-control">
+                                            </label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="loading-city-postal-index">Пошт. код</label>
-                                            <input th:field="*{loadingCityPostalIndex}" type="text"
-                                                   id="loading-city-postal-index"
-                                                   class="form-control">
+                                            <label>
+                                                Пошт. код
+                                                <input th:value="${loading.loadingCityPostalIndex}" type="text"
+                                                       name="loading-city-postal-index"
+                                                       class="form-control">
+                                            </label>
                                         </div>
                                     </div>
                                     <!-- Forth Line: One Input Text, One Select Input -->
                                     <div class="row align-items-center">
                                         <div class="col-md-6">
-                                            <label for="loading-address">Адреса</label>
-                                            <input th:field="*{loadingAddress}" type="text"
-                                                   id="loading-address"
-                                                   class="form-control">
+                                            <label for="loading-address">
+                                                Адреса
+                                                <input th:value="${loading.loadingAddress}" type="text"
+                                                       name="loading-address" class="form-control">
+                                            </label>
                                         </div>
                                     </div>
                                     <!-- Fifth Line: One Input Text, One Select Input -->
                                     <div class="row align-items-center">
                                         <div class="col-md-6">
-                                            <label for="loading-latitude">Широта</label>
-                                            <input th:field="*{loadingLatitude}" type="text"
-                                                   id="loading-latitude"
-                                                   class="form-control">
+                                            <label for="loading-latitude">
+                                                Широта
+                                                <input th:value="${loading.loadingLatitude}" type="text"
+                                                       name="loading-latitude" class="form-control">
+                                            </label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="loading-longitude">Довгота</label>
-                                            <input th:field="*{loadingLongitude}" type="text"
-                                                   id="loading-longitude"
-                                                   class="form-control">
+                                            <label for="loading-longitude">
+                                                Довгота
+                                                <input th:value="${loading.loadingLongitude}" type="text"
+                                                       name="loading-longitude" class="form-control">
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div hidden="hidden" class="container-fluid loading-edit">
+                                <form action="#" th:action="@{/transportation-details/loading/update}"
+                                      th:object="${editedLoading}"
+                                      method="post">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title mb-9 fw-semibold"
+                                            th:text="${loadingTypes.contains(loading.loadingType) ? 'Завантаження' : 'Розвантаження'}">
+                                            Завантаження
+                                        </h5>
 
-
-                        <div class="col-lg-12">
-                            <!-- Розвантаження -->
-                            <div class="card overflow-hidden">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-9 fw-semibold">Розвантаження</h5>
-
-                                    <!-- First Line: Select Input, One Input Date, One Input Time -->
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-md-4">
-                                            <label for="unloading-type">Тип</label>
-                                            <select th:field="*{unloadingType}" id="unloading-type" class="form-select">
-
-                                                <option value="Розв">Розв</option>
-                                                <option value="РозвРозм">РозвРозм</option>
-                                            </select>
+                                        <!-- First Line: Select Input, One Input Date, One Input Time -->
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-md-4">
+                                                <label for="loading-type">Тип</label>
+                                                <select th:field="*{loadingType}" id="loading-type"
+                                                        class="form-select">
+                                                    <option th:if="${loadingTypes.contains(loading.loadingType)}"
+                                                            th:each="t: ${loadingTypes}" th:value="${t}"
+                                                            th:text="${t.notation}">
+                                                        Зав
+                                                    </option>
+                                                    <option th:if="${unloadingTypes.contains(loading.loadingType)}"
+                                                            th:each="t: ${unloadingTypes}" th:value="${t}"
+                                                            th:text="${t.notation}">
+                                                        РозвРозм
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="loading-date-str">Дата</label>
+                                                <input th:field="*{loadingDate}" type="date"
+                                                       th:value="${loading.loadingDate}" id="loading-date-str"
+                                                       class="form-control" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="loading-time-str">Час</label>
+                                                <input th:field="*{loadingTime}" type="time"
+                                                       th:value="${loading.loadingTime}" id="loading-time-str"
+                                                       class="form-control">
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="unloading-date-str">Дата</label>
-                                            <input th:field="*{unloadingDateStr}" type="date" id="unloading-date-str"
-                                                   class="form-control">
+
+                                        <!-- Second Line: One Input Text, One Select Input -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label for="loading-city">Місто</label>
+                                                <input th:field="*{loadingCity}" type="text" id="loading-city"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="loading-country">Країна</label>
+                                                <select th:field="*{loadingCountry}" id="loading-country"
+                                                        class="form-select">
+                                                    <option th:each="country: ${countries}"
+                                                            th:value="${country}"
+                                                            th:text="${country}">
+                                                        UA
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="unloading-time-str">Час</label>
-                                            <input th:field="*{unloadingTimeStr}" type="time" id="unloading-time-str"
-                                                   class="form-control">
+                                        <!-- Third Line: One Input Text, One Select Input -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label for="loading-region">Область</label>
+                                                <input th:field="*{loadingRegion}" type="text"
+                                                       id="loading-region"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="loading-city-postal-index">Пошт. код</label>
+                                                <input th:field="*{loadingCityPostalIndex}" type="text"
+                                                       id="loading-city-postal-index"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Forth Line: One Input Text, One Select Input -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label for="loading-address">Адреса</label>
+                                                <input th:field="*{loadingAddress}" type="text"
+                                                       id="loading-address"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Fifth Line: One Input Text, One Select Input -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <label for="loading-latitude">Широта</label>
+                                                <input th:field="*{loadingLatitude}" type="text"
+                                                       id="loading-latitude"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="loading-longitude">Довгота</label>
+                                                <input th:field="*{loadingLongitude}" type="text"
+                                                       id="loading-longitude"
+                                                       class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- Second Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-city">Місто</label>
-                                            <input th:field="*{unloadingCity}" type="text" id="unloading-city"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-country">Країна</label>
-                                            <select th:field="*{unloadingCountry}" id="unloading-country"
-                                                    class="form-select">
-                                                <option th:each="country: ${countries}" th:value="${country}"
-                                                        th:text="${country}">
-                                                    UA
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <!-- Third Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-region">Область</label>
-                                            <input th:field="*{unloadingRegion}" type="text" id="unloading-region"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-city-postal-index">Пошт. код</label>
-                                            <input th:field="*{unloadingCityPostalIndex}" type="text"
-                                                   id="unloading-city-postal-index"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Forth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-address">Адреса</label>
-                                            <input th:field="*{unloadingAddress}" type="text"
-                                                   id="unloading-address"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                    <!-- Fifth Line: One Input Text, One Select Input -->
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <label for="unloading-latitude">Широта</label>
-                                            <input th:field="*{unloadingLatitude}" type="text"
-                                                   id="unloading-latitude"
-                                                   class="form-control">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="unloading-longitude">Довгота</label>
-                                            <input th:field="*{unloadingLongitude}" type="text"
-                                                   id="unloading-longitude"
-                                                   class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
+                                    <button type="submit" class="btn btn-primary m-1">Зберегти</button>
+                                </form>
                             </div>
                         </div>
 

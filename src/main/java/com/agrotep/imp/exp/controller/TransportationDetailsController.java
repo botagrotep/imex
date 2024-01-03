@@ -4,6 +4,7 @@ import com.agrotep.imp.exp.dto.EmptyTransportationDto;
 import com.agrotep.imp.exp.dto.TransportationDetailsDto;
 import com.agrotep.imp.exp.dto.TransportationDto;
 import com.agrotep.imp.exp.dto.TruckDto;
+import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.service.TransportationService;
 import com.agrotep.imp.exp.service.TruckService;
 import jakarta.validation.Valid;
@@ -17,6 +18,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static com.agrotep.imp.exp.entity.enums.LoadingType.LOADING_TYPES;
+import static com.agrotep.imp.exp.entity.enums.LoadingType.UNLOADING_TYPES;
+
 /**
  * @author prog
  */
@@ -26,13 +30,16 @@ import java.util.Optional;
 public class TransportationDetailsController {
     private final TransportationService service;
     private final TruckService truckService;
-
+//    https://www.baeldung.com/thymeleaf-list
     @GetMapping("/update/{id}")
     public String getTranstortationDetails(@PathVariable Long id, Model model) {
         Optional<TransportationDetailsDto> details = service.findTransportationDetailsById(id);
         if (details.isPresent()) {
             TransportationDetailsDto dto = details.get();
             model.addAttribute("transportation", dto);
+            model.addAttribute("loadingTypes", LOADING_TYPES);
+            model.addAttribute("unloadingTypes", UNLOADING_TYPES);
+            model.addAttribute("editedLoading", Loading.builder().build());
             addListsToModel(model);
             return "update-transportation-details";
         }

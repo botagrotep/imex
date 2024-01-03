@@ -1,7 +1,7 @@
 package com.agrotep.imp.exp.service.filters;
 
 import com.agrotep.imp.exp.dto.PersonDto;
-import com.agrotep.imp.exp.dto.TransportationFilterType;
+import com.agrotep.imp.exp.dto.enums.TransportationFilterType;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.service.PersonService;
 import lombok.Getter;

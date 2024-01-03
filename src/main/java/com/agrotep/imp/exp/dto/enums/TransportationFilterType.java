@@ -1,4 +1,4 @@
-package com.agrotep.imp.exp.dto;
+package com.agrotep.imp.exp.dto.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
