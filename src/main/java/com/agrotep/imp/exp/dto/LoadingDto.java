@@ -1,16 +1,13 @@
 package com.agrotep.imp.exp.dto;
 
 import com.agrotep.imp.exp.entity.enums.LoadingType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoadingDto {
     private Long id;
     private String loadingCity;

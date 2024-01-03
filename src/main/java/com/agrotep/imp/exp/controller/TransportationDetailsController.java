@@ -30,7 +30,6 @@ import static com.agrotep.imp.exp.entity.enums.LoadingType.UNLOADING_TYPES;
 public class TransportationDetailsController {
     private final TransportationService service;
     private final TruckService truckService;
-//    https://www.baeldung.com/thymeleaf-list
     @GetMapping("/update/{id}")
     public String getTranstortationDetails(@PathVariable Long id, Model model) {
         Optional<TransportationDetailsDto> details = service.findTransportationDetailsById(id);
