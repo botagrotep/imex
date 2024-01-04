@@ -2,6 +2,7 @@ package com.agrotep.imp.exp.controller;
 
 import com.agrotep.imp.exp.dto.*;
 import com.agrotep.imp.exp.entity.Loading;
+import com.agrotep.imp.exp.entity.enums.LoadingType;
 import com.agrotep.imp.exp.service.TransportationService;
 import com.agrotep.imp.exp.service.TruckService;
 import jakarta.validation.Valid;
@@ -17,6 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.agrotep.imp.exp.entity.enums.LoadingType.*;
+import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -33,9 +38,11 @@ public class TransportationDetailsController {
         Optional<TransportationDetailsDto> details = service.findTransportationDetailsById(id);
         if (details.isPresent()) {
             TransportationDetailsDto dto = details.get();
-            dto.getLoadings().add(new LoadingDto());
+            addEmptyLoadingIfAbsent(dto);
             model.addAttribute("transportation", dto);
             model.addAttribute("loadingTypes", LOADING_TYPES);
+            model.addAttribute("loadingTypesMap", Stream.of(LoadingType.values())
+                    .collect(Collectors.toMap(t -> t.name(), t -> t.getNotation(), (t1, t2) -> t2, LinkedHashMap::new )));
             model.addAttribute("unloadingTypes", UNLOADING_TYPES);
             model.addAttribute("editedLoading", Loading.builder().build());
             addListsToModel(model);
@@ -131,5 +138,16 @@ public class TransportationDetailsController {
 
     private static void removeStubLoading(TransportationDetailsDto transportation) {
         transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
+    }
+
+    private void addEmptyLoadingIfAbsent(TransportationDetailsDto dto) {
+        final List<LoadingDto> loadings = dto.getLoadings();
+        if (!CollectionUtils.isEmpty(loadings)) {
+            return;
+        } 
+        if (loadings == null) {
+            dto.setLoadings(new ArrayList<>());
+        }
+        dto.getLoadings().add(new LoadingDto());
     }
 }
