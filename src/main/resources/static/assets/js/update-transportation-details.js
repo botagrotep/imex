@@ -7,6 +7,7 @@ jQuery(document).ready(function () {
 
 function prepareLoadingEditor() {
     $(LOADING_FORM).last().each(function () {
+        console.log($(this).html());
         $('input[required], select[required]', this).removeAttr('required');
         $(this).hide();
     });

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class TransportationDetailsController {
 
     @PostMapping(value = "/update", params = "submit")
     public String updateTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
-        transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
+        removeStubLoading(transportation);
         TransportationDto transportationDto = service.saveOrCopy(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
@@ -54,7 +55,7 @@ public class TransportationDetailsController {
 
     @PostMapping(value = "/update", params = "cancel")
     public String cancelTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
-        transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
+        removeStubLoading(transportation);
         TransportationDto transportationDto = service.cancel(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
@@ -77,14 +78,23 @@ public class TransportationDetailsController {
 
     @GetMapping("/add")
     public String createTransportationDetails(Model model) {
-        model.addAttribute("transportation", new TransportationDetailsDto());
+        TransportationDetailsDto dto = new TransportationDetailsDto();
+        dto.setLoadings(new ArrayList<>(List.of(
+                LoadingDto.builder().loadingNo(1).loadingType(SIMPLE_LOADING).build(),
+                LoadingDto.builder().loadingNo(2).loadingType(SIMPLE_UNLOADING).build(),
+                new LoadingDto()
+        )));
+        model.addAttribute("transportation", dto);
         addListsToModel(model);
+        model.addAttribute("loadingTypes", LOADING_TYPES);
+        model.addAttribute("unloadingTypes", UNLOADING_TYPES);
         return "add-transportation-details";
     }
 
     @PostMapping("/add")
     public String addTransportation(Authentication authentication,
                                     @ModelAttribute @Valid TransportationDetailsDto transportation, Model model) {
+        removeStubLoading(transportation);
         transportation.setManagerName(authentication.getName());
         TransportationDto transportationDto = service.saveOrCopy(transportation);
         model.addAttribute(transportationDto);
@@ -117,5 +127,9 @@ public class TransportationDetailsController {
     private void addCompaniesToModel(Model model) {
         Collection<String> companies = service.getCompanies();
         model.addAttribute("clientCompanies", companies);
+    }
+
+    private static void removeStubLoading(TransportationDetailsDto transportation) {
+        transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
     }
 }
