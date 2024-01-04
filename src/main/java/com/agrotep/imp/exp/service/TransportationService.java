@@ -1,7 +1,10 @@
 package com.agrotep.imp.exp.service;
 
 
-import com.agrotep.imp.exp.dto.*;
+import com.agrotep.imp.exp.dto.EmptyTransportationDto;
+import com.agrotep.imp.exp.dto.TransportationDetailsDto;
+import com.agrotep.imp.exp.dto.TransportationDto;
+import com.agrotep.imp.exp.dto.TruckDto;
 import com.agrotep.imp.exp.dto.enums.TransportationFilterType;
 import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.entity.Transportation;
@@ -22,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.agrotep.imp.exp.entity.enums.LoadingType.LOADING_TYPES;
+import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 
 @Service
 @RequiredArgsConstructor
@@ -72,17 +75,11 @@ public class TransportationService {
 
         if (dateFrom != null) {
             LocalDate dayBeforeFrom = dateFrom.minusDays(1L);
-            andVal = andVal && transportation.getLoadings().stream()
-                    .map(Loading::getLoadingDate)
-                    .filter(Objects::nonNull)
-                    .allMatch(dayBeforeFrom::isBefore);
+            andVal = andVal && getFirstLoadingDate(transportation).filter(dayBeforeFrom::isBefore).isPresent();
         }
         if (dateTo != null) {
             LocalDate dayAfterTo = dateTo.plusDays(1L);
-            andVal = andVal && transportation.getLoadings().stream()
-                    .map(Loading::getLoadingDate)
-                    .filter(Objects::nonNull)
-                    .allMatch(dayAfterTo::isAfter);
+            andVal = andVal && getFirstLoadingDate(transportation).filter(dayAfterTo::isAfter).isPresent();
         }
         if (StringUtils.hasText(borderCrossingPoint)) {
             andVal = andVal && borderCrossingPoint.equalsIgnoreCase(transportation.getBorderCrossingPoint());
@@ -97,26 +94,36 @@ public class TransportationService {
 
     public TransportationDto saveOrCopy(TransportationDetailsDto transportationDetailsDto) {
         Transportation transportation = detailsDtoConverter.toTransportation(transportationDetailsDto);
-        LocalDate firstLoadingDate = getFirstLoadingDate(transportation);
+        Optional<LocalDate> firstLoadingDate = getFirstLoadingDate(transportation);
         repository.findById(transportation.getId())
-                .filter(t -> firstLoadingDate != null
+                .filter(t -> firstLoadingDate.isPresent()
                         && !firstLoadingDate.equals(getFirstLoadingDate(t)))
                 .ifPresent(t -> {
                     transportation.setId(null);
                     t.setTruck(null);
-                    t.setTransportationComment(String.format("перенесено на %s", firstLoadingDate.format(DD_MM)));
+                    t.setTransportationComment(String.format("перенесено на %s", firstLoadingDate.get().format(DD_MM)));
                     repository.save(t);
                 });
         Transportation t = repository.save(transportation);
         return converter.toTransportationDto(t);
     }
 
-    private static LocalDate getFirstLoadingDate(Transportation transportation) {
-        return transportation.getLoadings().stream()
-                .filter(l -> LOADING_TYPES.contains(l.getLoadingType()))
-                .min(Comparator.comparing(Loading::getLoadingNo))
-                .map(Loading::getLoadingDate)
-                .orElse(null);
+    private static Optional<LocalDate> getFirstLoadingDate(Transportation transportation) {
+
+        List<Loading> loadings = transportation.getLoadings();
+        if (CollectionUtils.isEmpty(loadings)) {
+            return Optional.empty();
+        }
+        Loading firstLoading = CollectionUtils.firstElement(loadings);
+        if (firstLoading == null) {
+            return Optional.empty();
+        }
+        LocalDate loadingDate = firstLoading.getLoadingDate();
+        if (loadingDate == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(loadingDate);
     }
 
     public void save(EmptyTransportationDto dto) {
@@ -185,6 +192,7 @@ public class TransportationService {
                     .map(d -> {
                         TransportationDto dto = new TransportationDto();
                         dto.setLoadingDate(d);
+                        dto.setTransportationDateStr(d.format(DATE_FORMATTER));
                         return dto;
                     })
                     .toList();

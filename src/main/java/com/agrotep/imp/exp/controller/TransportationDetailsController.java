@@ -1,9 +1,6 @@
 package com.agrotep.imp.exp.controller;
 
-import com.agrotep.imp.exp.dto.EmptyTransportationDto;
-import com.agrotep.imp.exp.dto.TransportationDetailsDto;
-import com.agrotep.imp.exp.dto.TransportationDto;
-import com.agrotep.imp.exp.dto.TruckDto;
+import com.agrotep.imp.exp.dto.*;
 import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.service.TransportationService;
 import com.agrotep.imp.exp.service.TruckService;
@@ -18,8 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static com.agrotep.imp.exp.entity.enums.LoadingType.LOADING_TYPES;
-import static com.agrotep.imp.exp.entity.enums.LoadingType.UNLOADING_TYPES;
+import static com.agrotep.imp.exp.entity.enums.LoadingType.*;
+import org.springframework.util.StringUtils;
 
 /**
  * @author prog
@@ -35,6 +32,7 @@ public class TransportationDetailsController {
         Optional<TransportationDetailsDto> details = service.findTransportationDetailsById(id);
         if (details.isPresent()) {
             TransportationDetailsDto dto = details.get();
+            dto.getLoadings().add(new LoadingDto());
             model.addAttribute("transportation", dto);
             model.addAttribute("loadingTypes", LOADING_TYPES);
             model.addAttribute("unloadingTypes", UNLOADING_TYPES);
@@ -47,6 +45,7 @@ public class TransportationDetailsController {
 
     @PostMapping(value = "/update", params = "submit")
     public String updateTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
+        transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
         TransportationDto transportationDto = service.saveOrCopy(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";
@@ -55,6 +54,7 @@ public class TransportationDetailsController {
 
     @PostMapping(value = "/update", params = "cancel")
     public String cancelTransportation(@ModelAttribute TransportationDetailsDto transportation, Model model) {
+        transportation.getLoadings().removeIf(l -> !StringUtils.hasText(l.getLoadingDate()));
         TransportationDto transportationDto = service.cancel(transportation);
         model.addAttribute(transportationDto);
         return "redirect:/import-export";

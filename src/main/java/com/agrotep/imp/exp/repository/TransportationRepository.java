@@ -119,6 +119,7 @@ public class TransportationRepository {
                                     .loadingLongitude(VINNYTSYA.longitude())
                                     .build(),
                             Loading.builder()
+                                    .id(4L)
                                     .loadingCity(BUDAPESHT.name())
                                     .loadingCountry(BUDAPESHT.country())
                                     .loadingNo(2)
@@ -148,7 +149,7 @@ public class TransportationRepository {
                     .transportationFillingDate(LocalDate.now().plusDays(2))
                     .loadings(new ArrayList<>(List.of(
                             Loading.builder()
-                                    .id(3L)
+                                    .id(13L)
                                     .loadingCity(VINNYTSYA.name())
                                     .loadingCountry(VINNYTSYA.country())
                                     .loadingNo(2)
@@ -160,7 +161,7 @@ public class TransportationRepository {
                                     .loadingLongitude(VINNYTSYA.longitude())
                                     .build(),
                             Loading.builder()
-                                    .id(4L)
+                                    .id(14L)
                                     .loadingCity(BUDAPESHT.name())
                                     .loadingCountry(BUDAPESHT.country())
                                     .loadingNo(2)
@@ -318,6 +319,7 @@ public class TransportationRepository {
                                     .loadingLongitude(LADYGYN.longitude())
                                     .build(),
                             Loading.builder()
+                                    .id(20L)
                                     .loadingCity(LONDON.name())
                                     .loadingCountry(LONDON.country())
                                     .loadingNo(2)
