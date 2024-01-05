@@ -39,13 +39,10 @@ public class TransportationDetailsController {
         if (details.isPresent()) {
             TransportationDetailsDto dto = details.get();
             addEmptyLoadingIfAbsent(dto);
-            model.addAttribute("transportation", dto);
-            model.addAttribute("loadingTypes", LOADING_TYPES);
-            model.addAttribute("loadingTypesMap", Stream.of(LoadingType.values())
-                    .collect(Collectors.toMap(t -> t.name(), t -> t.getNotation(), (t1, t2) -> t2, LinkedHashMap::new )));
-            model.addAttribute("unloadingTypes", UNLOADING_TYPES);
-            model.addAttribute("editedLoading", Loading.builder().build());
             addListsToModel(model);
+            model.addAttribute("transportation", dto);
+            addLoadingTypesToModel(model);
+            model.addAttribute("editedLoading", Loading.builder().build());
             return "update-transportation-details";
         }
         return this.createTransportationDetails(model);
@@ -88,13 +85,11 @@ public class TransportationDetailsController {
         TransportationDetailsDto dto = new TransportationDetailsDto();
         dto.setLoadings(new ArrayList<>(List.of(
                 LoadingDto.builder().loadingNo(1).loadingType(SIMPLE_LOADING).build(),
-                LoadingDto.builder().loadingNo(2).loadingType(SIMPLE_UNLOADING).build(),
-                new LoadingDto()
+                LoadingDto.builder().loadingNo(2).loadingType(SIMPLE_UNLOADING).build()
         )));
         model.addAttribute("transportation", dto);
         addListsToModel(model);
-        model.addAttribute("loadingTypes", LOADING_TYPES);
-        model.addAttribute("unloadingTypes", UNLOADING_TYPES);
+        addLoadingTypesToModel(model);
         return "add-transportation-details";
     }
 
@@ -149,5 +144,12 @@ public class TransportationDetailsController {
             dto.setLoadings(new ArrayList<>());
         }
         dto.getLoadings().add(new LoadingDto());
+    }
+
+    private static void addLoadingTypesToModel(Model model) {
+        model.addAttribute("loadingTypes", LOADING_TYPES);
+        model.addAttribute("loadingTypesMap", Stream.of(LoadingType.values())
+                .collect(Collectors.toMap(Enum::name, LoadingType::getNotation, (t1, t2) -> t2, LinkedHashMap::new )));
+        model.addAttribute("unloadingTypes", UNLOADING_TYPES);
     }
 }

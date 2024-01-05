@@ -18,6 +18,7 @@
         /*<![CDATA[*/
         const loadingTypes = /*[[${loadingTypes}]]*/ null;
         const unloadingTypes = /*[[${unloadingTypes}]]*/ null;
+        const loadingTypesMap = /*[[${loadingTypesMap}]]*/ null;
         /*]]>*/
     </script>
 </head>
@@ -376,14 +377,12 @@
                                                 Тип
                                                 <select th:field="*{loadings[__${i.index}__].loadingType}"
                                                         name="loading-type" class="form-select loading-type" required>
-                                                    <option th:if="${loading.loadingType == null or loadingTypes.contains(loading.loadingType)}"
-                                                            th:each="t: ${loadingTypes}" th:value="${t}"
+                                                    <option th:each="t: ${loadingTypes}" th:value="${t}"
                                                             th:text="${t.notation}"
                                                             th:selected="${loading.loadingType == t}">
                                                         Зав
                                                     </option>
-                                                    <option th:if="${loading.loadingType == null or unloadingTypes.contains(loading.loadingType)}"
-                                                            th:each="t: ${unloadingTypes}" th:value="${t.name()}"
+                                                    <option th:each="t: ${unloadingTypes}" th:value="${t.name()}"
                                                             th:text="${t.notation}"
                                                             th:selected="${loading.loadingType == t}">
                                                         РозвРозм
@@ -469,10 +468,10 @@
                                             <label>
                                                 Пошт. код
                                                 <input
-                                                        th:field="*{loadings[__${i.index}__].loadingCityPostalIndex}"
-                                                        type="text"
-                                                        name="loading-city-postal-index"
-                                                        class="form-control">
+                                                    th:field="*{loadings[__${i.index}__].loadingCityPostalIndex}"
+                                                    type="text"
+                                                    name="loading-city-postal-index"
+                                                    class="form-control">
                                             </label>
                                         </div>
                                     </div>
@@ -509,7 +508,7 @@
                             </div>
                         </div>
 
-                        <div class="row align-items-center">
+                        <div class="row align-items-center" id="buttons-block">
                             <div class="col-md-6">
                                 <button type="button" class="btn btn-primary m-1">Додати в ДР</button>
                             </div>

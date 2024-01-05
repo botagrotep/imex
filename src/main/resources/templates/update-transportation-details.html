@@ -379,14 +379,12 @@
                                                         Тип
                                                         <select th:field="*{loadings[__${i.index}__].loadingType}"
                                                                 name="loading-type" class="form-select loading-type" required>
-                                                            <option th:if="${loading.loadingType == null or loadingTypes.contains(loading.loadingType)}"
-                                                                    th:each="t: ${loadingTypes}" th:value="${t}"
+                                                            <option th:each="t: ${loadingTypes}" th:value="${t}"
                                                                     th:text="${t.notation}"
                                                                     th:selected="${loading.loadingType == t}">
                                                                 Зав
                                                             </option>
-                                                            <option th:if="${loading.loadingType == null or unloadingTypes.contains(loading.loadingType)}"
-                                                                    th:each="t: ${unloadingTypes}" th:value="${t.name()}"
+                                                            <option th:each="t: ${unloadingTypes}" th:value="${t.name()}"
                                                                     th:text="${t.notation}"
                                                                     th:selected="${loading.loadingType == t}">
                                                                 РозвРозм
