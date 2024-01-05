@@ -1,7 +1,12 @@
 package com.agrotep.imp.exp.service;
 
 
-import com.agrotep.imp.exp.dto.*;
+import com.agrotep.imp.exp.dto.EmptyTransportationDto;
+import com.agrotep.imp.exp.dto.TransportationDetailsDto;
+import com.agrotep.imp.exp.dto.TransportationDto;
+import com.agrotep.imp.exp.dto.TruckDto;
+import com.agrotep.imp.exp.dto.enums.TransportationFilterType;
+import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.repository.TransportationRepository;
 import com.agrotep.imp.exp.repository.TruckRepository;
@@ -16,11 +21,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 
 @Service
 @RequiredArgsConstructor
@@ -69,10 +74,12 @@ public class TransportationService {
                 .allMatch(p -> p.test(transportation));
 
         if (dateFrom != null) {
-            andVal = andVal && dateFrom.minusDays(1L).isBefore(transportation.getLoadingDate());
+            LocalDate dayBeforeFrom = dateFrom.minusDays(1L);
+            andVal = andVal && getFirstLoadingDate(transportation).filter(dayBeforeFrom::isBefore).isPresent();
         }
         if (dateTo != null) {
-            andVal = andVal && dateTo.plusDays(1L).isAfter(transportation.getLoadingDate());
+            LocalDate dayAfterTo = dateTo.plusDays(1L);
+            andVal = andVal && getFirstLoadingDate(transportation).filter(dayAfterTo::isAfter).isPresent();
         }
         if (StringUtils.hasText(borderCrossingPoint)) {
             andVal = andVal && borderCrossingPoint.equalsIgnoreCase(transportation.getBorderCrossingPoint());
@@ -87,18 +94,36 @@ public class TransportationService {
 
     public TransportationDto saveOrCopy(TransportationDetailsDto transportationDetailsDto) {
         Transportation transportation = detailsDtoConverter.toTransportation(transportationDetailsDto);
+        Optional<LocalDate> firstLoadingDate = getFirstLoadingDate(transportation);
         repository.findById(transportation.getId())
-                .filter(t -> transportation.getLoadingDate() != null
-                        && !transportation.getLoadingDate().equals(t.getLoadingDate()))
+                .filter(t -> firstLoadingDate.isPresent()
+                        && !firstLoadingDate.equals(getFirstLoadingDate(t)))
                 .ifPresent(t -> {
                     transportation.setId(null);
                     t.setTruck(null);
-                    t.setTransportationComment(String.format("перенесено на %s",
-                            transportation.getLoadingDate().format(DD_MM)));
+                    t.setTransportationComment(String.format("перенесено на %s", firstLoadingDate.get().format(DD_MM)));
                     repository.save(t);
                 });
         Transportation t = repository.save(transportation);
         return converter.toTransportationDto(t);
+    }
+
+    private static Optional<LocalDate> getFirstLoadingDate(Transportation transportation) {
+
+        List<Loading> loadings = transportation.getLoadings();
+        if (CollectionUtils.isEmpty(loadings)) {
+            return Optional.empty();
+        }
+        Loading firstLoading = CollectionUtils.firstElement(loadings);
+        if (firstLoading == null) {
+            return Optional.empty();
+        }
+        LocalDate loadingDate = firstLoading.getLoadingDate();
+        if (loadingDate == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(loadingDate);
     }
 
     public void save(EmptyTransportationDto dto) {
@@ -164,8 +189,12 @@ public class TransportationService {
                     .collect(Collectors.toSet());
             List<TransportationDto> datesWoTransportations = startDate.datesUntil(endDate)
                     .filter(d -> !availableDates.contains(d))
-                    .map(d -> Transportation.builder().loadingDate(d).build())
-                    .map(converter::toTransportationDto)
+                    .map(d -> {
+                        TransportationDto dto = new TransportationDto();
+                        dto.setLoadingDate(d);
+                        dto.setTransportationDateStr(d.format(DATE_FORMATTER));
+                        return dto;
+                    })
                     .toList();
             dtos.addAll(datesWoTransportations);
         }

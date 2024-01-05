@@ -2,6 +2,7 @@ package com.agrotep.imp.exp.service.converter;
 
 
 import com.agrotep.imp.exp.dto.TruckDto;
+import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.entity.Transportation;
 import com.agrotep.imp.exp.entity.Truck;
 import com.agrotep.imp.exp.repository.TransportationRepository;
@@ -9,10 +10,12 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static com.agrotep.imp.exp.dto.TransportationDetailsDto.DATE_FORMATTER;
 
@@ -59,17 +62,23 @@ public abstract class TruckDtoConverter {
     }
 
     private static void setUnloading(TruckDto dto, Transportation transportation) {
+        List<Loading> loadings = transportation.getLoadings();
+        if (CollectionUtils.isEmpty(loadings)) {
+            return;
+        }
+        Loading loadingsLast = CollectionUtils.lastElement(loadings);
         StringBuilder unloading = new StringBuilder();
-        if (transportation.getUnloadingDate() != null) {
-            unloading.append(transportation.getUnloadingDate().format(DATE_FORMATTER));
+        assert loadingsLast != null;
+        if (loadingsLast.getLoadingDate() != null) {
+            unloading.append(loadingsLast.getLoadingDate().format(DATE_FORMATTER));
         }
         unloading.append(" ");
-        if (StringUtils.hasText(transportation.getUnloadingCity())) {
-            unloading.append(transportation.getUnloadingCity());
+        if (StringUtils.hasText(loadingsLast.getLoadingCity())) {
+            unloading.append(loadingsLast.getLoadingCity());
         }
         unloading.append(" ");
-        if (StringUtils.hasText(transportation.getUnloadingCountry())) {
-            unloading.append(transportation.getUnloadingCountry());
+        if (StringUtils.hasText(loadingsLast.getLoadingCountry())) {
+            unloading.append(loadingsLast.getLoadingCountry());
         }
         dto.setUnloading(unloading.toString().trim());
     }

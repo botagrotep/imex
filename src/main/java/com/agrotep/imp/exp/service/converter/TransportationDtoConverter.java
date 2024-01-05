@@ -2,17 +2,20 @@ package com.agrotep.imp.exp.service.converter;
 
 
 import com.agrotep.imp.exp.dto.TransportationDto;
+import com.agrotep.imp.exp.entity.Loading;
 import com.agrotep.imp.exp.entity.Transportation;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring")
 public abstract class TransportationDtoConverter {
@@ -31,9 +34,10 @@ public abstract class TransportationDtoConverter {
 
     @AfterMapping
     public void toStringFields(Transportation t, @MappingTarget TransportationDto dto) {
-        LocalDate loadingDate = t.getLoadingDate();
+        LocalDate loadingDate = Objects.requireNonNull(CollectionUtils.firstElement(t.getLoadings())).getLoadingDate();
         if (loadingDate != null) {
             dto.setTransportationDateStr(loadingDate.format(TRANSPORTATION_DATE_TIME_FORMATTER));
+            dto.setLoadingDate(loadingDate);
         }
 
         setDirection(t, dto);
@@ -73,22 +77,34 @@ public abstract class TransportationDtoConverter {
     }
 
     private static void setDirection(Transportation t, TransportationDto dto) {
-        StringBuilder s = new StringBuilder(t.getLoadingCity());
+        List<Loading> loadings = t.getLoadings();
+        if (CollectionUtils.isEmpty(loadings)) {
+            return;
+        }
+        Loading loading = CollectionUtils.firstElement(loadings);
+        if (loading == null) {
+            return;
+        }
+        StringBuilder s = new StringBuilder(loading.getLoadingCity());
 
-        if (StringUtils.hasText(t.getLoadingCountry())) {
+        if (StringUtils.hasText(loading.getLoadingCountry())) {
             if (StringUtils.hasText(s)) {
                 s.append(", ");
             }
-            s.append(t.getLoadingCountry()).append(" - ");
+            s.append(loading.getLoadingCountry()).append(" - ");
         }
         if (StringUtils.hasText(t.getBorderCrossingPoint())) {
             s.append(t.getBorderCrossingPoint()).append(" - ");
         }
-        if (StringUtils.hasText(t.getUnloadingCity())) {
-            s.append(t.getUnloadingCity()).append(", ");
+        Loading unloading = CollectionUtils.lastElement(loadings);
+        if (unloading == null) {
+            return;
         }
-        if (StringUtils.hasText(t.getUnloadingCountry())) {
-            s.append(t.getUnloadingCountry());
+        if (StringUtils.hasText(unloading.getLoadingCity())) {
+            s.append(unloading.getLoadingCity()).append(", ");
+        }
+        if (StringUtils.hasText(unloading.getLoadingCountry())) {
+            s.append(unloading.getLoadingCountry());
         }
         dto.setDirection(s.toString());
     }

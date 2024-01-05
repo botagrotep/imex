@@ -1,6 +1,6 @@
 package com.agrotep.imp.exp.config;
 
-import com.agrotep.imp.exp.dto.TransportationFilterType;
+import com.agrotep.imp.exp.dto.enums.TransportationFilterType;
 import com.agrotep.imp.exp.service.filters.ImportExportFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

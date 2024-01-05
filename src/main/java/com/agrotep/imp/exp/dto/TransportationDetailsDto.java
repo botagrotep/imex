@@ -1,10 +1,10 @@
 package com.agrotep.imp.exp.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,10 +17,7 @@ public class TransportationDetailsDto {
 //    @NotEmpty(message = "ім'я менеджера не повинно бути порожнім")
     private String managerName;
     private Long managerId;
-    private String loadingCity;
-    private String unloadingCity;
-    private String loadingCountry;
-    private String unloadingCountry;
+    private List<LoadingDto> loadings;
     private String borderCrossingPoint;
     private String orderDateStr;
     private String orderTimeStr;
@@ -43,31 +40,11 @@ public class TransportationDetailsDto {
     private Integer temperatureMax;
     private String coordinatorComment;
 
-    private Integer loadingNo;
-    @NotEmpty
-    private String loadingDateStr;
-    private String loadingTimeStr;
-    private String loadingType;
     private String loadingSenderReceiverLegalEntity;
-    private String loadingCityPostalIndex;
-    private String loadingRegion;
-    private String loadingAddress;
-    private Double loadingLongitude;
-    private Double loadingLatitude;
     private Double freight;
     private String currency;
     private Boolean isPaymentInCash;
 
-    private Integer unloadingNo;
-    private String unloadingDateStr;
-    private String unloadingTimeStr;
-    private String unloadingType;
-    private String unloadingSenderReceiverLegalEntity;
-    private String unloadingCityPostalIndex;
-    private String unloadingRegion;
-    private String unloadingAddress;
-    private Double unloadingLongitude;
-    private Double unloadingLatitude;
     private Boolean isSentToDr;
     private Boolean isPrinted;
     private String comment;
